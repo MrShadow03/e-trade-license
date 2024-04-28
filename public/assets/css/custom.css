@@ -1,0 +1,144 @@
+@font-face {
+    font-family: 'HindSiliguri';
+    src: url('./../fonts/HindSiliguri-Regular.ttf') format('truetype');
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'HindSiliguri';
+    src: url('./../fonts/HindSiliguri-Bold.ttf') format('truetype');
+    font-weight: bold;
+}
+@font-face {
+    font-family: 'HindSiliguri';
+    src: url('./../fonts/HindSiliguri-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+}
+@font-face {
+    font-family: 'Ador';
+    src: url('./../fonts/LiAdorNoirritVR-VF.ttf') format('truetype');
+    font-weight: 100 900;
+}
+@font-face {
+    font-family: 'Noto Serif Bengali';
+    src: url('./../fonts/NotoSerifBengali.ttf') format('truetype');
+}
+
+.font-bn{
+    font-family: 'Hind Siliguri', 'HindSiliguri', sans-serif;
+}
+
+.font-ador{
+    font-family: 'Ador', sans-serif;
+}
+.font-noto{
+    font-family: 'Noto Serif Bengali', sans-serif;
+}
+.invoice-header{
+    background-color: #4273b8;
+}
+.print-display-show{
+    display: none !important;
+}
+.order-1 {
+    order: 1;
+}
+
+.order-2 {
+    order: 2;
+}
+
+.right-gap {
+    margin-right: auto;
+}
+.text-hover-underline:hover{
+    text-decoration: underline !important;
+}
+.truncate{
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.select2 .select2-selection{
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+}
+.select2-results__options{
+    font-size:14px !important;
+    font-family: 'HindSiliguri', sans-serif;
+}
+@media print {
+    .font-bn{
+        font-family: 'HindSiliguri', sans-serif;
+    }
+
+    .print-display-none{
+        display: none !important;
+    }
+    .print-display-show{
+        display: block !important;
+    }
+    .app-content{
+        background-color: #fff !important;
+    }
+
+    .print * {
+        color : #000 !important;
+    }
+
+    .dt-table td, .dt-table th{
+        padding-block: 0px !important;
+        border-bottom: 1px solid #747474 !important;
+    }
+
+    .dt-table .tfoot tr:nth-child(1) th{
+        padding-top: 10rem !important;
+    }
+
+}
+
+.marquee {
+    height: 50px; 
+    overflow: hidden;
+    position: relative;
+  }
+.marquee .marquee-content {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    line-height: 50px;
+    text-align: center;
+
+    /* Starting position */
+        -moz-transform:translateX(100%);
+        -webkit-transform:translateX(100%);  
+        transform:translateX(100%);
+
+/* Apply animation to this element */  
+        -moz-animation: marquee 15s linear infinite;
+        -webkit-animation: marquee 15s linear infinite;
+        animation: marquee 15s linear infinite;
+}
+  
+/* Move it (define the animation) */
+@-moz-keyframes marquee {
+    0%   { -moz-transform: translateX(100%); }
+    100% { -moz-transform: translateX(-100%); }
+}
+@-webkit-keyframes marquee {
+    0%   { -webkit-transform: translateX(100%); }
+    100% { -webkit-transform: translateX(-100%); }
+}
+@keyframes marquee {
+    0%   { 
+    -moz-transform: translateX(100%); /* Firefox bug fix */
+    -webkit-transform: translateX(100%); /* Firefox bug fix */
+    transform: translateX(100%);         
+    }
+    100% { 
+    -moz-transform: translateX(-100%); /* Firefox bug fix */
+    -webkit-transform: translateX(-100%); /* Firefox bug fix */
+    transform: translateX(-100%); 
+    }
+}
