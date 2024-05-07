@@ -13,12 +13,12 @@
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="" />
-    <link rel="shortcut icon" href="{{ asset('assets/website/img/Barisal_City_Corporation_logo.png') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/img/Barisal_City_Corporation_logo.png') }}">
 
     
 
     <!--begin::Fonts(mandatory for all pages)-->
-    @include('admin.partials.fonts')
+    @include('user.partials.fonts')
     <!--end::Fonts-->
 
     @section('exclusive_styles')
@@ -26,10 +26,10 @@
 
 
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-    @include('admin.partials.global_stylesheets_bundle')
+    @include('user.partials.global_stylesheets_bundle')
     <!--end::Global Stylesheets Bundle-->
     <!--Begin::Header Scripts -->
-    @include('admin.partials.header_scripts')
+    @include('user.partials.header_scripts')
 </head>
 <!--end::Head-->
 <!--begin::Body-->

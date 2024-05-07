@@ -4,7 +4,9 @@
 
         <!--begin::Menu toggle-->
         <a href="#" class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-30px h-30px w-md-40px h-md-40px" data-kt-menu-trigger="{default:'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-            <i class="ki-duotone ki-night-day theme-light-show fs-2 fs-lg-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span><span class="path10"></span></i> <i class="ki-duotone ki-moon theme-dark-show fs-2 fs-lg-1"><span class="path1"></span><span class="path2"></span></i></a>
+            <i class="fal fa-sun-bright theme-light-show fs-4 fs-lg-1"></i>
+            <i class="fal fa-moon theme-dark-show fs-4 fs-lg-1"></i>
+        </a>
         <!--begin::Menu toggle-->
 
         <!--begin::Menu-->
@@ -13,7 +15,8 @@
             <div class="menu-item px-3 my-0">
                 <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="light">
                     <span class="menu-icon" data-kt-element="icon">
-                        <i class="ki-duotone ki-night-day fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span><span class="path10"></span></i> </span>
+                        <i class="fal fa-sun-bright fs-4"></i> 
+                    </span>
                     <span class="menu-title">
                         Light
                     </span>
@@ -25,7 +28,8 @@
             <div class="menu-item px-3 my-0">
                 <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="dark">
                     <span class="menu-icon" data-kt-element="icon">
-                        <i class="ki-duotone ki-moon fs-2"><span class="path1"></span><span class="path2"></span></i> </span>
+                        <i class="fal fa-moon fs-4"></i>
+                    </span>
                     <span class="menu-title">
                         Dark
                     </span>
@@ -37,7 +41,8 @@
             <div class="menu-item px-3 my-0">
                 <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="system">
                     <span class="menu-icon" data-kt-element="icon">
-                        <i class="ki-duotone ki-screen fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i> </span>
+                        <i class="fal fa-computer-speaker fs-4"></i>
+                    </span>
                     <span class="menu-title">
                         System
                     </span>
@@ -89,9 +94,7 @@
 
             <!--begin::Menu item-->
             <div class="menu-item px-5">
-                <a href="{{ route('admin.profile') }}" class="menu-link px-5">
-                    আমার প্রোফাইল
-                </a>
+                <a href="#" class="menu-link px-5">আমার প্রোফাইল</a>
             </div>
             <!--end::Menu item-->
 

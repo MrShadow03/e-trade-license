@@ -2,15 +2,26 @@
 
 namespace App\Http\Controllers\Auth\User;
 
+use App\Models\User;
 use Illuminate\View\View;
+use App\Services\OtpService;
 use Illuminate\Http\Request;
+use App\Models\UserOneTimePassword;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Auth\UserLoginRequest;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
 {
+    protected $otpService;
+
+    public function __construct(OtpService $otpService)
+    {
+        $this->otpService = $otpService;
+    }
     /**
      * Display the login view.
      */
@@ -24,11 +35,60 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(UserLoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $user = User::where('phone', $request->phone)->first();
+        $match = Hash::check($request->password, $user->password);
 
-        $request->session()->regenerate();
+        if(!$user || !$match){
+            throw ValidationException::withMessages([
+                'phone' => trans('auth.failed'),
+            ]);
+        }
 
-        return redirect()->intended(route('user.dashboard', absolute: false));
+        $otp = UserOneTimePassword::where('user_id', $user->id)->latest()->first();
+        $sendTo = config('constants.OTP_METHOD') === 'email' ? $user->email : $user->phone;
+
+        
+        if(!$user->isVerified()){
+            if(!$otp){
+                // send otp
+                $newOtp = $this->otpService->generateOtp($user);
+                $this->otpService->sendOtp($user, $newOtp);
+                return redirect()->route('user.verify-otp', ['send_to' => $sendTo])->with(
+                    [
+                        "success"  => "OTP পাঠানো হয়েছে।",
+                        "is_sent" => true,
+                    ]
+                );
+            }else{
+                if($otp->isExpired()){
+                    // delete otp and send new otp
+                    $this->otpService->deleteOtp($user);
+                    $newOtp = $this->otpService->generateOtp($user);
+                    $this->otpService->sendOtp($user, $newOtp);
+                    return redirect()->route('user.verify-otp', ['send_to' => $sendTo])->with(
+                        [
+                            "success"  => "OTP পাঠানো হয়েছে।",
+                            "is_sent" => true,
+                        ]
+                    );
+                }else{
+                    if(!$otp->hasAttempts()){
+                        // delete otp and send to otp page with error message
+                        $this->otpService->deleteOtp($user);
+                        return redirect()->route('user.verify-otp', ['send_to' => $sendTo])->with([
+                            'error' => 'আপনার সকল প্রচেষ্টা শেষ হয়েছে।',
+                            'cool_down' => $otp->coolDown(),
+                        ]);
+                    }else{
+                        return redirect()->route('user.verify-otp', ['send_to' => $sendTo])->with('success', 'OTP পাঠানো হয়েছে।');
+                    }
+                }
+            }
+        }else{
+            $request->authenticate();
+            $request->session()->regenerate();
+            return redirect()->intended(route('user.dashboard', absolute: false));
+        }
     }
 
     /**

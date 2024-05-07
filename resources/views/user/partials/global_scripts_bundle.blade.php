@@ -1,6 +1,6 @@
 <!--begin::Global Javascript Bundle(mandatory for all pages)-->
-<script src="{{ asset('assets/admin/assets/plugins/global/plugins.bundle.js') }}"></script>
-<script src="{{ asset('assets/admin/assets/js/scripts.bundle.js') }}"></script>
+<script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
+<script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
 <script>
     toastr.options = {
         "closeButton": false,

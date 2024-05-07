@@ -1,10 +1,11 @@
 <?php
 
-use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Application;
+use App\Http\Middleware\PhoneVerifiedMiddleware;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -21,6 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
             return route('user.dashboard');
         });
+
+        // phone verification middleware
+        $middleware->alias(['phone_verified' => PhoneVerifiedMiddleware::class]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

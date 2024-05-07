@@ -16,8 +16,11 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
+        'phone',
         'email',
+        'address',
         'password',
+        'phone_verified_at',
     ];
 
     protected $hidden = [
@@ -30,11 +33,34 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'phone_verified_at' => 'datetime',
         ];
     }
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()->logFillable();
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->phone_verified_at !== null;
+    }
+
+    public function markPhoneAsVerified(): void
+    {
+        $this->phone_verified_at = now();
+        $this->save();
+    }
+
+    public function otp()
+    {
+        return $this->hasOne(UserOneTimePassword::class);
+    }
+
+    public function markUserPhoneAsVerified()
+    {
+        $this->phone_verified_at = now();
+        $this->save();
     }
 }

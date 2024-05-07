@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" /> 
     <!--end::Fonts-->
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-    {{-- <link href="{{ asset('/assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css"> --}}
+    <link href="{{ asset('/assets/plugins/global/font-awesome.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('/assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('/assets/css/custom.css') }}" rel="stylesheet" type="text/css">
     <!--end::Global Stylesheets Bundle-->
@@ -50,7 +50,7 @@
                     <div class="d-flex flex-center flex-column flex-column-fluid px-lg-10 pb-15 pb-lg-20">
 
                         <!--begin::Form-->
-                        <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" data-kt-redirect-url="/metronic8/demo1/../demo1/index.html" method="POST" action="{{ route('admin.login.store') }}">
+                        <form class="form w-100 font-bn" novalidate="novalidate" id="sign_in_form" method="POST" action="{{ route('user.login.store') }}">
                             @csrf
                             <!--begin::Heading-->
                             <div class="text-center mb-11">
@@ -60,58 +60,35 @@
                                 <!--end::Title-->
 
                                 <!--begin::Subtitle-->
-                                <div class="text-gray-700 fw-semibold fs-6 font-bn">ই-মেইল এবং পাসওয়ার্ড দিয়ে লগইন করুন</div>
+                                <div class="text-gray-700 fw-semibold fs-6 font-bn">ফোন নম্বর এবং পাসওয়ার্ড দিয়ে লগইন করুন</div>
                                 <!--end::Subtitle--->
                             </div>
-                            @error('email')
-                            <div class="text-center text-danger fs-base pb-5 font-bn">ই-মেইল কিংবা পাসওয়ার্ড সঠিক নয়!</div>
+                            @error('phone')
+                            <div class="text-center text-danger fs-base pb-5 font-bn">ফোন নম্বর কিংবা পাসওয়ার্ড সঠিক নয়!</div>
                             @enderror
                             <!--begin::Heading-->
-
-                            {{-- <!--begin::Login options-->
-                            <div class="row g-3 mb-9">
-                                <!--begin::Col-->
-                                <div class="col-md-6">
-                                    <!--begin::Google link--->
-                                    <a href="#" class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
-                                        <img alt="Logo" src="{{ asset('/assets/media/svg/brand-logos/google-icon.svg') }}" class="h-15px me-3">
-                                        Sign in with Google
-                                    </a>
-                                    <!--end::Google link--->
-                                </div>
-                                <!--end::Col-->
-
-                                <!--begin::Col-->
-                                <div class="col-md-6">
-                                    <!--begin::Google link--->
-                                    <a href="#" class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
-                                        <img alt="Logo" src="{{ asset('/assets/media/svg/brand-logos/apple-black.svg') }}" class="theme-light-show h-15px me-3">
-                                        <img alt="Logo" src="{{ asset('/assets/media/svg/brand-logos/apple-black-dark.svg') }}" class="theme-dark-show h-15px me-3">
-                                        Sign in with Apple
-                                    </a>
-                                    <!--end::Google link--->
-                                </div>
-                                <!--end::Col-->
-                            </div>
-                            <!--end::Login options--> --}}
-
-                            {{-- <!--begin::Separator-->
-                            <div class="separator separator-content my-14">
-                                <span class="w-125px text-gray-500 fw-semibold fs-7">Or with email</span>
-                            </div>
-                            <!--end::Separator--> --}}
 
                             <!--begin::Input group--->
                             <div class="fv-row mb-8">
                                 <!--begin::Email-->
-                                <input type="text" placeholder="ফোন নম্বর অথবা ই-মেইল" name="phoneOrEmail" value="" autocomplete="off" class="form-control font-bn">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fal fa-phone-alt fs-3"></i>
+                                    </span>
+                                    <input type="text" placeholder="ফোন নম্বর" name="phone" value="" autocomplete="off" class="form-control font-bn">
+                                </div>
                                 <!--end::Email-->
                             </div>
 
                             <!--end::Input group--->
                             <div class="fv-row mb-3">
                                 <!--begin::Password-->
-                                <input type="password" placeholder="পাসওয়ার্ড" name="password" autocomplete="off" class="form-control font-bn">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fal fa-lock fs-3"></i>
+                                    </span>
+                                    <input type="password" placeholder="পাসওয়ার্ড" name="password" autocomplete="off" class="form-control font-bn">
+                                </div>
                                 <!--end::Password-->
                             </div>
                             <!--end::Input group--->
@@ -125,7 +102,7 @@
                                 </label>
 
                                 <!--begin::Link-->
-                                <a href="{{ route('admin.password.request') }}" class="text-primary text-hover-underline font-bn">
+                                <a href="{{ route('user.password.request') }}" class="text-primary text-hover-underline font-bn">
                                     পাসওয়ার্ড মনে নেই ?
                                 </a>
                                 <!--end::Link-->
@@ -134,7 +111,7 @@
 
                             <!--begin::Submit button-->
                             <div class="d-grid mb-10">
-                                <button type="submit" id="kt_sign_in_submit" class="btn btn-success font-bn">
+                                <button type="submit" id="sign_in_submit" class="btn btn-success font-bn">
 
                                     <!--begin::Indicator label-->
                                     <span class="indicator-label">
@@ -155,7 +132,7 @@
                         <div class="text-gray-700 text-center fw-semibold fs-6 font-bn">
                             একাউন্ট নেই ?&nbsp;
                     
-                            <a href="{{ route('admin.register') }}" class="text-primary text-hover-underline">
+                            <a href="{{ route('user.register') }}" class="text-primary text-hover-underline">
                                 নিবন্ধন করুন
                             </a>
                         </div>
@@ -198,17 +175,36 @@
                     form,
                     {
                         fields: {					
-                            'email': {
+                            'phone': {
                                 validators: {
                                     notEmpty: {
-                                        message: 'Email address is required'
+                                        message: 'ফোন নম্বর প্রদান করুন'
+                                    },
+                                    callback: {
+                                        message: 'একটি বৈধ ফোন নম্বর প্রদান করুন',
+                                        callback: function(value, validator, $field) {
+                                            // Check if value is either a valid email or a valid phone number
+                                            value = value.value;
+
+                                            if (value.trim() === '') {
+                                                return true; // Skip validation if field is empty
+                                            }
+                                            
+                                            var phonePattern = /^01\d{9}$/;
+
+                                            if (phonePattern.test(value)) {
+                                                return true;
+                                            }
+                            
+                                            return false;
+                                        }
                                     }
                                 }
                             },
                             'password': {
                                 validators: {
                                     notEmpty: {
-                                        message: 'The password is required'
+                                        message: 'পাসওয়ার্ড প্রদান করুন'
                                     }
                                 }
                             } 
@@ -267,8 +263,8 @@
             return {
                 // Initialization
                 init: function() {
-                    form = document.querySelector('#kt_sign_in_form');
-                    submitButton = document.querySelector('#kt_sign_in_submit');
+                    form = document.querySelector('#sign_in_form');
+                    submitButton = document.querySelector('#sign_in_submit');
                     
                     handleValidation();
                     handleSubmitDemo();

@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('user.layouts.app')
 <!--begin::Page Title-->
 @section('title')
     <title>{{ auth()->user()->name }}'s Profile | Admin</title>
@@ -126,7 +126,7 @@
                             <!--begin::Card body-->
                             <div class="card-body pt-0 pb-5">
                                 <!--begin::Form-->
-                                <form class="form" action="{{ route('admin.profile.update') }}" method="POST" enctype="multipart/form-data" id="profile_form">
+                                <form class="form" action="{{ route('user.profile.update') }}" method="POST" enctype="multipart/form-data" id="profile_form">
                                     @csrf
                                     @method('PATCH')
                                     <!--begin::Input group-->
@@ -414,7 +414,7 @@
                 <!--begin::Modal body-->
                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                     <!--begin::Form-->
-                    <form id="update_password_form" class="form" action="{{ route('admin.profile.password') }}" method="POST">
+                    <form id="update_password_form" class="form" action="{{ route('user.profile.password') }}" method="POST">
                         @csrf
                         @method('PATCH')
                         <!--begin::Input group -->

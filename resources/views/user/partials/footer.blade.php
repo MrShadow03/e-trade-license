@@ -1,5 +1,5 @@
 <!--begin::Javascript-->
-@include('admin.partials.global_scripts_bundle')
+@include('user.partials.global_scripts_bundle')
 @section('exclusive_scripts')
 @show
 <!--end::Javascript-->

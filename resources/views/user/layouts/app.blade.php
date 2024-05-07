@@ -1,4 +1,4 @@
-@include('admin.partials.header')
+@include('user.partials.header')
 
 <!--begin::App-->
 @section('app')
@@ -8,13 +8,13 @@
     <div class="app-page  flex-column flex-column-fluid " id="kt_app_page">
 
 
-        @include('admin.partials.head')
+        @include('user.partials.head')
         <!--begin::Wrapper-->
         <div class="app-wrapper  flex-column flex-row-fluid " id="kt_app_wrapper">
             
             
             <!--begin::Sidebar-->
-            @include('admin.partials.sidebar')
+            @include('user.partials.sidebar')
             <!--end::Sidebar-->
 
 
@@ -68,8 +68,8 @@
 
 @yield('drawers')
 
-@include('admin.partials.scrolltop')
+@include('user.partials.scrolltop')
 
 @yield('exclusive_modals')
 
-@include('admin.partials.footer')
+@include('user.partials.footer')

@@ -3,35 +3,36 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Auth\User\PasswordController;
+use App\Http\Controllers\UserOneTimePasswordController;
 use App\Http\Controllers\Auth\User\NewPasswordController;
 use App\Http\Controllers\Auth\User\VerifyEmailController;
 use App\Http\Controllers\Auth\User\RegisteredUserController;
 use App\Http\Controllers\Auth\User\PasswordResetLinkController;
+use App\Http\Controllers\User\TradeLicenseApplicationController;
 use App\Http\Controllers\Auth\User\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\User\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\User\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\User\EmailVerificationNotificationController;
 
-Route::group(['middleware' => 'guest:web', 'as' => 'user.', 'prefix' => 'user'], function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
-    Route::post('register', [RegisteredUserController::class, 'store']);
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
-
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
-
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
-    Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');
-});
-
-Route::group(['middleware' => 'auth:web', 'as' => 'user.', 'prefix' => 'user'], function () {
-
+Route::group(['middleware' => ['auth:web', 'phone_verified'], 'as' => 'user.', 'prefix' => 'user'], function () {
+    
     Route::get('/dashboard', function () {
-        return view('user.dashboard');
+        return view('user.pages.dashboard');
     })->name('dashboard');
+    
+    // Application Routes...
+    Route::group(['prefix' => 'trade-license-applications', 'as' => 'trade_license_applications'], function () {
+        Route::get('/', [TradeLicenseApplicationController::class, 'index'])->name('');
+        Route::get('/apply', [TradeLicenseApplicationController::class, 'create'])->name('.create');
+        Route::post('/', [TradeLicenseApplicationController::class, 'store'])->name('.store');
+        Route::get('/{trade_license_application}', [TradeLicenseApplicationController::class, 'show'])->name('.show');
+        Route::get('/{trade_license_application}/edit', [TradeLicenseApplicationController::class, 'edit'])->name('.edit');
+        Route::patch('/{trade_license_application}', [TradeLicenseApplicationController::class, 'update'])->name('.update');
+        Route::delete('/{trade_license_application}', [TradeLicenseApplicationController::class, 'destroy'])->name('.destroy');
+    });
 
+    // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -43,4 +44,22 @@ Route::group(['middleware' => 'auth:web', 'as' => 'user.', 'prefix' => 'user'], 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+});
+
+Route::group(['middleware' => 'guest:web', 'as' => 'user.', 'prefix' => 'user'], function () {
+    // Authentication Routes...
+    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
+    Route::post('register', [RegisteredUserController::class, 'store'])->name('register.store');
+
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
+
+    Route::get('verify-otp', [UserOneTimePasswordController::class, 'create'])->name('verify-otp');
+    Route::post('verify-otp/verify', [UserOneTimePasswordController::class, 'verify'])->name('verify-otp.verify');
+
+    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
+    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+
+    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
+    Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');
 });

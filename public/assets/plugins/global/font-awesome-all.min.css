@@ -844,10 +844,6 @@
 .fa-wifi-fair:before {
     content: "\f6ab";
 }
-.fa-calendar-alt:before,
-.fa-calendar-days:before {
-    content: "\f073";
-}
 .fa-mp3-player:before {
     content: "\f8ce";
 }
@@ -2544,9 +2540,6 @@
 }
 .fa-circle-arrow-up-right:before {
     content: "\e0fc";
-}
-.fa-calendars:before {
-    content: "\e0d7";
 }
 .fa-bangladeshi-taka-sign:before {
     content: "\e2e6";
@@ -10983,6 +10976,13 @@
 }
 .fa-calendar-day:before {
     content: "\f783";
+}
+.fa-calendar-alt:before,
+.fa-calendar-days:before {
+    content: "\f073";
+}
+.fa-calendars:before {
+    content: "\e0d7";
 }
 .fa-ladder-water:before,
 .fa-swimming-pool:before,

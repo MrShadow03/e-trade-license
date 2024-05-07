@@ -2,24 +2,32 @@
 
 namespace App\Http\Controllers\Auth\User;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
+use App\Mail\OtpMail;
+use App\Mail\OTPEmail;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Traits\MessageHandling;
+use Illuminate\Validation\Rules;
+use App\Models\UserOneTimePassword;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Events\Registered;
+use App\Http\Requests\UserRegisterRequest;
+use App\Services\OtpService;
 
 class RegisteredUserController extends Controller
 {
+    use MessageHandling;
     /**
      * Display the registration view.
      */
     public function create(): View
     {
-        return view('auth.register');
+        return view('user.pages.register');
     }
 
     /**
@@ -27,24 +35,27 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(UserRegisterRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
         $user = User::create([
             'name' => $request->name,
+            'phone' => $request->phone,
             'email' => $request->email,
+            'address' => $request->address,
             'password' => Hash::make($request->password),
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
+        $otpService = new OtpService();
+        $otp = $otpService->generateOtp($user);
+        $otpService->sendOtp($user, $otp);
 
-        return redirect(route('dashboard', absolute: false));
+        $sentTo = config('constants.OTP_METHOD') === 'email' ? $user->email : $user->phone;
+
+        return redirect()->route('user.verify-otp', ['send_to' => $sentTo])->with([
+            'success' => 'OTP পাঠানো হয়েছে।',
+            'is_sent' => true,
+        ]);
     }
 }
