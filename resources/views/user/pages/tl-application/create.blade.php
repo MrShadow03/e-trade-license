@@ -10,9 +10,11 @@
 <style>
     .form label {
         font-size: 14px !important;
+        font-weight: 600 !important;
     }
     .form input, .form select {
         font-size: 15px !important;
+        font-family: 'Kohinoor', 'HindSiliguri', sans-serif;
     }
 </style>
 @endsection
@@ -28,12 +30,16 @@
         <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
 
             <!--begin::Page title-->
-            <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3 ">
+            <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3 font-bn">
                 <!--begin::Title-->
-                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0 font-bn">
+                <h1 class="page-heading d-flex text-dark fs-2 flex-column justify-content-center font-ador fw-semibold">
                     নতুন ট্রেড লাইসেন্স আবেদন
                 </h1>
                 <!--end::Title-->
+                <ol class="breadcrumb text-muted fs-6 fw-normal">
+                    <li class="breadcrumb-item text-muted">নতুন আবেদন</li>
+                    <li class="breadcrumb-item"><a href="{{ route('user.trade_license_applications') }}" class="">আবেদন সমূহ</a></li>
+                </ol> 
             </div>
             <!--end::Page title-->
         </div>
@@ -49,6 +55,8 @@
         <!--begin::Form-->
         <form class="card-body form" action="{{ route('user.trade_license_applications.store') }}" method="POST" enctype="multipart/form-data" id="tl_application_form">
             @csrf
+
+            <input type="text" name="fiscal_year" value="{{ date('Y').'-'.(date('Y')+1) }}" readonly required hidden>
             <!--begin::Input group-->
             <div class="fv-row mb-4">
                 <!--begin::Label-->
@@ -94,10 +102,18 @@
                         </label>
                         <!--end::Edit-->
                     </div>
-                    <div class="form-text text-gray-700">
-                        পাসপোর্ট সাইজের ছবি আপলোড করুন <br>
-                        ছবির সাইজ সর্বোচ্চ ২০০ কিলোবাইট হতে পারে <br>
-                        ফরমেট: jpg, jpeg, png
+                    <div class="form-text fs-6 text-gray-700">
+                        <div class="d-flex flex-column">
+                            <li class="d-flex align-items-center">
+                                <span class="bullet bullet-dot bg-info"></span> &nbsp; পাসপোর্ট সাইজের ছবি আপলোড করুন
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <span class="bullet bullet-dot bg-success"></span> &nbsp; ছবির সাইজ সর্বোচ্চ ২০০ কিলোবাইট হতে পারে
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <span class="bullet bullet-dot bg-danger"></span> &nbsp; ফরমেট: jpg, jpeg, png
+                            </li>
+                        </div>                       
                     </div>
                     <!--end::Image input-->
                     @error('image')
@@ -441,10 +457,10 @@
                             </select> 
                         </div>
                         <!--end::Input-->
-                        @error('nature_of_business_bn')
-                        <div class="fv-plugins message-container invalid-feedback">{{ $message }}</div>
-                        @enderror
                     </div>
+                    @error('nature_of_business_bn')
+                    <div class="fv-plugins message-container invalid-feedback">{{ $message }}</div>
+                    @enderror
                     <!--end::Input group-->
                 </div>
                 <div class="col">
@@ -460,18 +476,20 @@
                             <div class="input-group-text">
                                 <i class="fal fa-{{ COMMON_ICON }} fs-3"></i>
                             </div>
-                            <select type="text" class="form-control text-gray-900 form-select" name="business_category_id" value="{{ old('business_category_id') }}" required>
-                                <option value="">ব্যবসার ধরন নির্বাচন করুন</option>
-                                @foreach ($businessCategories as $cat)
-                                    <option value="{{ $cat->id }}" @selected(old('business_category_id') == $cat->id) >{{ $cat->name_bn }} - {{ Helpers::convertToBanglaDigits(number_format(round($cat->fee), 0, ',')) }} টাকা</option>
-                                @endforeach
-                            </select> 
+                            <div class="w-100">
+                                <select type="text" class="form-control text-gray-900 form-select font-kohinoor" name="business_category_id" value="{{ old('business_category_id') }}" required>
+                                    <option value="">ব্যবসার ধরন নির্বাচন করুন</option>
+                                    @foreach ($businessCategories as $cat)
+                                        <option value="{{ $cat->id }}" @selected(old('business_category_id') == $cat->id) >{{ $cat->name_bn }} - {{ Helpers::convertToBanglaDigits(number_format(round($cat->fee), 0, ',')) }} টাকা</option>
+                                    @endforeach
+                                </select> 
+                            </div>
                         </div>
                         <!--end::Input-->
-                        @error('type_of_business_bn')
-                        <div class="fv-plugins message-container invalid-feedback">{{ $message }}</div>
-                        @enderror
                     </div>
+                    @error('type_of_business_bn')
+                    <div class="fv-plugins message-container invalid-feedback">{{ $message }}</div>
+                    @enderror
                     <!--end::Input group-->
                 </div>
             </div>
@@ -559,11 +577,14 @@
                             <div class="input-group-text">
                                 <i class="fal fa-location-dot fs-3"></i>
                             </div>
-                            <select type="text" class="form-control text-gray-900 form-select font-ador fw-light" name="ward_no" value="{{ old('ward_no') }}" required>
-                                @for ($i = 1; $i <= 30; $i++)
-                                    <option value="{{ $i }}">{{ Helpers::convertToBanglaDigits($i) }}</option>
-                                @endfor
-                            </select>
+                            <div class="w-100">
+                                <select type="text" class="form-control text-gray-900 form-select font-kohinoor" name="ward_no" value="{{ old('ward_no') }}" required>
+                                    <option value="">ওয়ার্ড নির্বাচন করুন</option>
+                                    @for ($i = 1; $i <= 30; $i++)
+                                        <option value="{{ $i }}" @selected(old('ward_no') == $i)>{{ Helpers::convertToBanglaDigits($i) }}</option>
+                                    @endfor
+                                </select>
+                            </div>
                         </div>
                         <!--end::Input-->
                         @error('ward_no')
@@ -674,7 +695,7 @@
                     <div class="fv-row mb-4">
                         <!--begin::Label-->
                         <label class="fs-6 text-gray-{{ LABEL_INTENSITY }} fw-semibold mb-2 required">
-                            অর্থবছর
+                            সাইনবোর্ড ধরন (ফিট)
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->
@@ -682,15 +703,18 @@
                             <div class="input-group-text">
                                 <i class="fal fa-calendars fs-3"></i>
                             </div>
-                            <select type="text" class="form-control text-gray-900 form-select font-ador fw-light" data-select2-disable-search name="fiscal_year" value="{{ old('fiscal_year') }}" required>
-                                @for ($i = 2020; $i <= date('Y'); $i++)
-                                    <option value="{{ $i }}-{{ $i+1 }}">{{ Helpers::convertToBanglaDigits($i) }}-{{ Helpers::convertToBanglaDigits($i+1) }}
-                                    </option>
-                                @endfor
-                            </select>
+                            <div class="w-100">
+                                <select type="text" class="form-control text-gray-900 form-select font-kohinoor" name="signboard_id" required>
+                                    @foreach ($signboards as $item)
+                                        <option value="{{ $item->id }}" @selected(old('signboard_id') == $item->id)>
+                                            {{ Helpers::convertToBanglaDigits($item->dimension) }} - {{ Helpers::convertToBanglaDigits(number_format(round($item->charge), 0, ',')) }} টাকা
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <!--end::Input-->
-                        @error('fiscal_year')
+                        @error('signboard_id')
                         <div class="fv-plugins message-container invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -1302,7 +1326,7 @@
             </div>
 
             <input type="hidden" id="documentsInput" value="{{ json_encode($requiredDocuments->pluck('id')->toArray()) }}"/>
-            @foreach ($requiredDocuments as $doc)
+            {{-- @foreach ($requiredDocuments as $doc)
                 <div class="row row-cols-1">
                     <div class="col">
                         <!--begin::Input group-->
@@ -1333,6 +1357,63 @@
                         <!--end::Input group-->
                     </div>
                 </div>
+            @endforeach --}}
+
+            @foreach ($requiredDocuments->chunk(3) as $chunk)
+            <div class="row">
+                @foreach ($chunk as $doc)
+                <div class="col col-lg-3 col-md-4 col-12 mb-4 mb-md-0">
+                    <div class="fv-row">
+                        <!--begin::Label-->
+                        <label class="min-h-100px min-h-md-75px fs-6 text-gray-{{ LABEL_INTENSITY }} fw-semibold mb-2">
+                            <span>
+                                <span class="required">{{ $doc->document_name }}</span>
+                            </span>
+                        </label>
+                        <!--end::Label-->
+
+                        <!--begin::Image input-->
+                        <div class="image-input image-input-outline" data-kt-image-input="true">
+                            <!--begin::Image preview wrapper-->
+                            <div class="d-block image-input-wrapper w-200px h-250px position-relative" id="imageWrapper{{ $doc->id }}">
+                                <i class="fal fa-file-invoice image_wrapper_icon text-danger"></i>
+                            </div>
+                            <!--end::Image preview wrapper-->
+
+                            <!--begin::Edit button-->
+                            <label class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-30px h-30px bg-body shadow"
+                            data-kt-image-input-action="change"
+                            data-bs-toggle="tooltip"
+                            data-bs-dismiss="click"
+                            title="আপলোড করুন"
+                            for="fileInput{{ $doc->id }}"
+                            >
+                                <i class="far fa-cloud-arrow-up fs-6"></i>
+
+                                <!--begin::Inputs-->
+                                <input type="file" class="document_input" id="fileInput{{ $doc->id }}" data-document-id="{{ $doc->id }}" name="documents[{{ $doc->id }}]" accept=".png, .jpg, .jpeg, .pdf" />
+                                <input type="hidden" name="avatar_remove" />
+                                <!--end::Inputs-->
+                            </label>
+                            <!--end::Edit button-->
+
+                            <!--begin::Cancel button-->
+                            <span class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow document_cancel"
+                            data-kt-image-input-action="cancel"
+                            data-bs-toggle="tooltip"
+                            data-bs-dismiss="click"
+                            data-document-id="{{ $doc->id }}"
+                            id="cancelButton{{ $doc->id }}"
+                            title="বাতিল করুন">
+                                <i class="far fa-times fs-3"></i>
+                            </span>
+                            <!--end::Cancel button-->
+                        </div>
+                        <!--end::Image input-->
+                    </div>
+                </div>
+                @endforeach
+            </div>
             @endforeach
 
             <div class="d-flex justify-content-center mt-5">

@@ -70,14 +70,15 @@ var imageInputElement = document.querySelectorAll(".document_input");
 
 var documentCancel = document.querySelectorAll(".document_cancel");
 
-documentCancel?.forEach(function (element) {
+documentCancel.forEach(function (element) {
     element.addEventListener("click", function (e) {
         var documentId = element.getAttribute('data-document-id');
         var imageWrapper = document.querySelector('#imageWrapper'+documentId);
 
-        imageWrapper.innerHTML = '<i class="fal fa-file-invoice image_wrapper_icon text-danger"></i>';
+        imageWrapper.innerHTML = '';
     });
 });
+
 
 var divisionsAndDistricts = [
     [
@@ -270,6 +271,7 @@ var KTSigninGeneral = function() {
     var submitButton;
     var fileInputs;
     var documentNames = JSON.parse(document.getElementById('documentsInput').value);
+    console.log(documentNames);
 
     var handleValidation = function(e) {
         const requiredAndEnglish = (regex = /^[A-Za-z ]+$/, notEmptyMessage="অবশ্যই প্রদান করতে হবে") => ({
@@ -334,18 +336,17 @@ var KTSigninGeneral = function() {
         documentNames.forEach((doc) => {
             documentValidations['documents['+doc+']'] = {
                 validators: {
-                    notEmpty: {
-                        message: 'ডকুমেন্টটি সংযুক্ত করুন'
-                    },
                     file: {
                         extension: 'jpeg,jpg,png,pdf',
                         type: 'image/jpeg,image/png,application/pdf',
                         maxSize: 1048576,   // 1MB
-                        message: 'সঠিক ফাইল ফরম্যাট: jpeg, jpg, png, pdf <br> সর্বোচ্চ আকার ১ মেগাবাইট'
+                        message: 'সঠিক ফাইল ফরম্যাট: jpeg, jpg, png, pdf<br>সর্বোচ্চ আকার: 1MB'
                     }
                 }
             };
         });
+
+        console.log(documentValidations);
 
         validator = FormValidation.formValidation(
             form,
@@ -354,14 +355,11 @@ var KTSigninGeneral = function() {
                     ...documentValidations,
                     'image': {
                         validators: {
-                            notEmpty: {
-                                message: 'ছবি আপলোড করুন'
-                            },
                             file: {
                                 extension: 'jpeg,jpg,png',
                                 type: 'image/jpeg,image/png',
                                 maxSize: 1024*1024*2,   // 2MB
-                                message: 'সঠিক ফাইল ফরম্যাট: jpeg, jpg, png | সর্বোচ্চ আকার ২ মেগাবাইট'
+                                message: 'ফাইল ফরম্যাট: jpeg, jpg, png | সর্বোচ্চ আকার ২ মেগাবাইট'
                             }
                         }
                     },

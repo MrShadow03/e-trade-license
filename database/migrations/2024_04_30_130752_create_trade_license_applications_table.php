@@ -6,15 +6,16 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    protected $dependsOnTables = ['users', 'business_categories', 'signboards'];
     public function up(): void
     {
         Schema::create('trade_license_applications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('restrict');
             $table->foreignId('business_category_id')->constrained()->onDelete('restrict');
+            $table->foreignId('signboard_id')->constrained()->onDelete('restrict');
+            // $table->unsignedBigInteger('business_category_id');
+            // $table->unsignedBigInteger('signboard_id');
             $table->string('business_organization_name_bn')->nullable(false);
             $table->string('business_organization_name')->nullable(false);
             $table->string('owner_name_bn')->nullable(false);
@@ -49,7 +50,7 @@ return new class extends Migration
             $table->string('ca_village')->nullable(false);
             $table->string('ca_post_office_bn')->nullable(false);
             $table->string('ca_post_office')->nullable(false);
-            $table->string('ca_post_code')->nullable(false);
+            $table->string('ca_post_code')->nullable();
             $table->string('ca_upazilla_bn')->default('বরিশাল মেট্রোপলিটন পুলিশ স্টেশন')->nullable(false);
             $table->string('ca_upazilla')->default('Barishal Metropolitan Police Station')->nullable(false);
             $table->string('ca_district_bn')->default('বরিশাল')->nullable(false);
@@ -65,7 +66,7 @@ return new class extends Migration
             $table->string('pa_village')->nullable(false);
             $table->string('pa_post_office_bn')->nullable(false);
             $table->string('pa_post_office')->nullable(false);
-            $table->string('pa_post_code')->nullable(false);
+            $table->string('pa_post_code')->nullable();
             $table->string('pa_upazilla_bn')->nullable(false);
             $table->string('pa_upazilla')->nullable(false);
             $table->string('pa_district_bn')->nullable(false);
@@ -75,7 +76,7 @@ return new class extends Migration
             $table->string('pa_country_bn')->nullable('বাংলাদেশ');
             $table->string('pa_country')->nullable();
 
-            $table->string('image')->required();
+            $table->string('image')->nullable();
 
             $table->string('application_type')->default('new');
 

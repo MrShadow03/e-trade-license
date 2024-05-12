@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('trade_license_activities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('trade_license_application_id')->constrained()->onDelete('cascade');
-            $table->string('activity_name')->nullable(false);
-            $table->string('activity_description')->nullable();
+            $table->string('activity')->nullable(false);
+            $table->string('message')->nullable();
             $table->decimal('payment_amount', 10, 2)->nullable();
             $table->timestamps();
         });

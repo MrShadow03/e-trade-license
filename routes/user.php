@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth:web', 'phone_verified'], 'as' => 'user.', '
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile/password', [ProfileController::class, 'passwordUpdate'])->name('profile.password');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
     Route::get('verify-email', EmailVerificationPromptController::class)->name('verification.notice');
