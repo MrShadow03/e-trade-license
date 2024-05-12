@@ -6,13 +6,14 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 
-class TradeLicenseStoreRequest extends FormRequest {
+class TradeLicenseUpdateRequest extends FormRequest {
     public function authorize(): bool{
         return true;
     }
 
     public function rules(): array {
         return [
+            'application_id' => ['required', 'exists:trade_license_applications,id'],
             'business_category_id' => ['required', 'exists:business_categories,id'],
             'signboard_id' => ['required', 'exists:signboards,id'],
             'owner_name_bn' => ['required', 'string', 'max:255', 'regex:/^[\x{0980}-\x{09FF} ]+$/u'],
@@ -26,8 +27,8 @@ class TradeLicenseStoreRequest extends FormRequest {
             'national_id_no' => ['required_without_all:birth_registration_no,passport_no'],
             'birth_registration_no' => ['required_without_all:national_id_no,passport_no'],
             'passport_no' => ['required_without_all:national_id_no,birth_registration_no'],
-            'business_organization_name_bn' => ['required', 'string', 'max:255', 'regex:/^[\x{0980}-\x{09FF}\" ]+$/u', 'unique:trade_license_applications,business_organization_name_bn'],
-            'business_organization_name' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z ]+$/', 'unique:trade_license_applications,business_organization_name'],
+            'business_organization_name_bn' => ['required', 'string', 'max:255', 'regex:/^[\x{0980}-\x{09FF}\" ]+$/u'],
+            'business_organization_name' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z ]+$/'],
             'nature_of_business_bn' => ['required', 'string', 'max:255', 'regex:/^[\x{0980}-\x{09FF} ]+$/u'],
             'business_category_id' => ['required', 'exists:business_categories,id'],
             'address_of_business_organization_bn' => ['required', 'string', 'max:255', 'regex:/^[\x{0980}-\x{09FF}\,\.\- ]+$/u'],
@@ -62,9 +63,9 @@ class TradeLicenseStoreRequest extends FormRequest {
             'pa_district_bn' => ['required', 'string', 'max:255'],
             'pa_upazilla_bn' => ['required', 'string', 'max:255', 'regex:/^[\x{0980}-\x{09FF}\,\.\- ]+$/u'],
             'pa_upazilla' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9\,\.\- ]+$/'],
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
-            'documents' => ['required', 'array'],
-            'documents.*' => ['required', 'mimes:jpeg,png,jpg,pdf', 'max:1024'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+            'documents' => ['nullable', 'array'],
+            'documents.*' => ['nullable', 'mimes:jpeg,png,jpg,pdf', 'max:1024'],
         ];
     }
 
@@ -261,7 +262,7 @@ class TradeLicenseStoreRequest extends FormRequest {
         $response = redirect()->back()
             ->withInput($this->input())
             ->withErrors($validator->errors());
-            
+        dd($response);
         throw new ValidationException($validator, $response);
     }
 }

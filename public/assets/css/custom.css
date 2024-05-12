@@ -16,15 +16,49 @@
 @font-face {
     font-family: 'Ador';
     src: url('./../fonts/LiAdorNoirritVR-VF.ttf') format('truetype');
-    font-weight: 100 900;
 }
 @font-face {
     font-family: 'Noto Serif Bengali';
     src: url('./../fonts/NotoSerifBengali.ttf') format('truetype');
 }
+@font-face {
+    font-family: 'Kohinoor';
+    src: url('./../fonts/Kohinoor-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Kohinoor';
+    src: url('./../fonts/Kohinoor.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Kohinoor';
+    src: url('./../fonts/Kohinoor-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Kohinoor';
+    src: url('./../fonts/Kohinoor-Bold.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Akhand';
+    src: url('./../fonts/Akhand-Bengali.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 
 .font-bn{
     font-family: 'Hind Siliguri', 'HindSiliguri', sans-serif;
+}
+.font-kohinoor{
+    font-family: 'Kohinoor', sans-serif;
 }
 .font-ador{
     font-family: 'Ador', sans-serif;
@@ -66,13 +100,26 @@
 }
 .select2-results__options{
     font-size:15px !important;
-    font-family: 'Noto Serif Bengali', sans-serif;
+    font-family: 'Kohinoor', sans-serif;
     font-weight: 500;
 }
 .select2-search__field{
     font-size:14px !important;
-    font-family: 'Noto Serif Bengali', sans-serif;
+    font-family: 'Kohinoor', sans-serif;
     font-weight: 500;
+}
+
+.tooltip-inner{
+    font-size: 14px;
+    font-family: 'Kohinoor', sans-serif;
+    font-weight: 500;
+}
+
+.image_wrapper_icon {
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    scale: 5;
 }
 @media print {
     .font-bn{

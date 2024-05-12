@@ -213,6 +213,78 @@
 .fa-search:before {
     content: "\f002";
 }
+.fa-eye:before {
+  content: "\f06e";
+}
+.fa-bangladeshi-taka-sign:before {
+  content: "\e2e6";
+}
+.fa-trash:before {
+  content: "\f1f8";
+}
+.fa-edit:before,
+.fa-pen-to-square:before {
+    content: "\f044";
+}
+.fa-file-exclamation:before {
+  content: "\f31a";
+}
+.fa-exclamation-triangle:before,
+.fa-triangle-exclamation:before,
+.fa-warning:before {
+    content: "\f071";
+}
+.fa-file-award:before,
+.fa-file-certificate:before {
+    content: "\f5f3";
+}
+.fa-memo-circle-check:before {
+  content: "\e1d9";
+}
+.fa-trash-alt:before,
+.fa-trash-can:before {
+    content: "\f2ed";
+}
+.fa-redo-alt:before,
+.fa-rotate-forward:before,
+.fa-rotate-right:before {
+    content: "\f2f9";
+}
+.fa-close:before,
+.fa-multiply:before,
+.fa-remove:before,
+.fa-times:before,
+.fa-xmark:before {
+    content: "\f00d";
+}
+.fa-hourglass-empty:before,
+.fa-hourglass:before {
+    content: "\f254";
+}
+.fa-check:before {
+  content: "\f00c";
+}
+.fa-add:before,
+.fa-plus:before {
+    content: "\2b";
+}
+.fa-cloud-arrow-up:before,
+.fa-cloud-upload-alt:before,
+.fa-cloud-upload:before {
+    content: "\f0ee";
+}
+.fa-file-image:before {
+  content: "\f1c5";
+}
+
+
+
+.fa-duotone.fa-trash-alt:after,
+.fa-duotone.fa-trash-can:after,
+.fad.fa-trash-alt:after,
+.fad.fa-trash-can:after {
+    content: "\f2ed\f2ed";
+}
 :host,
 :root {
     --fa-font-light: normal 300 1em/1 "Font Awesome 6 Pro";

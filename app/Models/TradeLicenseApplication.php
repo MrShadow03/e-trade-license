@@ -3,41 +3,19 @@
 namespace App\Models;
 
 use Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Helpers\Helpers;
+use Spatie\MediaLibrary\HasMedia;
 use Spatie\Activitylog\LogOptions;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use App\Observers\TradeLicenseApplicationObserver;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class TradeLicenseApplication extends Model
+class TradeLicenseApplication extends Model implements HasMedia
 {
-    use HasFactory, LogsActivity;
-
-    const PENDING_FORM_FEE_PAYMENT = 'pending_form_fee_payment';
-    const PENDING_FORM_FEE_VERIFICATION = 'pending_form_fee_verification';
-    const PENDING_ASSISTANT_APPROVAL = 'pending_assistant_approval';
-    const DENIED_ASSISTANT_APPROVAL = 'denied_assistant_approval';
-    const PENDING_INSPECTOR_APPROVAL = 'pending_inspector_approval';
-    const DENIED_INSPECTOR_APPROVAL = 'denied_inspector_approval';
-    const PENDING_LICENSE_FEE_PAYMENT = 'pending_license_fee_payment';
-    const PENDING_LICENSE_FEE_VERIFICATION = 'pending_license_fee_verification';
-    const PENDING_SUPT_APPROVAL = 'pending_supt_approval';
-    const DENIED_SUPT_APPROVAL = 'denied_supt_approval';
-    const PENDING_RO_APPROVAL = 'pending_ro_approval';
-    const DENIED_RO_APPROVAL = 'denied_ro_approval';
-
-    const PENDING_INSPECTOR_RENEWAL_APPROVAL = 'pending_inspector_renewal_approval';
-    const DENIED_INSPECTOR_RENEWAL_APPROVAL = 'denied_inspector_renewal_approval';
-    const PENDING_LICENSE_RENEWAL_FEE_PAYMENT = 'pending_license_renewal_fee_payment';
-    const PENDING_LICENSE_RENEWAL_FEE_VERIFICATION = 'pending_license_renewal_fee_verification';
-    const PENDING_SUPT_RENEWAL_APPROVAL = 'pending_supt_renewal_approval';
-    const DENIED_SUPT_RENEWAL_APPROVAL = 'denied_supt_renewal_approval';
-    const PENDING_RO_RENEWAL_APPROVAL = 'pending_ro_renewal_approval';
-    const DENIED_RO_RENEWAL_APPROVAL = 'denied_ro_renewal_approval';
-
-    const ISSUED = 'issued';
-    const RENEWED = 'renewed';
-    const CANCELLED = 'cancelled';
-    const EXPIRED = 'expired';
+    use HasFactory, LogsActivity, InteractsWithMedia;
 
     protected $guarded = [
         'id',
@@ -61,6 +39,11 @@ class TradeLicenseApplication extends Model
         
     }
 
+    // initialize observer
+    protected static function boot(){
+        parent::boot();
+        self::observe(TradeLicenseApplicationObserver::class);
+    }
     protected function businessOrganizationName(): Attribute {
         return Attribute::make(
             set: fn (string $value) => ucwords($value),
@@ -108,6 +91,10 @@ class TradeLicenseApplication extends Model
         return $this->hasMany(TradeLicenseActivity::class);
     }
 
+    public function signboard(){
+        return $this->belongsTo(Signboard::class);
+    }
+
     public function businessCategory()
     {
         return $this->belongsTo(BusinessCategory::class, 'business_category_id');
@@ -122,11 +109,11 @@ class TradeLicenseApplication extends Model
     //custom methods
     public function isValid(): bool
     {
-        return $this->status === self::ISSUED && $this->expiry_date->isFuture();
+        return $this->status === Helpers::ISSUED && $this->expiry_date->isFuture();
     }
     public function isValidForRenewal(): bool
     {
-        return $this->status === self::ISSUED && $this->expiry_date->isToday();
+        return $this->status === Helpers::ISSUED && $this->expiry_date->isToday();
     }
 
     public function expire()
@@ -134,8 +121,22 @@ class TradeLicenseApplication extends Model
         $this->update([
             'issued_at' => null,
             'expiry_date' => null,
-            'status' => self::EXPIRED,
+            'status' => Helpers::EXPIRED,
         ]);
     }
 
+    public function isEditable(): bool{
+        return $this->status === Helpers::PENDING_FORM_FEE_PAYMENT;
+    }
+    public function isDeletable(): bool{
+        return $this->status === Helpers::PENDING_FORM_FEE_PAYMENT;
+    }
+    //Media Conversion
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(60)
+            ->height(60)
+            ->nonQueued();
+    }
 }
