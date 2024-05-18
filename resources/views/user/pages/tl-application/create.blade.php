@@ -695,7 +695,7 @@
                     <div class="fv-row mb-4">
                         <!--begin::Label-->
                         <label class="fs-6 text-gray-{{ LABEL_INTENSITY }} fw-semibold mb-2 required">
-                            সাইনবোর্ড ধরন (ফিট)
+                            সাইনবোর্ডের ধরন (ফিট)
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->

@@ -50,7 +50,7 @@
 @endsection
 <!--end::Page Custom Styles-->
 @php
-    const PENDING_STATE_THEME = 'warning';
+    const PENDING_STATE_THEME = 'danger';
     const TIMELINE_NEGATIVE_GAP = 'mb-n8';
     const TIMELINE_GAP = 'mb-4';
     const INFO_LABEL_CLASSES = 'fw-bold text-label fs-6';
@@ -146,9 +146,12 @@
                                 <div class="timeline-line border-success w-40px mt-6 {{ TIMELINE_NEGATIVE_GAP }}"></div>
                                 <!--end::Timeline line-->
 
+                                @php
+                                    $c = Helpers::hasCompletedFormFeePayment($application->status)
+                                @endphp
                                 <!--begin::Timeline icon-->
-                                <div class="timeline-icon badge badge-lg badge-success badge-circle p-5">
-                                    <i class="far fa-check fs-4 text-white"></i>                                   
+                                <div class="timeline-icon badge badge-lg {{ $c ? 'badge-success' : 'border border-'.PENDING_STATE_THEME.' border-dashed badge-light-'.PENDING_STATE_THEME  }} badge-circle p-5">
+                                    <i class="far fa-bangladeshi-taka-sign fs-4 text-{{ $c ? 'white' : PENDING_STATE_THEME  }}"></i>                                   
                                 </div>
                                 <!--end::Timeline icon-->  
                                 
@@ -171,9 +174,12 @@
                                 <div class="timeline-line w-40px {{ TIMELINE_NEGATIVE_GAP }}"></div>
                                 <!--end::Timeline line-->
 
+                                @php
+                                    $c = Helpers::hasAssistantApproval($application->status)
+                                @endphp
                                 <!--begin::Timeline icon-->
-                                <div class="timeline-icon border border-primary border-dashed badge badge-lg badge-light-primary badge-circle p-5">
-                                    <i class="far fa-user fs-4 text-primary"></i>                                   
+                                <div class="timeline-icon badge badge-lg {{ $c ? 'badge-success' : 'border border-'.PENDING_STATE_THEME.' border-dashed badge-light-'.PENDING_STATE_THEME  }} badge-circle p-5">
+                                    <i class="far fa-user fs-4 text-{{ $c ? 'white' : PENDING_STATE_THEME  }}"></i>                                   
                                 </div>
                                 <!--end::Timeline icon-->
 
@@ -196,9 +202,12 @@
                                 <div class="timeline-line  w-40px {{ TIMELINE_NEGATIVE_GAP }}"></div>
                                 <!--end::Timeline line-->
 
+                                @php
+                                    $c = Helpers::hasInspectorApproval($application->status)
+                                @endphp
                                 <!--begin::Timeline icon-->
-                                <div class="timeline-icon border border-{{ PENDING_STATE_THEME }} border-dashed badge badge-lg badge-light-{{ PENDING_STATE_THEME }} badge-circle p-5">
-                                    <i class="far fa-user fs-4 text-{{ PENDING_STATE_THEME }}"></i>                                   
+                                <div class="timeline-icon badge badge-lg {{ $c ? 'badge-success' : 'border border-'.PENDING_STATE_THEME.' border-dashed badge-light-'.PENDING_STATE_THEME  }} badge-circle p-5">
+                                    <i class="far fa-user fs-4 text-{{ $c ? 'white' : PENDING_STATE_THEME  }}"></i>   
                                 </div>
                                 <!--end::Timeline icon-->
 
@@ -221,9 +230,12 @@
                                 <div class="timeline-line  w-40px {{ TIMELINE_NEGATIVE_GAP }}"></div>
                                 <!--end::Timeline line-->
 
+                                @php
+                                    $c = Helpers::hasCompletedLicenseFeePayment($application->status)
+                                @endphp
                                 <!--begin::Timeline icon-->
-                                <div class="timeline-icon border border-{{ PENDING_STATE_THEME }} border-dashed badge badge-lg badge-light-{{ PENDING_STATE_THEME }} badge-circle p-5">
-                                    <i class="far fa-bangladeshi-taka-sign fs-4 text-{{ PENDING_STATE_THEME }}"></i>                                   
+                                <div class="timeline-icon badge badge-lg {{ $c ? 'badge-success' : 'border border-'.PENDING_STATE_THEME.' border-dashed badge-light-'.PENDING_STATE_THEME  }} badge-circle p-5">
+                                    <i class="far fa-bangladeshi-taka-sign fs-4 text-{{ $c ? 'white' : PENDING_STATE_THEME  }}"></i>                                   
                                 </div>
                                 <!--end::Timeline icon-->
 
@@ -246,9 +258,12 @@
                                 <div class="timeline-line  w-40px {{ TIMELINE_NEGATIVE_GAP }}"></div>
                                 <!--end::Timeline line-->
 
+                                @php
+                                    $c = Helpers::hasSuptApproval($application->status)
+                                @endphp
                                 <!--begin::Timeline icon-->
-                                <div class="timeline-icon border border-{{ PENDING_STATE_THEME }} border-dashed badge badge-lg badge-light-{{ PENDING_STATE_THEME }} badge-circle p-5">
-                                    <i class="far fa-user fs-4 text-{{ PENDING_STATE_THEME }}"></i>                                   
+                                <div class="timeline-icon badge badge-lg {{ $c ? 'badge-success' : 'border border-'.PENDING_STATE_THEME.' border-dashed badge-light-'.PENDING_STATE_THEME  }} badge-circle p-5">
+                                    <i class="far fa-user fs-4 text-{{ $c ? 'white' : PENDING_STATE_THEME  }}"></i>                                   
                                 </div>
                                 <!--end::Timeline icon-->
 
@@ -258,7 +273,7 @@
                                     <span class="fs-6 text-gray-600 fw-normal d-block font-kohinoor">অপেক্ষমাণ</span>
                                     <!--end::Title-->   
                                     <!--begin::Title-->
-                                    <span class="fs-5 text-gray-800 fw-semibold">সুপারেন্ডেন্টেন্টের অনুমোদন</span>
+                                    <span class="fs-5 text-gray-800 fw-semibold">সুপারিনটেনডেন্টের অনুমোদন</span>
                                     <!--end::Title-->     
                                 </div>
                                 <!--end::Timeline content-->                                  
@@ -271,9 +286,12 @@
                                 <div class="timeline-line  w-40px {{ TIMELINE_NEGATIVE_GAP }}"></div>
                                 <!--end::Timeline line-->
 
+                                @php
+                                    $c = Helpers::hasROApproval($application->status)
+                                @endphp
                                 <!--begin::Timeline icon-->
-                                <div class="timeline-icon border border-{{ PENDING_STATE_THEME }} border-dashed badge badge-lg badge-light-{{ PENDING_STATE_THEME }} badge-circle p-5">
-                                    <i class="far fa-user fs-4 text-{{ PENDING_STATE_THEME }}"></i>                                   
+                                <div class="timeline-icon badge badge-lg {{ $c ? 'badge-success' : 'border border-'.PENDING_STATE_THEME.' border-dashed badge-light-'.PENDING_STATE_THEME  }} badge-circle p-5">
+                                    <i class="far fa-user fs-4 text-{{ $c ? 'white' : PENDING_STATE_THEME  }}"></i>                                   
                                 </div>
                                 <!--end::Timeline icon-->
 
@@ -296,9 +314,12 @@
                                 <div class="timeline-line  w-40px {{ TIMELINE_NEGATIVE_GAP }}"></div>
                                 <!--end::Timeline line-->
 
+                                @php
+                                    $c = Helpers::hasCROApproval($application->status)
+                                @endphp
                                 <!--begin::Timeline icon-->
-                                <div class="timeline-icon border border-{{ PENDING_STATE_THEME }} border-dashed badge badge-lg badge-light-{{ PENDING_STATE_THEME }} badge-circle p-5">
-                                    <i class="far fa-user fs-4 text-{{ PENDING_STATE_THEME }}"></i>                                   
+                                <div class="timeline-icon badge badge-lg {{ $c ? 'badge-success' : 'border border-'.PENDING_STATE_THEME.' border-dashed badge-light-'.PENDING_STATE_THEME  }} badge-circle p-5">
+                                    <i class="far fa-user fs-4 text-{{ $c ? 'white' : PENDING_STATE_THEME  }}"></i>                                   
                                 </div>
                                 <!--end::Timeline icon-->
 
@@ -321,9 +342,12 @@
                                 <div class="timeline-line  w-40px {{ TIMELINE_NEGATIVE_GAP }}"></div>
                                 <!--end::Timeline line-->
 
+                                @php
+                                    $c = Helpers::hasCEOApproval($application->status)
+                                @endphp
                                 <!--begin::Timeline icon-->
-                                <div class="timeline-icon border border-{{ PENDING_STATE_THEME }} border-dashed badge badge-lg badge-light-{{ PENDING_STATE_THEME }} badge-circle p-5">
-                                    <i class="far fa-user fs-4 text-{{ PENDING_STATE_THEME }}"></i>                                   
+                                <div class="timeline-icon badge badge-lg {{ $c ? 'badge-success' : 'border border-'.PENDING_STATE_THEME.' border-dashed badge-light-'.PENDING_STATE_THEME  }} badge-circle p-5">
+                                    <i class="far fa-user fs-4 text-{{ $c ? 'white' : PENDING_STATE_THEME  }}"></i>                                   
                                 </div>
                                 <!--end::Timeline icon-->
 
@@ -346,9 +370,12 @@
                                 <div class="timeline-line  w-40px"></div>
                                 <!--end::Timeline line-->
 
+                                @php
+                                    $c = Helpers::hasCEOApproval($application->status)
+                                @endphp
                                 <!--begin::Timeline icon-->
-                                <div class="timeline-icon border border-{{ PENDING_STATE_THEME }} border-dashed badge badge-lg badge-light-{{ PENDING_STATE_THEME }} badge-circle p-5">
-                                    <i class="far fa-location-dot fs-4 text-{{ PENDING_STATE_THEME }}"></i>                                   
+                                <div class="timeline-icon badge badge-lg {{ $c ? 'badge-success' : 'border border-'.PENDING_STATE_THEME.' border-dashed badge-light-'.PENDING_STATE_THEME  }} badge-circle p-5">
+                                    <i class="far fa-location-dot fs-4 text-{{ $c ? 'white' : PENDING_STATE_THEME  }}"></i>                                   
                                 </div>
                                 <!--end::Timeline icon-->
 

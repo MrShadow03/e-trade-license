@@ -41,16 +41,12 @@
         <!--begin::Menu-->
         <div class="menu menu-column menu-rounded menu-sub-indention px-3" id="#kt_app_sidebar_menu"
         data-kt-menu="true" data-kt-menu-expand="false">
-                @can(['view-general-information'])
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
                     <a class="menu-link {{ request()->url() == route('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
                         <span class="menu-icon">
-                            <i class="ki-duotone ki-bookmark fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                            </i>
+                            <i class="ki-outline ki-home-2 fs-2"></i>
                         </span>
                         <span class="menu-title font-bn">
                             ড্যাশবোর্ড
@@ -59,9 +55,22 @@
                     <!--end:Menu link-->
                 </div>
                 <!--end:Menu item-->
-                @endcan
                 
-                {{-- <!--begin:Menu item-->
+                <!--begin:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link {{ request()->url() == route('admin.trade_license_applications') ? 'active' : '' }}" href="{{ route('admin.trade_license_applications') }}">
+                        <span class="menu-icon">
+                            <i class="ki-outline ki-note-2 fs-2"></i>
+                        </span>
+                        <span class="menu-title font-bn">
+                            আবেদনসমূহ
+                        </span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
+                <!--begin:Menu item-->
                 <div class="menu-item pt-5">
                     <!--begin:Menu content-->
                     <div class="menu-content">
@@ -71,7 +80,23 @@
                     </div>
                     <!--end:Menu content-->
                 </div>
-                <!--end:Menu item--> --}}
+                <!--end:Menu item-->
+                
+                                <!--begin:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link {{ request()->url() == route('admin.admins') ? 'active' : '' }}" href="{{ route('admin.admins') }}">
+                        <span class="menu-icon">
+                            <i class="ki-outline ki-profile-user fs-2"></i>
+                        </span>
+                        <span class="menu-title font-bn">
+                            এডমিনগণ
+                        </span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
+                
             </div>
             <!--end::Menu-->
         </div>

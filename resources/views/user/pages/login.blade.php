@@ -38,7 +38,7 @@
 
 <body id="kt_body" class="app-blank bgi-size-cover bgi-attachment-fixed bgi-position-center bgi-no-repeat">
     <!--begin::Root-->
-    <div class="d-flex flex-column flex-root" id="kt_app_root">
+    <div class="d-flex flex-column flex-root" id="kt_app_root" data-bs-theme="light">
         <!--begin::Authentication - Sign-in -->
         <div class="d-flex flex-column justify-content-center flex-column-fluid flex-lg-row" style="background-image: url('{{ asset('assets/img/login_bg.jpg') }}'); background-size: cover;">
 

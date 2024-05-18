@@ -13,7 +13,7 @@
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="" />
-    <link rel="shortcut icon" href="{{ asset('assets/website/img/Barisal_City_Corporation_logo.png') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/img/Barisal_City_Corporation_logo.png') }}">
 
     
 
@@ -26,7 +26,7 @@
 
 
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-    @include('admin.partials.global_stylesheets_bundle')
+    @include('partials.global_stylesheets_bundle')
     <!--end::Global Stylesheets Bundle-->
     <!--Begin::Header Scripts -->
     @include('admin.partials.header_scripts')
@@ -34,11 +34,6 @@
 <!--end::Head-->
 <!--begin::Body-->
 <body id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true" data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true" data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" data-kt-app-page-loading-enabled="true" data-kt-app-page-loading="on" class="app-default">
-
-    <!-- Google Tag Manager (noscript) -->
-    {{-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TXMJCJMM"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> --}}
-    <!-- End Google Tag Manager (noscript) -->
     
     <!--begin::Theme mode setup on page load-->
     <script>

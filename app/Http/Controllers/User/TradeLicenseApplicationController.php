@@ -8,11 +8,14 @@ use Illuminate\Http\Request;
 use App\Traits\ImageHandling;
 use App\Models\BusinessCategory;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use App\Models\TradeLicenseApplication;
 use App\Models\TradeLicenseRequiredDocument;
 use App\Http\Requests\TradeLicenseStoreRequest;
 use App\Http\Requests\TradeLicenseUpdateRequest;
 use App\Services\TradeLicenseApplicationService;
+use App\Http\Requests\TradeLicenseCorrectionRequest;
 
 class TradeLicenseApplicationController extends Controller
 {
@@ -20,7 +23,8 @@ class TradeLicenseApplicationController extends Controller
 
     public function index(){
         return view('user.pages.tl-application.index', [
-            'applications' => TradeLicenseApplication::where('user_id', auth()->id())->latest()->get()
+            'applications' => TradeLicenseApplication::where('user_id', auth()->id())->latest()->get(),
+            'form_fee' => Helpers::TRADE_LICENSE_FORM_FEE,
         ]);
     }
 
@@ -56,10 +60,12 @@ class TradeLicenseApplicationController extends Controller
             return redirect()->route('user.trade_license_applications.create')->with('error', 'ডকুমেন্ট আপলোড করা যায়নি। আবেদন পুনরায় জমা দিন।');
         }
 
-        return redirect()->route('user.trade_license_applications')->with('success', 'আবেদন সফলভাবে জমা দেয়া হয়েছে। ফরম ফি পরিশোধ করুন।');
+        return redirect()->route('user.trade_license_applications')->with('success', 'আবেদন সফলভাবে জমা দেয়া হয়েছে। ফর্ম ফি পরিশোধ করুন।');
     }
 
-    public function show(TradeLicenseApplication $tradeLicenseApplication){
+    public function show(TradeLicenseApplication $tradeLicenseApplication, Request $request){
+        Gate::authorize('view', $tradeLicenseApplication);
+
         $application = $tradeLicenseApplication->load([
             'documents.media', 
             'businessCategory' => function ($query) {
@@ -76,9 +82,7 @@ class TradeLicenseApplicationController extends Controller
     }
 
     public function edit(TradeLicenseApplication $tradeLicenseApplication){
-        if(!$tradeLicenseApplication->isEditable()){
-            return redirect()->route('user.trade_license_applications')->with('error', 'আবেদনটি এডিট করা যাবে না।');
-        }
+        Gate::authorize('update', $tradeLicenseApplication);
 
         return view('user.pages.tl-application.edit', [
             'application' => $tradeLicenseApplication->load('documents'),
@@ -90,9 +94,7 @@ class TradeLicenseApplicationController extends Controller
     }
 
     public function update(TradeLicenseUpdateRequest $request, TradeLicenseApplication $tradeLicenseApplication){
-        if(!$tradeLicenseApplication->isEditable()){
-            return redirect()->route('user.trade_license_applications')->with('error', 'আবেদনটি এডিট করা যাবে না।');
-        }
+        Gate::authorize('update', $tradeLicenseApplication);
 
         $tlService = new TradeLicenseApplicationService($tradeLicenseApplication);
 
@@ -114,7 +116,44 @@ class TradeLicenseApplicationController extends Controller
         return redirect()->route('user.trade_license_applications')->with('info', 'আবেদনটি সফলভাবে আপডেট করা হয়েছে।');
     }
 
+    public function review(TradeLicenseApplication $tradeLicenseApplication){
+        Gate::authorize('correct', $tradeLicenseApplication);
+
+        return view('user.pages.tl-application.review', [
+            'application' => $tradeLicenseApplication->load('documents'),
+            'businessCategories' => BusinessCategory::all(),
+            'requiredDocuments' => TradeLicenseRequiredDocument::all(),
+            'districts' => Helpers::DISTRICTS,
+            'signboards' => Signboard::all()
+        ]);
+    }
+
+    public function correction(TradeLicenseApplication $tradeLicenseApplication, TradeLicenseCorrectionRequest $request) {
+        Gate::authorize('correct', $tradeLicenseApplication);
+
+        $tlService = new TradeLicenseApplicationService($tradeLicenseApplication);
+        
+        // update documents if there is any
+        if($request->has('documents')){
+            $tlService->updateDocuments($request->documents);
+        }
+        
+        // update image if there is any
+        $tlService->updateImage();
+
+        // mark as corrected
+        $tlService->markAsCorrected($request->validated());
+
+        // if all fields are corrected, update status
+        if($tlService->hasAllFieldsCorrected()){
+            $tradeLicenseApplication->update([
+                'status' => Helpers::CORRECTED_STATES[$tradeLicenseApplication->status] ?? $tradeLicenseApplication->status
+            ]);
+        }
+    }
+
     public function destroy(TradeLicenseApplication $tradeLicenseApplication){
+        Gate::authorize('delete', $tradeLicenseApplication);
 
         if(!$tradeLicenseApplication->isDeletable()){
             return redirect()->route('user.trade_license_applications')->with('error', 'আবেদনটি ডিলিট করা যাবে না।');

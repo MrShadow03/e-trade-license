@@ -42,4 +42,8 @@ class TradeLicenseDocument extends Model implements HasMedia
     public function getDocumentNameAttribute(){
         return $this->requiredDocument?->document_name;
     }
+
+    public function getRequiredDocumentIdAttribute(){
+        return $this->requiredDocument?->id;
+    }
 }

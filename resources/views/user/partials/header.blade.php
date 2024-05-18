@@ -26,7 +26,7 @@
 
 
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-    @include('user.partials.global_stylesheets_bundle')
+    @include('partials.global_stylesheets_bundle')
     <!--end::Global Stylesheets Bundle-->
     <!--Begin::Header Scripts -->
     @include('user.partials.header_scripts')

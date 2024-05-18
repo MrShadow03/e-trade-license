@@ -1,7 +1,7 @@
 @extends('user.layouts.app')
 <!--begin::Page Title-->
 @section('title')
-    <title>নতুন ট্রেড লাইসেন্স আবেদন | BCC - E-Trade License</title>
+    <title>{{ $application->business_organization_name_bn }} - আবেদন পরিবর্তন</title>
 @endsection
 <!--end::Page Title-->
 @section('exclusive_styles')
@@ -690,7 +690,7 @@
                     <div class="fv-row mb-4">
                         <!--begin::Label-->
                         <label class="fs-6 text-gray-{{ LABEL_INTENSITY }} fw-semibold mb-2 required">
-                            সাইনবোর্ড ধরন (ফিট)
+                            সাইনবোর্ডের ধরন (ফিট)
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->

@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Gate;
+use App\Models\TradeLicenseApplication;
 use Illuminate\Support\ServiceProvider;
+use App\Policies\TradeLicenseApplicationPolicy;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +22,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::before(function ($user, $ability) {
+            if (auth()->guard('admin')->check() && in_array($user->phone, ['01766555213'])) {
+                return true;
+            }
+        
+            return null;
+        });
     }
 }

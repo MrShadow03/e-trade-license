@@ -2,17 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TradeLicenseApplication;
-use App\Models\TradeLicenseDocument;
-use Illuminate\Http\Request;
 use Imagick;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use App\Models\TradeLicenseDocument;
+use App\Models\TradeLicenseApplication;
+use Spatie\Permission\Models\Permission;
 
 class TestController extends Controller
 {
     public function store(){
-        $tl = TradeLicenseDocument::find(22);
+        // $tl = TradeLicenseDocument::find(22);
 
-        return response()->json(['message' => 'File uploaded successfully']);
+        // $tl->media->each(function($media){
+        //     if($media->id >= 37 && $media->id <= 51){
+        //         $media->delete();
+        //     }
+        // });
+
+        $permissions = [
+            'create-admins',
+            'update-admins',
+            'delete-admins',
+        ];
+
+        foreach($permissions as $permission){
+            Permission::create(['guard_name' => 'admin', 'name' => $permission]);
+        }
+
+        return response()->json(['message' => 'Success']);
     }
 
     public static function resizeImage($inputFileName = 'image', $width = 300, $preserveAspectRatio = false) {

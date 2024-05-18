@@ -178,6 +178,8 @@
   --bs-border-color-translucent: rgba(255, 255, 255, 0.15);
 }
 
+
+
 *,
 *::before,
 *::after {
@@ -2601,7 +2603,7 @@ textarea.form-control-lg {
 }
 .form-check-input:checked {
   background-color: #009ef7;
-  border-color: #009ef7;
+  /* border-color: #009ef7; */
 }
 .form-check-info .form-check-input:checked{
   background-color: var(--bs-info) !important;
@@ -49093,7 +49095,9 @@ body,
   }
 }
 [data-kt-app-layout=dark-sidebar] .app-sidebar {
-  background-color: #1e1e2d;
+  /* background-color: #1e1e2d; */
+  /* background-color: #0e0e14; */
+  background-color: #15171C;
   border-right: 0 !important;
 }
 [data-kt-app-layout=dark-sidebar] .app-sidebar .hover-scroll-overlay-y {

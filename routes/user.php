@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Auth\User\PasswordController;
+use App\Http\Controllers\TradeLicensePaymentController;
 use App\Http\Controllers\UserOneTimePasswordController;
 use App\Http\Controllers\Auth\User\NewPasswordController;
 use App\Http\Controllers\Auth\User\VerifyEmailController;
@@ -28,9 +29,16 @@ Route::group(['middleware' => ['auth:web', 'phone_verified'], 'as' => 'user.', '
         Route::post('/', [TradeLicenseApplicationController::class, 'store'])->name('.store');
         Route::get('/{trade_license_application}', [TradeLicenseApplicationController::class, 'show'])->name('.show');
         Route::get('/{trade_license_application}/edit', [TradeLicenseApplicationController::class, 'edit'])->name('.edit');
+        Route::get('/{trade_license_application}/review', [TradeLicenseApplicationController::class, 'review'])->name('.review');
         Route::patch('/{trade_license_application}', [TradeLicenseApplicationController::class, 'update'])->name('.update');
+        Route::patch('/{trade_license_application}/correction', [TradeLicenseApplicationController::class, 'correction'])->name('.correction');
         Route::delete('/{trade_license_application}', [TradeLicenseApplicationController::class, 'destroy'])->name('.destroy');
+        
+        // Payment Routes...
+        Route::post('/payments/form-fee', [TradeLicensePaymentController::class, 'storeFromFee'])->name('.payments.form_fee.store');
     });
+
+
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

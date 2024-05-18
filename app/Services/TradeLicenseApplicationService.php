@@ -77,7 +77,6 @@ class TradeLicenseApplicationService {
                     'document_path' => $existingDocument->getFirstMedia('document')->getUrl()
                 ]);
             } catch (\Exception $exc) {
-                dd($exc->getMessage());
                 return false;
             }
         }
@@ -128,6 +127,47 @@ class TradeLicenseApplicationService {
         return true;
     }
 
+    public function markAsCorrected($validatedFields): void {
+        $corrections = $this->tlApplication->corrections;
+
+        //mark all provided documents as corrected
+        if(array_key_exists('documents', $validatedFields)){
+            foreach($validatedFields['documents'] as $id => $info){
+                $corrections = array_diff_key($corrections, ['document-'.$id => '']);
+            }
+
+            $validatedFields = array_diff_key($validatedFields, ['documents' => '']);
+        }
+        
+        //mark the image as corrected
+        if(array_key_exists('image', $validatedFields)){
+            $corrections = array_diff_key($corrections, ['image' => '']);
+            $validatedFields = array_diff_key($validatedFields, ['image' => '']);
+        }
+
+        //mark the rest of the fields as corrected
+        foreach($validatedFields as $field => $value){
+            if($this->tlApplication->{$field} == $value){
+                continue;
+            }
+
+            $corrections = array_diff_key($corrections, [$field => '']);
+        }
+
+        $this->tlApplication->update([
+            'corrections' => $corrections
+        ]);
+    }
+
+    public function hasAllFieldsCorrected(): bool {
+        $corrections = $this->tlApplication->corrections;
+        foreach($corrections as $field => $info){
+            if($info['isCorrected'] == 0){
+                return false;
+            }
+        }
+        return true;
+    }
     public function hasUpdatedData(array $requestData): bool {
         try{
             $requestData = collect($requestData)->except(['application_id'])->sortKeys()->toArray();
@@ -148,26 +188,37 @@ class TradeLicenseApplicationService {
 
     protected $statusMappings = [
         [null, Helpers::PENDING_FORM_FEE_PAYMENT, Helpers::FORM_CREATED],
+
         [Helpers::PENDING_FORM_FEE_PAYMENT, Helpers::PENDING_FORM_FEE_VERIFICATION, Helpers::FORM_FEE_SUBMITTED],
-        [Helpers::PENDING_FORM_FEE_VERIFICATION, Helpers::PENDING_FORM_FEE_PAYMENT, Helpers::FORM_FEE_REJECTED],
+        [Helpers::PENDING_FORM_FEE_VERIFICATION, Helpers::DENIED_FORM_FEE_VERIFICATION, Helpers::FORM_FEE_REJECTED],
+        [Helpers::DENIED_FORM_FEE_VERIFICATION, Helpers::PENDING_FORM_FEE_VERIFICATION, Helpers::FORM_FEE_RESUBMITTED],
         [Helpers::PENDING_FORM_FEE_VERIFICATION, Helpers::PENDING_ASSISTANT_APPROVAL, Helpers::FORM_FEE_VERIFIED],
+
         [Helpers::PENDING_ASSISTANT_APPROVAL, Helpers::DENIED_ASSISTANT_APPROVAL, Helpers::ASSISTANT_REJECTED],
         [Helpers::DENIED_ASSISTANT_APPROVAL, Helpers::PENDING_ASSISTANT_APPROVAL, Helpers::USER_CORRECTION],
         [Helpers::PENDING_ASSISTANT_APPROVAL, Helpers::PENDING_INSPECTOR_APPROVAL, Helpers::ASSISTANT_APPROVED],
+
         [Helpers::PENDING_INSPECTOR_APPROVAL, Helpers::DENIED_INSPECTOR_APPROVAL, Helpers::INSPECTOR_REJECTED],
+        [Helpers::DENIED_INSPECTOR_APPROVAL, Helpers::PENDING_INSPECTOR_APPROVAL, Helpers::USER_CORRECTION],
         [Helpers::PENDING_INSPECTOR_APPROVAL, Helpers::PENDING_LICENSE_FEE_PAYMENT, Helpers::INSPECTOR_APPROVED],
+
         [Helpers::PENDING_LICENSE_FEE_PAYMENT, Helpers::PENDING_LICENSE_FEE_VERIFICATION, Helpers::LICENSE_FEE_SUBMITTED],
-        [Helpers::PENDING_LICENSE_FEE_VERIFICATION, Helpers::PENDING_LICENSE_FEE_PAYMENT, Helpers::LICENSE_FEE_REJECTED],
+        [Helpers::PENDING_LICENSE_FEE_VERIFICATION, Helpers::DENIED_LICENSE_FEE_VERIFICATION, Helpers::LICENSE_FEE_REJECTED],
+        [Helpers::DENIED_LICENSE_FEE_VERIFICATION, Helpers::PENDING_LICENSE_FEE_VERIFICATION, Helpers::LICENSE_FEE_RESUBMITTED],
         [Helpers::PENDING_LICENSE_FEE_VERIFICATION, Helpers::PENDING_SUPT_APPROVAL, Helpers::LICENSE_FEE_VERIFIED],
+
         [Helpers::PENDING_SUPT_APPROVAL, Helpers::DENIED_SUPT_APPROVAL, Helpers::SUPT_REJECTED],
         [Helpers::DENIED_SUPT_APPROVAL, Helpers::PENDING_SUPT_APPROVAL, Helpers::USER_CORRECTION],
         [Helpers::PENDING_SUPT_APPROVAL, Helpers::PENDING_RO_APPROVAL, Helpers::SUPT_APPROVED],
+
         [Helpers::PENDING_RO_APPROVAL, Helpers::DENIED_RO_APPROVAL, Helpers::RO_REJECTED],
         [Helpers::DENIED_RO_APPROVAL, Helpers::PENDING_RO_APPROVAL, Helpers::USER_CORRECTION],
         [Helpers::PENDING_RO_APPROVAL, Helpers::PENDING_CRO_APPROVAL, Helpers::RO_APPROVED],
+
         [Helpers::PENDING_CRO_APPROVAL, Helpers::DENIED_CRO_APPROVAL, Helpers::CRO_REJECTED],
         [Helpers::DENIED_CRO_APPROVAL, Helpers::PENDING_CRO_APPROVAL, Helpers::USER_CORRECTION],
         [Helpers::PENDING_CRO_APPROVAL, Helpers::PENDING_CEO_APPROVAL, Helpers::CRO_APPROVED],
+
         [Helpers::PENDING_CEO_APPROVAL, Helpers::DENIED_CEO_APPROVAL, Helpers::CEO_REJECTED],
         [Helpers::DENIED_CEO_APPROVAL, Helpers::PENDING_CEO_APPROVAL, Helpers::USER_CORRECTION],
         [Helpers::PENDING_CEO_APPROVAL, Helpers::ISSUED, Helpers::ISSUED]
@@ -185,11 +236,11 @@ class TradeLicenseApplicationService {
         return Helpers::UNKNOWN_ACTIVITY;
     }
 
-    public function isTransitionValid($prevStatus = null): bool {
+    public function isValidTransition($nextStatus): bool {
         $currentStatus = $this->tlApplication->status;
         foreach ($this->statusMappings as $mapping) {
-            [$prev, $current] = $mapping;
-            if ($prev === $prevStatus && $current === $currentStatus) {
+            [$current, $next] = $mapping;
+            if ($current === $currentStatus && $next === $nextStatus) {
                 return true;
             }
         }

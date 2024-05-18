@@ -121,6 +121,9 @@
     left: 50%;
     scale: 5;
 }
+.fv-plugins-message-container{
+    font-family: 'Kohinoor', sans-serif;
+}
 @media print {
     .font-bn{
         font-family: 'HindSiliguri', sans-serif;

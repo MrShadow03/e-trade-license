@@ -34,7 +34,7 @@ class TradeLicenseApplication extends Model implements HasMedia
             'trade_license_no' => 'string',
             'issued_at' => 'datetime',
             'expiry_date' => 'date',
-            'corrections' => 'collection',
+            'corrections' => 'array',
         ];
         
     }
@@ -126,10 +126,10 @@ class TradeLicenseApplication extends Model implements HasMedia
     }
 
     public function isEditable(): bool{
-        return $this->status === Helpers::PENDING_FORM_FEE_PAYMENT;
+        return auth()->user()->id == $this->user_id && $this->status === Helpers::PENDING_FORM_FEE_PAYMENT;
     }
     public function isDeletable(): bool{
-        return $this->status === Helpers::PENDING_FORM_FEE_PAYMENT;
+        return auth()->user()->id == $this->user_id && $this->status === Helpers::PENDING_FORM_FEE_PAYMENT;
     }
     //Media Conversion
     public function registerMediaConversions(?Media $media = null): void
@@ -138,5 +138,32 @@ class TradeLicenseApplication extends Model implements HasMedia
             ->width(60)
             ->height(60)
             ->nonQueued();
+    }
+
+    public function payFormFeeWithBank($amount){
+        $payment = $this->payments()->create([
+            'amount' => $amount,
+            'method' => Helpers::BANK_PAYMENT,
+            'type' => Helpers::FORM_FEE,
+            'status' => 'pending',
+        ]);
+
+        $this->update([
+            'status' => Helpers::PENDING_FORM_FEE_VERIFICATION,
+        ]);
+
+        return $payment;
+    }
+
+    public function isFormFeePayable(): bool{
+        return $this->user_id === auth()->id() && ($this->status === Helpers::PENDING_FORM_FEE_PAYMENT || $this->status === Helpers::DENIED_FORM_FEE_VERIFICATION);
+    }
+
+    public function getFormFeePayment(){
+        return $this->payments()->where('type', Helpers::FORM_FEE)->first();
+    }
+
+    public function getLatestActivityAttribute(){
+        return $this->tlActivities()->latest()->first();
     }
 }

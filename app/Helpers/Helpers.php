@@ -78,8 +78,8 @@ class Helpers
     public static function areaFinder($ward): array
     {
         $areas = [
-            1 => [
-                'কাউনিয়া (অংশ)',
+            '1' => [
+                'কাউনিয়া',
                 'পশ্চিম বিসিক রোড',
                 'পশ্চিম কাউনিয়া',
                 'পশ্চিম কাউনিয়া মেইন রোড',
@@ -88,8 +88,8 @@ class Helpers
                 'উত্তর কাউনিয়া',
                 'উত্তর কাউনিয়া প্রথম লেন',
             ],
-            2 => [
-                'কাউনিয়া অংশ',
+            '2' => [
+                'কাউনিয়া',
                 'কাউনিয়া প্রথম লেন',
                 'কাউনিয়া ক্লাব রোড',
                 'কাউনিয়া মেইন রোড দক্ষিণ',
@@ -98,7 +98,112 @@ class Helpers
                 'পূর্ব বিসিক রোড',
                 'পূর্ব-পশ্চিম কাউনিয়া জংশন রোড',
                 'উত্তর কাউনিয়া মেইনরোড',
-            ]
+            ],
+            '3' => [
+                'পুরানপাড়া',
+                'পুরানপাড়া সিটি ওয়ার্ড',
+                'গাউয়াসার',
+                'মতাসার',
+            ],
+            '4' => [
+                'আমানতগঞ্জ',
+                'ভাটিখানা চৌধুরী সড়ক',
+                'ভাটিখানা সড়ক',
+                'ভাটিখানা সড়ক-২',
+                'ভাটিখানা উত্তর পূর্ব-১',
+                'ভাটিখানা উত্তর পূর্ব-২',
+                'ভাটিখানা উত্তর পূর্ব-৩',
+                'পূর্ব টাউন স্কুল',
+                'স্ব রোড নতুন বাকলা',
+                'উত্তর আমানতগঞ্জ রোকেয়া আজিম রোড',
+                'উত্তর আমানতগঞ্জ উত্তর',
+                'উলানঘুনি',
+                'উলানঘুনি সিটি',
+            ],
+            '5' => [
+                'আমানতগঞ্জ',
+                'চর উপেন দক্ষিণ পলাশপুর',
+                'চর উপেন উত্তর পলাশপুর',
+                'চর বদনা',
+                'চর বদনা সিটি',
+                'চর উপেন পলাশপুর গুচ্ছগ্রাম-১',
+                'চর উপেন পলাশপুর গুচ্ছগ্রাম-২',
+                'চর উপেন পলাশপুর গুচ্ছগ্রাম-৩',
+                'চর উপেন পলাশপুর গুচ্ছগ্রাম-৪',
+                'চর উপেন পলাশপুর গুচ্ছগ্রাম-৫',
+                'চর উপেন পলাশপুর গুচ্ছগ্রাম-৬',
+                'চর উপেন পলাশপুর গুচ্ছগ্রাম-৭',
+                'চর উপেন পলাশপুর গুচ্ছগ্রাম-৮',
+                'পলাশপুর ডকইয়ার্ড',
+                'পলাশপুর মঠবাড়ি',
+                'পলাশপুর রোড-৭',
+            ],
+            '6' => [
+                'আমানতগঞ্জ',
+                'চর হাটখোলা',
+                'দপ্তরখানা',
+                '৬ নং জালেরখাল',
+                'এনায়েত উল্লা স্কুল এলাকা',
+                'গগনগলি',
+                'হযরত মাওলানা ইয়াছিন সড়ক',
+                'মরিচপট্টি',
+                'পীরসাহেব সড়ক',
+                'পুরান হাটখোলা',
+                'পূর্ব হাটখোলাচর এলাকা',
+                'পূর্ব পুরান কয়লাঘাট',
+                'শায়েস্তাবাদ সড়ক পাওয়ার হাউজ',
+                'উত্তর আমানতগঞ্জ পূর্ব জালেরখাল',
+                'হাটখোলা',
+            ],
+            '7' => [
+                'কাউনিয়া',
+                'বর্মণ রোড',
+                'পশ্চিম ভাটিখানা সড়ক',
+                'পূর্ব কাউনিয়া ব্রাঞ্চ রোড',
+                'উত্তর কাউনিয়া',
+            ],
+            '8' => [
+                'আমানতগঞ্জ',
+                'উত্তর কাটপট্টি',
+                'পূর্ব ইটখোলা',
+                'বাজার রোড',
+                'জেলখানা',
+                'পশ্চিম দপ্তরখানা',
+                'পশ্চিম পুরাতন কয়লাঘাট',
+                'স্ব রোড দক্ষিণ',
+                'উত্তর লাইন রোড',
+            ],
+            '9' => [
+                'বগুড়া আলেকান্দা (অংশ)',
+                'গীর্জা মহল্লা',
+                'কাটপট্টি দক্ষিণ',
+                'পূর্ব সদর রোড',
+                'উত্তর চকবাজার',
+                'বরিশাল',
+                'দক্ষিণ পূর্ব চক বাজার',
+                'এনায়েতুর রহমান সড়ক',
+                'ফড়িয়াপট্টি',
+                'পদ্মাবতী',
+                'উত্তর চকবাজার',
+                'পোর্টরোড/বাঁধরোড',
+                'চর বদনা',
+                'রসুলপুর',
+            ],
+            '10' => [
+                'বগুড়া আলেকান্দা',
+                'বেলসপার্ক',
+                'খেয়াঘাট',
+                'রাজাবাহাদুর সড়ক',
+                'চকবাজার',
+                'পোর্টরোড',
+                'ক্লাব রোড',
+                'দক্ষিণ পূর্ব সদর রোড',
+                'জব্বার মিয়ার গলি',
+                'জর্ডন রোড',
+                'পিডব্লিউডি ষ্টাফ কোয়ার্টার',
+                'টিএন্ডটি কলোনি',
+                'ফজলুল হক এভিনিউ',
+            ],
         ];
 
         if (array_key_exists($ward, $areas)) {
@@ -380,6 +485,14 @@ class Helpers
         }
     }
 
+    public static function getImageUrl($model, $collection = 'default', $conversion = 'default', $defaultImgDir = 'default')
+    {
+        if ($model->getFirstMedia($collection)) {
+            return str_replace('localhost', 'localhost:'.env('LOCAL_PORT'), $model->getFirstMediaUrl($collection, $conversion));
+        }
+        return asset('storage/'.$defaultImgDir.'/default.png');
+    }
+
     const DISTRICTS = [
         'বরিশাল',
         'ঝালকাঠি',
@@ -450,18 +563,27 @@ class Helpers
     // Status
     const PENDING_FORM_FEE_PAYMENT = 'pending_form_fee_payment';
     const PENDING_FORM_FEE_VERIFICATION = 'pending_form_fee_verification';
+    const DENIED_FORM_FEE_VERIFICATION = 'denied_form_fee_verification';
+
     const PENDING_ASSISTANT_APPROVAL = 'pending_assistant_approval';
     const DENIED_ASSISTANT_APPROVAL = 'denied_assistant_approval';
+
     const PENDING_INSPECTOR_APPROVAL = 'pending_inspector_approval';
     const DENIED_INSPECTOR_APPROVAL = 'denied_inspector_approval';
+
     const PENDING_LICENSE_FEE_PAYMENT = 'pending_license_fee_payment';
     const PENDING_LICENSE_FEE_VERIFICATION = 'pending_license_fee_verification';
+    const DENIED_LICENSE_FEE_VERIFICATION = 'denied_license_fee_verification';
+
     const PENDING_SUPT_APPROVAL = 'pending_supt_approval';
     const DENIED_SUPT_APPROVAL = 'denied_supt_approval';
+
     const PENDING_RO_APPROVAL = 'pending_ro_approval';
     const DENIED_RO_APPROVAL = 'denied_ro_approval';
+
     const PENDING_CRO_APPROVAL = 'pending_cro_approval';
     const DENIED_CRO_APPROVAL = 'denied_cro_approval';
+
     const PENDING_CEO_APPROVAL = 'pending_ceo_approval';
     const DENIED_CEO_APPROVAL = 'denied_ceo_approval';
 
@@ -474,15 +596,49 @@ class Helpers
     const PENDING_RO_RENEWAL_APPROVAL = 'pending_ro_renewal_approval';
     const DENIED_RO_RENEWAL_APPROVAL = 'denied_ro_renewal_approval';
 
-    //Status
     const ISSUED = 'issued';
     const RENEWED = 'renewed';
     const CANCELLED = 'cancelled';
     const EXPIRED = 'expired';
 
     //Activity
+    const DENIED_STATES = [
+        self::PENDING_FORM_FEE_VERIFICATION => self::DENIED_FORM_FEE_VERIFICATION,
+        self::PENDING_ASSISTANT_APPROVAL => self::DENIED_ASSISTANT_APPROVAL,
+        self::PENDING_INSPECTOR_APPROVAL => self::DENIED_INSPECTOR_APPROVAL,
+        self::PENDING_LICENSE_FEE_VERIFICATION => self::DENIED_LICENSE_FEE_VERIFICATION,
+        self::PENDING_SUPT_APPROVAL => self::DENIED_SUPT_APPROVAL,
+        self::PENDING_RO_APPROVAL => self::DENIED_RO_APPROVAL,
+        self::PENDING_CRO_APPROVAL => self::DENIED_CRO_APPROVAL,
+        self::PENDING_CEO_APPROVAL => self::DENIED_CEO_APPROVAL,
+    ];
+
+    const APPROVED_STATES = [
+        self::PENDING_FORM_FEE_VERIFICATION => self::PENDING_ASSISTANT_APPROVAL,
+        self::PENDING_ASSISTANT_APPROVAL => self::PENDING_INSPECTOR_APPROVAL,
+        self::PENDING_INSPECTOR_APPROVAL => self::PENDING_LICENSE_FEE_PAYMENT,
+        self::PENDING_LICENSE_FEE_VERIFICATION => self::PENDING_SUPT_APPROVAL,
+        self::PENDING_SUPT_APPROVAL => self::PENDING_RO_APPROVAL,
+        self::PENDING_RO_APPROVAL => self::PENDING_CRO_APPROVAL,
+        self::PENDING_CRO_APPROVAL => self::PENDING_CEO_APPROVAL,
+        self::PENDING_CEO_APPROVAL => self::ISSUED,
+    ];
+
+    const CORRECTED_STATES = [
+        self::DENIED_FORM_FEE_VERIFICATION => self::PENDING_FORM_FEE_VERIFICATION,
+        self::DENIED_ASSISTANT_APPROVAL => self::PENDING_ASSISTANT_APPROVAL,
+        self::DENIED_INSPECTOR_APPROVAL => self::PENDING_INSPECTOR_APPROVAL,
+        self::DENIED_LICENSE_FEE_VERIFICATION => self::PENDING_LICENSE_FEE_VERIFICATION,
+        self::DENIED_SUPT_APPROVAL => self::PENDING_SUPT_APPROVAL,
+        self::DENIED_RO_APPROVAL => self::PENDING_RO_APPROVAL,
+        self::DENIED_CRO_APPROVAL => self::PENDING_CRO_APPROVAL,
+        self::DENIED_CEO_APPROVAL => self::PENDING_CEO_APPROVAL,
+    ];
+
+    //Activity
     const FORM_CREATED = 'form created';
     const FORM_FEE_SUBMITTED = 'form fee submitted';
+    const FORM_FEE_RESUBMITTED = 'form fee resubmitted';
     const FORM_FEE_REJECTED = 'form fee rejected';
     const FORM_FEE_VERIFIED = 'form fee verified';
     const ASSISTANT_REJECTED = 'assistant rejected';
@@ -491,6 +647,7 @@ class Helpers
     const INSPECTOR_REJECTED = 'inspector rejected';
     const INSPECTOR_APPROVED = 'inspector approved';
     const LICENSE_FEE_SUBMITTED = 'license fee submitted';
+    const LICENSE_FEE_RESUBMITTED = 'license fee resubmitted';
     const LICENSE_FEE_REJECTED = 'license fee rejected';
     const LICENSE_FEE_VERIFIED = 'license fee verified';
     const SUPT_REJECTED = 'supt rejected';
@@ -504,34 +661,60 @@ class Helpers
     const UNKNOWN_ACTIVITY = 'unknown activity';
 
     //Payment Types
-    const FORM_FEE = 'form_fee';
-    const LICENSE_FEE = 'license_fee';
-    const LICENSE_RENEWAL_FEE = 'license_renewal_fee';
-    const LICENSE_AMENDMENT_FEE = 'license_amendment_fee';
+    const FORM_FEE = 'form fee';
+    const LICENSE_FEE = 'license fee';
+    const LICENSE_RENEWAL_FEE = 'license renewal fee';
+    const LICENSE_AMENDMENT_FEE = 'license amendment fee';
+
+    //payment Amounts
+    const TRADE_LICENSE_FORM_FEE = 200.00;
+
+    //payment Methods
+    const BANK_PAYMENT = 'bank payment';
+    const ONLINE_PAYMENT = 'online payment';
+
+    public static function needsApplicationCorrection($status): bool {
+        return in_array($status, [
+            self::DENIED_ASSISTANT_APPROVAL,
+            self::DENIED_INSPECTOR_APPROVAL,
+            self::DENIED_SUPT_APPROVAL,
+            self::DENIED_RO_APPROVAL,
+            self::DENIED_CRO_APPROVAL,
+            self::DENIED_CEO_APPROVAL,
+        ]);
+    }
 
     public static function convertTlStatusToBangla($status){
         switch ($status) {
             case self::PENDING_FORM_FEE_PAYMENT:
                 return [
-                    'msg_bn' => 'ফরম ফি পরিশোধ করুন',
+                    'msg_bn' => 'ফর্ম ফি পরিশোধ করুন',
                     'msg_en' => '',
-                    'theme' => 'warning',
+                    'theme' => 'primary',
                     'icon' => 'fa-bangladeshi-taka-sign'
                 ];
                 break;
             case self::PENDING_FORM_FEE_VERIFICATION:
                 return [
-                    'msg_bn' => 'ফরম ফি যাচাই করার জন্য অপেক্ষমাণ',
+                    'msg_bn' => 'ফর্ম ফি যাচাই করার জন্য অপেক্ষমাণ',
                     'msg_en' => '',
-                    'theme' => 'info',
-                    'icon' => 'fa-clock'
+                    'theme' => 'warning',
+                    'icon' => 'fa-bangladeshi-taka-sign'
+                ];
+                break;
+            case self::DENIED_FORM_FEE_VERIFICATION:
+                return [
+                    'msg_bn' => 'ফর্ম ফি প্রত্যাখ্যান করা হয়েছে। <br>সংশোধন করে পুনরায় প্রেরণ করুন',
+                    'msg_en' => '',
+                    'theme' => 'danger',
+                    'icon' => 'fa-bangladeshi-taka-sign'
                 ];
                 break;
             case self::PENDING_ASSISTANT_APPROVAL:
                 return [
                     'msg_bn' => 'সহকারী কর্মকর্তার অনুমোদনের জন্য অপেক্ষমাণ',
                     'msg_en' => '',
-                    'theme' => 'info',
+                    'theme' => 'warning',
                     'icon' => 'fa-clock'
                 ];
                 break;
@@ -547,7 +730,7 @@ class Helpers
                 return [
                     'msg_bn' => 'পরিদর্শকের অনুমোদনের জন্য অপেক্ষমাণ',
                     'msg_en' => '',
-                    'theme' => 'info',
+                    'theme' => 'warning',
                     'icon' => 'fa-clock'
                 ];
                 break;
@@ -563,7 +746,7 @@ class Helpers
                 return [
                     'msg_bn' => 'লাইসেন্স ফি পরিশোধ করুন',
                     'msg_en' => '',
-                    'theme' => 'warning',
+                    'theme' => 'primary',
                     'icon' => 'fa-bangladeshi-taka-sign'
                 ];
                 break;
@@ -571,15 +754,23 @@ class Helpers
                 return [
                     'msg_bn' => 'লাইসেন্স ফি যাচাইয়ের জন্য অপেক্ষমাণ',
                     'msg_en' => '',
-                    'theme' => 'info',
-                    'icon' => 'fa-clock'
+                    'theme' => 'warning',
+                    'icon' => 'fa-bangladeshi-taka-sign'
+                ];
+                break;
+            case self::DENIED_LICENSE_FEE_VERIFICATION:
+                return [
+                    'msg_bn' => 'লাইসেন্স ফি প্রত্যাখ্যান করেছেন<br>সংশোধন করে পুনরায় প্রেরণ করুন',
+                    'msg_en' => '',
+                    'theme' => 'danger',
+                    'icon' => 'fa-bangladeshi-taka-sign'
                 ];
                 break;
             case self::PENDING_SUPT_APPROVAL:
                 return [
                     'msg_bn' => 'SUPT অনুমোদনের জন্য অপেক্ষমাণ',
                     'msg_en' => '',
-                    'theme' => 'info',
+                    'theme' => 'warning',
                     'icon' => 'fa-clock'
                 ];
                 break;
@@ -595,7 +786,7 @@ class Helpers
                 return [
                     'msg_bn' => 'রাজস্ব কর্মকর্তার অনুমোদনের জন্য অপেক্ষমাণ',
                     'msg_en' => '',
-                    'theme' => 'info',
+                    'theme' => 'warning',
                     'icon' => 'fa-clock'
                 ];
                 break;
@@ -611,7 +802,7 @@ class Helpers
                 return [
                     'msg_bn' => 'পরিদর্শকের অনুমোদনের জন্য অপেক্ষমাণ',
                     'msg_en' => '',
-                    'theme' => 'info',
+                    'theme' => 'warning',
                     'icon' => 'fa-clock'
                 ];
                 break;
@@ -627,7 +818,7 @@ class Helpers
                 return [
                     'msg_bn' => 'লাইসেন্স ফি পরিশোধের জন্য অপেক্ষমাণ',
                     'msg_en' => '',
-                    'theme' => 'info',
+                    'theme' => 'warning',
                     'icon' => 'fa-clock'
                 ];
                 break;
@@ -635,7 +826,7 @@ class Helpers
                 return [
                     'msg_bn' => 'লাইসেন্স ফি যাচাই করার জন্য অপেক্ষমাণ',
                     'msg_en' => '',
-                    'theme' => 'info',
+                    'theme' => 'warning',
                     'icon' => 'fa-clock'
                 ];
                 break;
@@ -643,7 +834,7 @@ class Helpers
                 return [
                     'msg_bn' => 'SUPT অনুমোদনের জন্য অপেক্ষমাণ',
                     'msg_en' => '',
-                    'theme' => 'info',
+                    'theme' => 'warning',
                     'icon' => 'fa-clock'
                 ];
                 break;
@@ -659,7 +850,7 @@ class Helpers
                 return [
                     'msg_bn' => 'রাজস্ব কর্মকর্তার অনুমোদনের জন্য অপেক্ষমাণ',
                     'msg_en' => '',
-                    'theme' => 'info',
+                    'theme' => 'warning',
                     'icon' => 'fa-clock'
                 ];
                 break;
@@ -699,17 +890,21 @@ class Helpers
                 return [
                     'msg_bn' => 'মেয়াদ উত্তীর্ণ হয়েছে',
                     'msg_en' => '',
-                    'theme' => 'warning',
+                    'theme' => 'danger',
                     'icon' => 'fa-exclamation-triangle'
                 ];
                 break;
             default:
-                return $status;
+                return [
+                    'msg_bn' => 'অজানা অবস্থা',
+                    'msg_en' => '',
+                    'theme' => 'info',
+                    'icon' => 'fa-question-circle'
+                ];
                 break;
         }
     }
-
-    public static function resizeImage($inputFileName = 'image', $width = 300, $applyCrop = true) {
+    public static function resizeImage($inputFileName = 'image', $width = 300, $applyCrop = true, $filters =  []) {
         // Get the uploaded file
         $uploadedFile = request()->file($inputFileName);
 
@@ -773,10 +968,111 @@ class Helpers
         $resizedImagePath = $uploadedFile->store('images', 'public');
         imagejpeg($resizedImage, storage_path('app/public/' . $resizedImagePath));
 
+        if(count($filters) > 0){
+            // Apply filters - Brightness
+            if (array_key_exists('brightness', $filters)) {
+                imagefilter($resizedImage, IMG_FILTER_BRIGHTNESS, $filters['brightness']);
+            }
+
+            // Apply filters - Contrast
+            if (array_key_exists('contrast', $filters)) {
+                imagefilter($resizedImage, IMG_FILTER_CONTRAST, $filters['contrast']);
+            }
+
+            // Apply filters - Grayscale
+            if (array_key_exists('grayscale', $filters)) {
+                imagefilter($resizedImage, IMG_FILTER_GRAYSCALE);
+            }
+        }
+
         // Free up memory by destroying the image resources
         imagedestroy($originalImage);
         imagedestroy($resizedImage);
 
         return storage_path('app/public/' . $resizedImagePath);
     }
+
+    const STEPS_TO_COMPLETE_FORM_FEE_PAYMENT = [
+        self::PENDING_FORM_FEE_PAYMENT,
+        self::PENDING_FORM_FEE_VERIFICATION,
+        self::DENIED_FORM_FEE_VERIFICATION,
+    ];
+
+    const STEPS_TO_COMPLETE_ASSISTANT_APPROVAL = [
+        ...self::STEPS_TO_COMPLETE_FORM_FEE_PAYMENT,
+        self::PENDING_ASSISTANT_APPROVAL,
+        self::DENIED_ASSISTANT_APPROVAL,
+    ];
+
+    const STEPS_TO_COMPLETE_INSPECTOR_APPROVAL = [
+        ...self::STEPS_TO_COMPLETE_ASSISTANT_APPROVAL,
+        self::PENDING_INSPECTOR_APPROVAL,
+        self::DENIED_INSPECTOR_APPROVAL,
+    ];
+
+    const STEPS_TO_COMPLETE_LICENSE_FEE_PAYMENT = [
+        ...self::STEPS_TO_COMPLETE_INSPECTOR_APPROVAL,
+        self::PENDING_LICENSE_FEE_PAYMENT,
+        self::PENDING_LICENSE_FEE_VERIFICATION,
+        self::DENIED_LICENSE_FEE_VERIFICATION,
+    ];
+
+    const STEPS_TO_COMPLETE_SUPT_APPROVAL = [
+        ...self::STEPS_TO_COMPLETE_LICENSE_FEE_PAYMENT,
+        self::PENDING_SUPT_APPROVAL,
+        self::DENIED_SUPT_APPROVAL,
+    ];
+
+    const STEPS_TO_COMPLETE_RO_APPROVAL = [
+        ...self::STEPS_TO_COMPLETE_SUPT_APPROVAL,
+        self::PENDING_RO_APPROVAL,
+        self::DENIED_RO_APPROVAL,
+    ];
+
+    const STEPS_TO_COMPLETE_CRO_APPROVAL = [
+        ...self::STEPS_TO_COMPLETE_RO_APPROVAL,
+        self::PENDING_CRO_APPROVAL,
+        self::DENIED_CRO_APPROVAL,
+    ];
+
+    const STEPS_TO_COMPLETE_CEO_APPROVAL = [
+        ...self::STEPS_TO_COMPLETE_CRO_APPROVAL,
+        self::PENDING_CEO_APPROVAL,
+        self::DENIED_CEO_APPROVAL,
+    ];
+
+    public static function hasCompletedFormFeePayment($status): bool {
+        return !(in_array($status, self::STEPS_TO_COMPLETE_FORM_FEE_PAYMENT));
+    }
+
+    public static function hasAssistantApproval($status): bool {
+        return !(in_array($status, self::STEPS_TO_COMPLETE_ASSISTANT_APPROVAL));
+    }
+
+    public static function hasInspectorApproval($status): bool {
+        return !(in_array($status, self::STEPS_TO_COMPLETE_INSPECTOR_APPROVAL));
+    }
+
+    public static function hasCompletedLicenseFeePayment($status): bool {
+        return !(in_array($status, self::STEPS_TO_COMPLETE_LICENSE_FEE_PAYMENT));
+    }
+
+    public static function hasSuptApproval($status): bool {
+        return !(in_array($status, self::STEPS_TO_COMPLETE_SUPT_APPROVAL));
+    }
+
+    public static function hasROApproval($status): bool {
+        return !(in_array($status, self::STEPS_TO_COMPLETE_RO_APPROVAL));
+    }
+
+    public static function hasCROApproval($status): bool {
+        return !(in_array($status, self::STEPS_TO_COMPLETE_CRO_APPROVAL));
+    }
+
+    public static function hasCEOApproval($status): bool {
+        return !(in_array($status, self::STEPS_TO_COMPLETE_CEO_APPROVAL));
+    }
+
+    
+
 }

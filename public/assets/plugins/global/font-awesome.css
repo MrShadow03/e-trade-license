@@ -74,6 +74,15 @@
 .fa-chevron-up:before {
     content: "\f077";
 }
+.fa-chevron-down:before {
+    content: "\f078";
+}
+.fa-chevron-right:before {
+    content: "\f054";
+}
+.fa-chevron-left:before {
+    content: "\f053";
+}
 .fa-globe:before {
     content: "\f0ac";
 }
@@ -276,8 +285,47 @@
 .fa-file-image:before {
   content: "\f1c5";
 }
-
-
+.fa-cc-visa:before {
+  content: "\f1f0";
+}
+.fa-hand-holding-circle-dollar:before {
+  content: "\e621";
+}
+.fa-arrow-up-right-from-square:before,
+.fa-external-link:before {
+    content: "\f08e";
+}
+.fa-clock-four:before,
+.fa-clock:before {
+    content: "\f017";
+}
+.fa-user-tie:before {
+  content: "\f508";
+}
+.fa-file-xmark:before {
+  content: "\f317";
+}
+.fa-file-check:before {
+  content: "\f316";
+}
+.fa-ballot-check:before {
+  content: "\f733";
+}
+.fa-shop:before {
+  content: "\f54f";
+}
+.fa-comment-quote:before {
+  content: "\e14c";
+}
+.fa-facebook-messenger:before {
+  content: "\f39f";
+}
+.fa-bell-on:before {
+  content: "\f8fa";
+}
+.fa-bell-ring:before {
+  content: "\e62c";
+}
 
 .fa-duotone.fa-trash-alt:after,
 .fa-duotone.fa-trash-can:after,
@@ -332,6 +380,24 @@
 .fa-solid,
 .fas {
     font-weight: 900;
+}
+
+:host,
+:root {
+    --fa-style-family-brands: "Font Awesome 6 Brands";
+    --fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
+}
+@font-face {
+    font-family: "Font Awesome 6 Brands";
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url(./fonts/fontawesome/fa-brands-400.woff2) format("woff2"),
+        url(./fonts/fontawesome/fa-brands-400.ttf) format("truetype");
+}
+.fa-brands,
+.fab {
+    font-weight: 400;
 }
 
 @font-face {

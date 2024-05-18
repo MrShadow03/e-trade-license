@@ -18,8 +18,13 @@ return new class extends Migration
             $table->string('gateway')->nullable();
             $table->decimal('amount')->nullable(false);
             $table->string('method')->nullable();
+            $table->string('type')->nullable();
+            $table->string('bank')->nullable();
+            $table->string('bank_branch')->nullable();
+            $table->string('bank_invoice_no')->nullable();
             $table->string('received_by')->nullable();
             $table->string('status')->nullable();
+            $table->dateTime('paid_at')->nullable();
             $table->timestamps();
         });
     }

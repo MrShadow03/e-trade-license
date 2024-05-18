@@ -99,7 +99,7 @@ return new class extends Migration
             $table->date('expiry_date')->nullable();
 
             $table->string('status')->default('pending_tl_assistant_approval');
-            $table->json('corrections')->nullable();
+            $table->longText('corrections')->nullable();
             $table->timestamps();
         });
     }
