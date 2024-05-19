@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CanAny;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Application;
 use App\Http\Middleware\PhoneVerifiedMiddleware;
@@ -24,7 +25,10 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         // phone verification middleware
-        $middleware->alias(['phone_verified' => PhoneVerifiedMiddleware::class]);
+        $middleware->alias([
+            'phone_verified' => PhoneVerifiedMiddleware::class,
+            'can_any' => CanAny::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

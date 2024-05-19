@@ -163,7 +163,31 @@ class TradeLicenseApplication extends Model implements HasMedia
         return $this->payments()->where('type', Helpers::FORM_FEE)->first();
     }
 
+    public function getLicenseFeeAttribute(){
+        return $this->businessCategory?->fee ?? 0;
+    }
+
+    public function getSignboardChargeAttribute(){
+        return $this->signboard?->charge ?? 0;
+    }
+
     public function getLatestActivityAttribute(){
         return $this->tlActivities()->latest()->first();
+    }
+
+    public function getIncomeTaxAmountAttribute(){
+        $percentage = Helpers::INCOME_TAX_PERCENTAGE;
+        $totalFee = $this->businessCategory->fee + $this->signboard->charge;
+        return ($percentage / 100) * $totalFee;
+    }
+
+    public function getVatAmountAttribute(){
+        $percentage = Helpers::VAT_PERCENTAGE;
+        $totalFee = $this->businessCategory->fee + $this->signboard->charge;
+        return ($percentage / 100) * $totalFee;
+    }
+
+    public function getGrandTotalAttribute(){
+        return $this->license_fee + $this->signboard_charge + $this->income_tax_amount + $this->vat_amount + Helpers::FORM_FEE + Helpers::SURCHARGE;
     }
 }

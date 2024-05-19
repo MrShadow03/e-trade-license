@@ -666,12 +666,11 @@ class Helpers
     const LICENSE_RENEWAL_FEE = 'license renewal fee';
     const LICENSE_AMENDMENT_FEE = 'license amendment fee';
 
-    //payment Amounts
-    const TRADE_LICENSE_FORM_FEE = 200.00;
-
     //payment Methods
     const BANK_PAYMENT = 'bank payment';
     const ONLINE_PAYMENT = 'online payment';
+
+    // 
 
     public static function needsApplicationCorrection($status): bool {
         return in_array($status, [
@@ -1073,6 +1072,170 @@ class Helpers
         return !(in_array($status, self::STEPS_TO_COMPLETE_CEO_APPROVAL));
     }
 
+    //form fee
+    const TRADE_LICENSE_FORM_FEE = 200.00;
+
+    //license fee
+    const SURCHARGE = 100.00;
+    const INCOME_TAX_PERCENTAGE = 3.00;
+    const VAT_PERCENTAGE = 15.00;
     
 
+    public static function numToBanglaWords($number): string {
+        $number = (int) $number;
+
+        if($number == 0){
+            return 'শূন্য';
+        }
+
+        if($number < 0){
+            return 'ঋণাত্মক সংখ্যা';
+        }
+
+        $multiplier = [
+            "", "শত", "হাজার", "লক্ষ", "কোটি"
+        ];
+
+        $numbersTo99 = [
+            0 => 'শূন্য',
+            1 => 'এক',
+            2 => 'দুই',
+            3 => 'তিন',  
+            4 => 'চার',
+            5 => 'পাঁচ',
+            6 => 'ছয়',
+            7 => 'সাত',
+            8 => 'আট',
+            9 => 'নয়',
+            10 => 'দশ',
+            11 => 'এগারো',
+            12 => 'বারো',
+            13 => 'তেরো',
+            14 => 'চৌদ্দ',
+            15 => 'পনেরো',
+            16 => 'ষোল',
+            17 => 'সতেরো',
+            18 => 'আঠারো',
+            19 => 'ঊনিশ',
+            20 => 'বিশ',
+            21 => 'একুশ',
+            22 => 'বাইশ',
+            23 => 'তেইশ',
+            24 => 'চব্বিশ',
+            25 => 'পঁচিশ',
+            26 => 'ছাব্বিশ',
+            27 => 'সাতাশ',
+            28 => 'আটাশ',
+            29 => 'ঊনত্রিশ',
+            30 => 'ত্রিশ',
+            31 => 'একত্রিশ',
+            32 => 'বত্রিশ',
+            33 => 'তেত্রিশ',
+            34 => 'চৌত্রিশ',
+            35 => 'পঁয়ত্রিশ',
+            36 => 'ছত্রিশ',
+            37 => 'সাঁইত্রিশ',
+            38 => 'আটত্রিশ',
+            39 => 'ঊনচল্লিশ',
+            40 => 'চল্লিশ',
+            41 => 'একচল্লিশ',
+            42 => 'বিয়াল্লিশ',
+            43 => 'তেতাল্লিশ',
+            44 => 'চুয়াল্লিশ',
+            45 => 'পঁয়তাল্লিশ',
+            46 => 'ছেচল্লিশ',
+            47 => 'সাতচল্লিশ',
+            48 => 'আটচল্লিশ',
+            49 => 'ঊনপঞ্চাশ',
+            50 => 'পঞ্চাশ',
+            51 => 'একান্ন',
+            52 => 'বায়ান্ন',
+            53 => 'তিপ্পান্ন',
+            54 => 'চুয়ান্ন',
+            55 => 'পঞ্চান্ন',
+            56 => 'ছাপ্পান্ন',
+            57 => 'সাতান্ন',
+            58 => 'আটান্ন',
+            59 => 'ঊনষাট',
+            60 => 'ষাট',
+            61 => 'একষট্টি',
+            62 => 'বাষট্টি',
+            63 => 'তেষট্টি',
+            64 => 'চৌষট্টি',
+            65 => 'পঁয়ষট্টি',
+            66 => 'ছেষট্টি',
+            67 => 'সাতষট্টি',
+            68 => 'আটষট্টি',
+            69 => 'ঊনসত্তর',
+            70 => 'সত্তর',
+            71 => 'একাত্তর',
+            72 => 'বাহাত্তর',
+            73 => 'তিয়াত্তর',
+            74 => 'চুয়াত্তর',
+            75 => 'পঁচাত্তর',
+            76 => 'ছিয়াত্তর',
+            77 => 'সাতাত্তর',
+            78 => 'আটাত্তর',
+            79 => 'ঊনআশি',
+            80 => 'আশি',
+            81 => 'একাশি',
+            82 => 'বিরাশি',
+            83 => 'তিরাশি',
+            84 => 'চুরাশি',
+            85 => 'পঁচাশি',
+            86 => 'ছিয়াশি',
+            87 => 'সাতাশি',
+            88 => 'আটাশি',
+            89 => 'ঊননব্বই',
+            90 => 'নব্বই',
+            91 => 'একানব্বই',
+            92 => 'বিরানব্বই',
+            93 => 'তিরানব্বই',
+            94 => 'চুরানব্বই',
+            95 => 'পঁচানব্বই',
+            96 => 'ছিয়ানব্বই',
+            97 => 'সাতানব্বই',
+            98 => 'আটানব্বই',
+            99 => 'নিরানব্বই',
+        ];
+
+        //for 0 to 99
+        if($number < 100){
+            return $numbersTo99[$number];
+        }
+
+        //for 100 to 999
+        if($number < 1000){
+            $t = floor($number / 100);
+            $r = $number % 100;
+            return $numbersTo99[$t] . ' শত ' . self::numToBanglaWords($r);
+        }
+
+        //for 1000 to 99999
+        if($number < 100000){
+            $t = floor($number / 1000);
+            $r = $number % 1000;
+            return $numbersTo99[$t] . ' হাজার ' . self::numToBanglaWords($r);
+        }
+
+        //for 100000 to 9999999
+        if($number < 10000000){
+            $t = floor($number / 100000);
+            $r = $number % 100000;
+            return $numbersTo99[$t] . ' লক্ষ ' . self::numToBanglaWords($r);
+        }
+
+        //for 10000000 to 999999999
+        if($number < 1000000000){
+            $t = floor($number / 10000000);
+            $r = $number % 10000000;
+            return $numbersTo99[$t] . ' কোটি ' . self::numToBanglaWords($r);
+        }
+
+
+        //if number is too big split it into 2 parts and convert them separately
+        $t = floor($number / 10000000);
+        $r = $number % 10000000;
+        return self::numToBanglaWords($t) . ' কোটি ' . self::numToBanglaWords($r);
+    }
 }

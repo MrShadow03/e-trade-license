@@ -193,11 +193,18 @@
                                 </a>
                                 @endif
 
-                                @if ($application->status === Helpers::PENDING_ASSISTANT_APPROVAL)
+                                @canany([
+                                    'approve-pending-trade-license-assistant-approval-applications',
+                                    'approve-pending-trade-license-inspector-approval-applications',
+                                    'approve-pending-trade-license-superintendent-approval-applications',
+                                    'approve-pending-revenue-officer-approval-applications',
+                                    'approve-pending-chief-revenue-officer-approval-applications',
+                                    'approve-pending-chief-executive-officer-approval-applications',
+                                ])
                                 <a href="{{ route('admin.trade_license_applications.inspect', $application->id) }}" class="btn btn-success btn-icon btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="left" title="আবেদন যাচাই করুন">
                                     <i class="fal fa-ballot-check fs-4"></i>
                                 </a>
-                                @endif
+                                @endcanany
 
                                 @if ($application->status === Helpers::PENDING_FORM_FEE_VERIFICATION)
                                 <a href="#" class="btn btn-success btn-icon btn-sm me-1" data-bs-toggle="modal" data-bs-target="#view_payment_details" title="ফর্ম ফি নিশ্চিত করুন" onclick="enterPaymentData({{ json_encode($application->getFormFeePayment()) }}, '{{ Helpers::getImageUrl($application->getFormFeePayment(), 'payment-slip') }}', '{{ Helpers::convertToBanglaDigits(number_format($application->getFormFeePayment()->amount, 0, ',')) }}')">

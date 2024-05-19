@@ -61,12 +61,11 @@ class TradeLicenseApplicationPolicy
     }
 
     public function hasApprovalPermission(Admin $admin, TradeLicenseApplication $tradeLicenseApplication): bool {
-
-        return $admin->can('approve-pending-trade-license-assistant-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_ASSISTANT_APPROVAL;
-        $admin->can('approve-pending-trade-license-inspector-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_INSPECTOR_APPROVAL;
-        $admin->can('approve-pending-trade-license-superintendent-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_SUPT_APPROVAL;
-        $admin->can('approve-pending-revenue-officer-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_RO_APPROVAL;
-        $admin->can('approve-pending-chief-revenue-officer-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_CRO_APPROVAL;
+        return $admin->can('approve-pending-trade-license-assistant-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_ASSISTANT_APPROVAL ||
+        $admin->can('approve-pending-trade-license-inspector-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_INSPECTOR_APPROVAL ||
+        $admin->can('approve-pending-trade-license-superintendent-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_SUPT_APPROVAL ||
+        $admin->can('approve-pending-revenue-officer-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_RO_APPROVAL ||
+        $admin->can('approve-pending-chief-revenue-officer-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_CRO_APPROVAL ||
         $admin->can('approve-pending-chief-executive-officer-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_CEO_APPROVAL;
         
     }

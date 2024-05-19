@@ -139,7 +139,9 @@ class TradeLicenseApplicationController extends Controller
         }
         
         // update image if there is any
-        $tlService->updateImage();
+        if(array_key_exists('image', $tradeLicenseApplication->corrections)){
+            $tlService->updateImage();
+        }
 
         // mark as corrected
         $tlService->markAsCorrected($request->validated());
@@ -149,7 +151,11 @@ class TradeLicenseApplicationController extends Controller
             $tradeLicenseApplication->update([
                 'status' => Helpers::CORRECTED_STATES[$tradeLicenseApplication->status] ?? $tradeLicenseApplication->status
             ]);
+
+            return redirect()->route('user.trade_license_applications')->with('info', 'আবেদনটি যাচাইয়ের জন্য পাঠানো হয়েছে।');
         }
+
+        return redirect()->route('user.trade_license_applications')->with('warning', 'আবেদনটির কিছু তথ্য সংশোধন করা হয়েছে।');
     }
 
     public function destroy(TradeLicenseApplication $tradeLicenseApplication){

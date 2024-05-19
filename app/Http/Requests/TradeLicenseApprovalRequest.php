@@ -24,6 +24,8 @@ class TradeLicenseApprovalRequest extends FormRequest
         return [
             'isApproved' => 'required|boolean',
             'message' => 'required_if:isApproved,false',
+            'business_category_id' => 'nullable|exists:business_categories,id',
+            'signboard_id' => 'nullable|exists:signboards,id',
             'corrections' => 'nullable|array',
             'corrections.*' => 'array',
             'corrections.*.*' => 'nullable|string',

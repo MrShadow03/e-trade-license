@@ -88,11 +88,13 @@
 
             <input type="text" name="fiscal_year" value="{{ date('Y').'-'.(date('Y')+1) }}" readonly required hidden>
             <input type="hidden" name="application_id" value="{{ $application->id }}">
+            @php
+                $needsCorrection = array_key_exists('image', $application->corrections ?? []);
+            @endphp
+
+            @if($needsCorrection)
             <!--begin::Input group-->
             <div class="fv-row mb-4">
-                @php
-                    $needsCorrection = array_key_exists('image', $application->corrections ?? []);
-                @endphp
                 <!--begin::Label-->
                 <label class="fs-6 text-gray-{{ LABEL_INTENSITY }} cursor-pointer fw-semibold mb-4">
                     <span>
@@ -154,6 +156,7 @@
                 <!--end::Image input wrapper-->
             </div>
             <!--end::Input group-->
+            @endif
 
             <div class="row row-cols-md-2 row-cols-1">
                 @php

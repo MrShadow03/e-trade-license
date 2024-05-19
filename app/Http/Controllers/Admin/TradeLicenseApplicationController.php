@@ -93,7 +93,7 @@ class TradeLicenseApplicationController extends Controller {
                     ...$commonData
                 ]);
     
-                return redirect()->route('admin.trade_license_applications')->with('warning', 'সহকারী অনুমোদন প্রত্যাখ্যাত করা হয়েছে।');
+                return redirect()->route('admin.trade_license_applications')->with('warning', 'অনুমোদন প্রত্যাখ্যাত করা হয়েছে।');
             }
     
             $trade_license_application->update([
@@ -101,9 +101,10 @@ class TradeLicenseApplicationController extends Controller {
                 ...$commonData
             ]);
     
-            return redirect()->route('admin.trade_license_applications')->with('success', 'সহকারী অনুমোদন সফল হয়েছে।');
+            return redirect()->route('admin.trade_license_applications')->with('info', 'অনুমোদন সফল হয়েছে।');
         }catch (\Exception $e){
-            return redirect()->route('admin.trade_license_applications')->with('warning', 'সহকারী অনুমোদন সম্ভব নয়।');
+            dd($e->getMessage());
+            return redirect()->route('admin.trade_license_applications')->with('warning', 'অনুমোদন সম্ভব নয়।');
         }
     }
 

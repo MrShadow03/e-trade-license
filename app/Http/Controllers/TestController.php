@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Imagick;
+use App\Helpers\Helpers;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Models\TradeLicenseDocument;
@@ -20,15 +21,7 @@ class TestController extends Controller
         //     }
         // });
 
-        $permissions = [
-            'create-admins',
-            'update-admins',
-            'delete-admins',
-        ];
-
-        foreach($permissions as $permission){
-            Permission::create(['guard_name' => 'admin', 'name' => $permission]);
-        }
+        dd(Helpers::numToBanglaWords('23465412'));
 
         return response()->json(['message' => 'Success']);
     }
