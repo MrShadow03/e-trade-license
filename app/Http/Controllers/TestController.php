@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Imagick;
 use App\Helpers\Helpers;
+use Milon\Barcode\DNS2D;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Models\TradeLicenseDocument;
@@ -13,17 +14,13 @@ use Spatie\Permission\Models\Permission;
 class TestController extends Controller
 {
     public function store(){
-        // $tl = TradeLicenseDocument::find(22);
 
-        // $tl->media->each(function($media){
-        //     if($media->id >= 37 && $media->id <= 51){
-        //         $media->delete();
-        //     }
-        // });
+        $url = 'https://www.example.com';
+        $qrcode = new DNS2D();
+        $qrcode->setStorPath(__DIR__ . '/cache/');
+        $qrcodeHTML = $qrcode->getBarcodeHTML($url, 'QRCODE');
 
-        dd(Helpers::numToBanglaWords('23465412'));
-
-        return response()->json(['message' => 'Success']);
+        return $qrcodeHTML;
     }
 
     public static function resizeImage($inputFileName = 'image', $width = 300, $preserveAspectRatio = false) {

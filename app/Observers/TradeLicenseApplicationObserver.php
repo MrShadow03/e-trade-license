@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Helpers\Helpers;
 use App\Models\TradeLicenseApplication;
 use App\Services\TradeLicenseApplicationService;
 
@@ -25,21 +26,40 @@ class TradeLicenseApplicationObserver
      */
     public function updated(TradeLicenseApplication $tradeLicenseApplication): void
     {
-        if ($tradeLicenseApplication->getOriginal('status') === $tradeLicenseApplication->status) {
-            return;
+        if($tradeLicenseApplication->ca_division_bn != $tradeLicenseApplication->getOriginal('ca_division_bn')) {
+            $tradeLicenseApplication->ca_division = Helpers::translateDivisionToEnglish($tradeLicenseApplication->ca_division_bn);
+            $tradeLicenseApplication->saveQuietly();
+        }
+        
+        if($tradeLicenseApplication->ca_district_bn != $tradeLicenseApplication->getOriginal('ca_district_bn')) {
+            $tradeLicenseApplication->ca_district = Helpers::translateDistrictToEnglish($tradeLicenseApplication->ca_district_bn);
+            $tradeLicenseApplication->saveQuietly();
+        }
+        
+        if($tradeLicenseApplication->pa_division_bn != $tradeLicenseApplication->getOriginal('pa_division_bn')) {
+            $tradeLicenseApplication->pa_division = Helpers::translateDivisionToEnglish($tradeLicenseApplication->pa_division_bn);
+            $tradeLicenseApplication->saveQuietly();
+        }
+        
+        if($tradeLicenseApplication->pa_district_bn != $tradeLicenseApplication->getOriginal('pa_district_bn')) {
+            $tradeLicenseApplication->pa_district = Helpers::translateDistrictToEnglish($tradeLicenseApplication->pa_district_bn);
+            $tradeLicenseApplication->saveQuietly();
         }
 
-        $tlService = new TradeLicenseApplicationService($tradeLicenseApplication);
-        $activity = $tlService->determineActivity($tradeLicenseApplication->getOriginal('status'));
+        if ($tradeLicenseApplication->getOriginal('status') != $tradeLicenseApplication->status) {
+            $tlService = new TradeLicenseApplicationService($tradeLicenseApplication);
+            $activity = $tlService->determineActivity($tradeLicenseApplication->getOriginal('status'));
+    
+            $message = request()->has('message') ? request()->get('message') : null;
+            $payment_amount = request()->has('payment_amount') ? request()->get('payment_amount') : null;
+    
+            $tradeLicenseApplication->tlActivities()->create([
+                'activity' => $activity,
+                'message' => $message,
+                'payment_amount' => $payment_amount,
+            ]);
+        }
 
-        $message = request()->has('message') ? request()->get('message') : null;
-        $payment_amount = request()->has('payment_amount') ? request()->get('payment_amount') : null;
-
-        $tradeLicenseApplication->tlActivities()->create([
-            'activity' => $activity,
-            'message' => $message,
-            'payment_amount' => $payment_amount,
-        ]);
     }
 
     /**

@@ -150,10 +150,6 @@
                         </td>
                         <td class="py-2">
                             <div class="d-flex align-items-center">
-                                {{-- <span class="badge badge-square badge-{{ $data['theme'] }}">
-                                    <i class="far {{ $data['icon'] }} fs-6 text-light"></i>
-                                </span> --}}
-                                
                                 <div class="d-flex align-items-center">
                                     <!--begin::Symbol-->
                                     <div class="symbol symbol-50px me-5">
@@ -172,6 +168,9 @@
                                 </div>
                             </div>
                         </td>
+                        @php
+                            $paymentSlipCollectionName = $application->status === Helpers::PENDING_FORM_FEE_VERIFICATION ? 'form-fee-payment-slip' : 'license-fee-payment-slip';
+                        @endphp
                         <td class="text-end py-2" data-kt-filemanager-table="action_dropdown">
                             <div class="d-flex justify-content-end">
 
@@ -187,27 +186,44 @@
                                 </a>
                                 @endif
 
-                                @if ($application->status === Helpers::PENDING_LICENSE_FEE_PAYMENT)
-                                <a href="#" class="btn btn-primary btn-icon btn-sm me-1" data-bs-toggle="tooltip" title="লাইসেন্স ফি পরিশোধ করুন">
+                                @php
+                                    $fees = [
+                                        'licenseFee' => number_format(round($application->new_application_fee), 0, ','),
+                                        'signboardFee' => number_format(round($application->signboard_fee), 0, ','),
+                                        'incomeTax' => number_format(round($application->incomeTaxAmount), 0, ','),
+                                        'vat' => number_format(round($application->vatAmount), 0, ','),
+                                        'surcharge' => number_format(Helpers::SURCHARGE, 0, ','),
+                                        'total' => number_format($application->new_application_fee + $application->signboard_fee + $application->incomeTaxAmount + $application->vatAmount + Helpers::SURCHARGE, 0, ','),
+                                        'totalInBangla' => Helpers::numToBanglaWords($application->new_application_fee + $application->signboard_fee + $application->incomeTaxAmount + $application->vatAmount + Helpers::SURCHARGE),
+                                        'id' => $application->id
+                                    ]
+                                @endphp
+
+                                @if (auth()->user()->can('verify-license-fee-payment') && $application->status === Helpers::PENDING_LICENSE_FEE_VERIFICATION)
+                                <a href="#" class="btn btn-success btn-icon btn-sm me-1" data-bs-toggle="modal" data-bs-target="#view_license_fee_payment_details" title="লাইসেন্স ফি নিশ্চিত করুন" onclick="enterPaymentData({{ json_encode($fees) }},{{ json_encode($application->getLicenseFeePayment()) }}, '{{ Helpers::getImageUrl($application->getLicenseFeePayment(), $paymentSlipCollectionName) }}', '{{ Helpers::convertToBanglaDigits(number_format($application->getLicenseFeePayment()->amount, 0, ',')) }}')">
                                     <i class="far fa-bangladeshi-taka-sign fs-4"></i>
                                 </a>
                                 @endif
 
-                                @canany([
-                                    'approve-pending-trade-license-assistant-approval-applications',
-                                    'approve-pending-trade-license-inspector-approval-applications',
-                                    'approve-pending-trade-license-superintendent-approval-applications',
-                                    'approve-pending-revenue-officer-approval-applications',
-                                    'approve-pending-chief-revenue-officer-approval-applications',
-                                    'approve-pending-chief-executive-officer-approval-applications',
-                                ])
+                                @php
+                                    $canInspect = auth()->user()->can('approve-pending-trade-license-assistant-approval-applications') && $application->status === Helpers::PENDING_ASSISTANT_APPROVAL ||
+                                    auth()->user()->can('approve-pending-trade-license-inspector-approval-applications') && $application->status === Helpers::PENDING_INSPECTOR_APPROVAL ||
+                                    auth()->user()->can('approve-pending-trade-license-superintendent-approval-applications') && $application->status === Helpers::PENDING_SUPT_APPROVAL ||
+                                    auth()->user()->can('approve-pending-revenue-officer-approval-applications') && $application->status === Helpers::PENDING_RO_APPROVAL ||
+                                    auth()->user()->can('approve-pending-chief-revenue-officer-approval-applications') && $application->status === Helpers::PENDING_CRO_APPROVAL ||
+                                    auth()->user()->can('approve-pending-chief-executive-officer-approval-applications') && $application->status === Helpers::PENDING_CEO_APPROVAL;
+
+                                @endphp
+                                
+                                @if ($canInspect)
                                 <a href="{{ route('admin.trade_license_applications.inspect', $application->id) }}" class="btn btn-success btn-icon btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="left" title="আবেদন যাচাই করুন">
                                     <i class="fal fa-ballot-check fs-4"></i>
                                 </a>
-                                @endcanany
+                                @endif
+                                
 
-                                @if ($application->status === Helpers::PENDING_FORM_FEE_VERIFICATION)
-                                <a href="#" class="btn btn-success btn-icon btn-sm me-1" data-bs-toggle="modal" data-bs-target="#view_payment_details" title="ফর্ম ফি নিশ্চিত করুন" onclick="enterPaymentData({{ json_encode($application->getFormFeePayment()) }}, '{{ Helpers::getImageUrl($application->getFormFeePayment(), 'payment-slip') }}', '{{ Helpers::convertToBanglaDigits(number_format($application->getFormFeePayment()->amount, 0, ',')) }}')">
+                                @if (auth()->user()->can('verify-form-fee-payment') && $application->status === Helpers::PENDING_FORM_FEE_VERIFICATION)
+                                <a href="#" class="btn btn-success btn-icon btn-sm me-1" data-bs-toggle="modal" data-bs-target="#view_payment_details" title="ফর্ম ফি নিশ্চিত করুন" onclick="enterPaymentData({{ json_encode($application->getFormFeePayment()) }}, '{{ Helpers::getImageUrl($application->getFormFeePayment(), $paymentSlipCollectionName) }}', '{{ Helpers::convertToBanglaDigits(number_format($application->getFormFeePayment()->amount, 0, ',')) }}')">
                                     <i class="far fa-bangladeshi-taka-sign fs-4"></i>
                                 </a>
                                 @endif
@@ -322,20 +338,172 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="view_license_fee_payment_details" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered min-w-lg-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+            <!--begin::Modal header-->
+            <!--begin::Modal header-->
+            <div class="modal-header border-0 justify-content-between bg-light-dark">
+                <!--begin::Heading-->
+                <div class="text-center">
+                   <!--begin::Title-->
+                   <h3 class="text-gray-800 fw-semibold fs-2 font-bn fw-normal">
+                        পেমেন্ট নিশ্চিত করুন
+                   </h3>
+                   <!--end::Title-->
+               </div>
+               <!--end::Heading-->
+               <!--begin::Close-->
+               <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                   <i class="fa fa-times fs-1" aria-hidden="true"></i>
+               </div>
+               <!--end::Close-->
+           </div>
+           <!--begin::Modal header-->
+            <!--begin::Modal header-->
+
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y m-5">
+                <div class="row font-kohinoor">
+                    <table class="table table-striped table-row-dashed table-row-gray-300">
+                        <thead>
+                            <tr class="fw-semibold fs-6 text-gray-800">
+                                <th class="py-2 px-2">ক্ষেত্র</th>
+                                <th class="py-2 px-2 text-end">টাকার পরিমাণ (৳)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="fw-bold">
+                            <tr>
+                                <td class="py-2 px-2">নতুন লাইসেন্স ফি</td>
+                                <td class="py-2 px-2 text-end fs-4 fw-semibold" id="displayLicenseFee"></td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-2">সাইনবোর্ড ফি</td>
+                                <td class="py-2 px-2 text-end fs-4 fw-semibold" id="displaySignboardFee"></td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-2">আয়কর</td>
+                                <td class="py-2 px-2 text-end fs-4 fw-semibold" id="displayIncomeTax"></td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-2">ভ্যাট</td>
+                                <td class="py-2 px-2 text-end fs-4 fw-semibold" id="displayVat"></td>
+                            <tr>
+                                <td class="py-2 px-2">সারচার্জ</td>
+                                <td class="py-2 px-2 text-end fs-4 fw-semibold" id="displaySurcharge"></td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-2">মোট</td>
+                                <td class="py-2 px-2 text-end fs-4 fw-semibold fs-4 fw-semibold text-danger" id="displayTotalFee"></td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-2">মোট (কথায়)</td>
+                                <td class="py-2 px-2 text-end fs-4 fw-semibold fs-4 fw-semibold text-danger" id="displayTotalFeeInBangla"></td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-2">ব্যাংক</td>
+                                <td class="py-2 px-2 text-end fs-4 fw-semibold" id="bankLF"></td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-2">ব্রাঞ্চ</td>
+                                <td class="py-2 px-2 text-end fs-4 fw-semibold" id="bankBranchLF"></td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-2">চালান নম্বর</td>
+                                <td class="py-2 px-2 text-end fs-4 fw-semibold ls-2" id="bankInvoiveNoLF"></td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-2">ড্রাফটের ছবি</td>
+                                <td class="py-2 px-2 text-end fs-4 fw-semibold">
+                                    <a href="#" id="draftImageUrlLF" target="_blank" rel="noopener noreferrer">
+                                        <img class="shadow w-200px h-100px object-fit-contain" src="{{ asset('assets/img/blank-image.svg') }}" alt="bank draft image" id="draftImageLF">
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <table class="table table-striped align-middle table-row-dashed fs-6 gy-5 dt-table font-kohinoor">
+                    <tbody class="fw-bold">
+                    </tbody>
+                </table>
+                <!--begin::Actions-->
+                <form action="{{ route('admin.trade_license_applications.verify_license_fee_payment') }}" method="POST" class="text-center font-bn mt-8">
+                    @csrf
+                    @method('POST')
+                    <div class="fv-row mb-10">
+                        <label class="text-start d-block fw-bold fs-5 text-gray-800 mb-3">আপনার মন্তব্য</label>
+                        <textarea name="message" class="font-kohinoor text-dark fw-normal form-control fs-4" rows="3" placeholder="আপনার মন্তব্য লিখুন (যদি থাকে)"></textarea>
+                    </div>
+                    <input type="hidden" name="application_id" id="applicationIdLicenseFee">
+                    <input type="hidden" name="isVerified">
+                    <button type="button" class="btn btn-danger" onclick="submitForm(event, 0)">
+                        <span class="indicator-label">
+                            প্রত্যাখ্যান করুন
+                        </span>
+                        <span class="indicator-progress">
+                            অপেক্ষা করুন...
+                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                        </span>
+                    </button>
+                    <button type="button" class="btn btn-success ms-3" onclick="submitForm(event, 1)">
+                        <span class="indicator-label">
+                            নিশ্চিত করুন
+                        </span>
+                        <span class="indicator-progress">
+                            অপেক্ষা করুন...
+                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                        </span>
+                    </button>
+                </form>
+                <!--end::Actions-->
+            </div>
+            <!--begin::Modal body-->
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('exclusive_scripts')
 <script src="{{ asset('/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-<script>
+<script>    
+    const enterPaymentData = (paymentData, data, imageUrl) => {
+        document.getElementById('displayLicenseFee').innerText = convertToBanglaDigits(paymentData.licenseFee);
+        document.getElementById('displaySignboardFee').innerText = convertToBanglaDigits(paymentData.signboardFee);
+        document.getElementById('displayIncomeTax').innerText = convertToBanglaDigits(paymentData.incomeTax);
+        document.getElementById('displayVat').innerText = convertToBanglaDigits(paymentData.vat);
+        document.getElementById('displaySurcharge').innerText = convertToBanglaDigits(paymentData.surcharge);
+        document.getElementById('displayTotalFee').innerText = convertToBanglaDigits(paymentData.total);
+        document.getElementById('displayTotalFeeInBangla').innerText = convertToBanglaDigits(paymentData.totalInBangla)+' টাকা মাত্র';
+        document.getElementById('applicationIdLicenseFee').value = paymentData.id;
 
-    const enterPaymentData = (data, imageUrl, amount) => {
-        document.getElementById('bank').innerText = data.bank || 'N/A';
-        document.getElementById('bankBranch').innerText = data.bank_branch || 'N/A';
-        document.getElementById('bankInvoiveNo').innerText = data.bank_invoice_no || 'N/A';
-        document.getElementById('amount').innerText = data.amount ? `৳ ${amount}` : 'N/A';
-        document.getElementById('draftImage').src = imageUrl;
-        document.getElementById('draftImageUrl').href = imageUrl;
-        document.querySelector('input[name="application_id"]').value = data.trade_license_application_id;
+        document.getElementById('bankLF').innerText = data.bank || 'N/A';
+        document.getElementById('bankBranchLF').innerText = data.bank_branch || 'N/A';
+        document.getElementById('bankInvoiveNoLF').innerText = data.bank_invoice_no || 'N/A';
+        document.getElementById('draftImageLF').src = imageUrl;
+        document.getElementById('draftImageUrlLF').href = imageUrl;
+    }
+
+    const convertToBanglaDigits = (text) => {
+        text = String(text);
+        var banglaDigits = {
+            0: '০',
+            1: '১',
+            2: '২',
+            3: '৩',
+            4: '৪',
+            5: '৫',
+            6: '৬',
+            7: '৭',
+            8: '৮',
+            9: '৯'
+        }
+
+        return text.replace(/[0-9]/g, function (w) {
+            return banglaDigits[w]
+        });
     }
 
     const submitForm = (event, isVerified) => {

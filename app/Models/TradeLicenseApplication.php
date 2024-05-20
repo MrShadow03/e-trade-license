@@ -163,12 +163,16 @@ class TradeLicenseApplication extends Model implements HasMedia
         return $this->payments()->where('type', Helpers::FORM_FEE)->first();
     }
 
-    public function getLicenseFeeAttribute(){
+    public function getLicenseFeePayment(){
+        return $this->payments()->where('type', Helpers::LICENSE_FEE)->first();
+    }
+
+    public function getNewApplicationFeeAttribute(){
         return $this->businessCategory?->fee ?? 0;
     }
 
-    public function getSignboardChargeAttribute(){
-        return $this->signboard?->charge ?? 0;
+    public function getSignboardFeeAttribute(){
+        return $this->signboard?->fee ?? 0;
     }
 
     public function getLatestActivityAttribute(){
@@ -177,17 +181,17 @@ class TradeLicenseApplication extends Model implements HasMedia
 
     public function getIncomeTaxAmountAttribute(){
         $percentage = Helpers::INCOME_TAX_PERCENTAGE;
-        $totalFee = $this->businessCategory->fee + $this->signboard->charge;
+        $totalFee = $this->businessCategory->fee + $this->signboard->fee;
         return ($percentage / 100) * $totalFee;
     }
 
     public function getVatAmountAttribute(){
         $percentage = Helpers::VAT_PERCENTAGE;
-        $totalFee = $this->businessCategory->fee + $this->signboard->charge;
+        $totalFee = $this->businessCategory->fee + $this->signboard->fee;
         return ($percentage / 100) * $totalFee;
     }
 
-    public function getGrandTotalAttribute(){
-        return $this->license_fee + $this->signboard_charge + $this->income_tax_amount + $this->vat_amount + Helpers::FORM_FEE + Helpers::SURCHARGE;
+    public function getTotalLicenseFeeAttribute(){
+        return $this->new_application_fee + $this->signboard_fee + $this->income_tax_amount + $this->vat_amount + Helpers::SURCHARGE;
     }
 }

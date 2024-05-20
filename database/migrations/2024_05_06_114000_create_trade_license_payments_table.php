@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('bank_branch')->nullable();
             $table->string('bank_invoice_no')->nullable();
             $table->string('received_by')->nullable();
+            $table->longText('fields')->nullable();
             $table->string('status')->nullable();
             $table->dateTime('paid_at')->nullable();
             $table->timestamps();

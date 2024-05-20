@@ -94,6 +94,7 @@ return new class extends Migration
             $table->decimal('other_fee')->nullable();
             $table->decimal('total_fee')->nullable();
             
+            $table->string('uuid')->unique()->nullable();
             $table->string('trade_license_no')->nullable();
             $table->timestamp('issued_at')->nullable();
             $table->date('expiry_date')->nullable();

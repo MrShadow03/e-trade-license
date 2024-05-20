@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('signboards', function (Blueprint $table) {
             $table->id();
             $table->string('dimension')->nullable(false);
-            $table->decimal('charge')->nullable(false);
+            $table->decimal('fee')->nullable(false);
             $table->timestamps();
         });
     }

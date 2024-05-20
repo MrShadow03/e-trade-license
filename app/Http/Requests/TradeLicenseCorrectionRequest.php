@@ -44,8 +44,9 @@ class TradeLicenseCorrectionRequest extends FormRequest
         foreach ($this->changeableFields as $field) {
             $this->customRules[$field] = 'nullable';
         }
-    }
 
+    }
+    
     public function authorize(): bool
     {
         return true;

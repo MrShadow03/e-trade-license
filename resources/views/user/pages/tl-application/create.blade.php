@@ -707,7 +707,7 @@
                                 <select type="text" class="form-control text-gray-900 form-select font-kohinoor" name="signboard_id" required>
                                     @foreach ($signboards as $item)
                                         <option value="{{ $item->id }}" @selected(old('signboard_id') == $item->id)>
-                                            {{ Helpers::convertToBanglaDigits($item->dimension) }} - {{ Helpers::convertToBanglaDigits(number_format(round($item->charge), 0, ',')) }} টাকা
+                                            {{ Helpers::convertToBanglaDigits($item->dimension) }} - {{ Helpers::convertToBanglaDigits(number_format(round($item->fee), 0, ',')) }} টাকা
                                         </option>
                                     @endforeach
                                 </select>

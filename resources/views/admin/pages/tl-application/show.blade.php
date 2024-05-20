@@ -557,7 +557,7 @@
                                     </div>
                                     <div class="col">
                                         <div class="{{ INFO_LABEL_CLASSES }}">সাইনবোর্ড</div>
-                                        <div class="{{ INFO_CLASSES }}">{{ Helpers::convertToBanglaDigits($application->signboard?->dimension.' - '.number_format((int)$application->signboard?->charge, 0, ',')) }}</div>
+                                        <div class="{{ INFO_CLASSES }}">{{ Helpers::convertToBanglaDigits($application->signboard?->dimension.' - '.number_format((int)$application->signboard?->fee, 0, ',')) }}</div>
                                     </div>
                                     <div class="col">
                                         <div class="{{ INFO_LABEL_CLASSES }}">ব্যবসা শুরুর তারিখ</div>

@@ -17,12 +17,21 @@ class TradeLicensePayment extends Model implements HasMedia
         'updated_at',
     ];
 
+    protected function casts()
+    {
+        return [
+            'amount' => 'decimal:2',
+            'fields' => 'array',
+        ];
+    }
+
     public function tradeLicenseApplication(){
         return $this->belongsTo(TradeLicenseApplication::class);
     }
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('payment-slip')->singleFile();
+        $this->addMediaCollection('form-fee-payment-slip')->singleFile();
+        $this->addMediaCollection('license-fee-payment-slip')->singleFile();
     }
 }

@@ -13,7 +13,7 @@ class TradeLicensePaymentVerificationRequest extends FormRequest
     public function authorize(): bool {
         $application = TradeLicenseApplication::findOrFail($this->application_id);
 
-        return auth()->user()->can('verify-form-fee-payment') && $application->status === Helpers::PENDING_FORM_FEE_VERIFICATION;
+        return auth()->user()->can('verify-form-fee-payment') && $application->status === Helpers::PENDING_FORM_FEE_VERIFICATION || auth()->user()->can('verify-license-fee-payment') && $application->status === Helpers::PENDING_LICENSE_FEE_VERIFICATION;
     }
 
     public function rules(): array {

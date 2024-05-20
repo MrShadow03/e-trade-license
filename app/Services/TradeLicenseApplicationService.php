@@ -127,7 +127,7 @@ class TradeLicenseApplicationService {
         return true;
     }
 
-    public function markAsCorrected($validatedFields): void {
+    public function correctAndUpdate($validatedFields): void {
         $corrections = $this->tlApplication->corrections;
 
         //mark all provided documents as corrected
@@ -151,6 +151,8 @@ class TradeLicenseApplicationService {
                 continue;
             }
 
+            //update the field
+            $this->tlApplication->update([$field => $value]);
             $corrections = array_diff_key($corrections, [$field => '']);
         }
 

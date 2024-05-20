@@ -6,12 +6,12 @@ use App\Models\TradeLicensePayment;
 use App\Models\TradeLicenseApplication;
 
 class TradeLicensePaymentService {
-    public static function payWithBank($tradeLicenseApplication, $amount) {
+    public static function payWithBank($tradeLicenseApplication, $amount, $type = Helpers::FORM_FEE) {
         $payment = TradeLicensePayment::create([
             'trade_license_application_id' => $tradeLicenseApplication->id,
             'amount' => $amount,
             'method' => Helpers::BANK_PAYMENT,
-            'type' => Helpers::FORM_FEE,
+            'type' => $type,
             'bank' => request()->bank ?? null,
             'bank_branch' => request()->bank_branch ?? null,
             'bank_invoice_no' => request()->bank_invoice_no ?? null,
@@ -23,39 +23,54 @@ class TradeLicensePaymentService {
             'contrast' => 10,
         ]);
 
-        $payment->addMedia($image)->toMediaCollection('payment-slip');
+        $mediaCollection = $type === Helpers::FORM_FEE ? 'form-fee-payment-slip' : 'license-fee-payment-slip';
 
-        $tradeLicenseApplication->update([
-            'status' => Helpers::PENDING_FORM_FEE_VERIFICATION
-        ]);
+        $payment->addMedia($image)->toMediaCollection($mediaCollection);
 
         return $payment;
     }
 
-    public static function verifyFormFeePayment($request) {
+    public static function verifyPayment($request, $type = Helpers::FORM_FEE) {
         $tlApplication = TradeLicenseApplication::findOrFail($request['application_id']);
-        $payment = $tlApplication->getFormFeePayment();
+        $payment = $type === Helpers::FORM_FEE ? $tlApplication->getFormFeePayment() : $tlApplication->getLicenseFeePayment();
 
         if ($request['isVerified'] == '0') {
-            self::denyFormFeePayment($tlApplication, $payment);
+            self::denyPayment($tlApplication, $payment);
             return 'denied';
         }
 
+        $paymentData = [];
+
+        if ($type === Helpers::FORM_FEE) {
+            $paymentData = [
+                'form_fee' => $payment->amount,
+            ];
+        }else {
+            $paymentData = [
+                'new_application_fee' => $tlApplication->new_application_fee,
+                'signboard_fee' => $tlApplication->signboard_fee,
+                'income_tax' => $tlApplication->income_tax_amount,
+                'vat' => $tlApplication->vat_amount,
+                'surcharge' => Helpers::SURCHARGE,
+            ];
+        }
+
         $tlApplication->update([
-            'status' => Helpers::PENDING_ASSISTANT_APPROVAL,
-            'form_fee' => $payment->amount
+            'status' => Helpers::APPROVED_STATES[$tlApplication->status] ?? $tlApplication->status,
+            ...$paymentData
         ]);
 
         $payment->update([
-            'status' => 'verified'
+            'status' => 'verified',
+            'fields' => $paymentData,
         ]);
 
         return 'verified';
     }
 
-    protected static function denyFormFeePayment($tlApplication, $payment) {
+    protected static function denyPayment($tlApplication, $payment) {
         $tlApplication->update([
-            'status' => Helpers::DENIED_FORM_FEE_VERIFICATION
+            'status' => Helpers::DENIED_STATES[$tlApplication->status] ?? $tlApplication->status
         ]);
 
         $payment->delete();

@@ -176,7 +176,7 @@
                             <div class="d-flex justify-content-end">
 
                                 @if ($application->isValid())
-                                <a href="#" class="btn btn-success btn-icon btn-sm me-1" data-bs-toggle="tooltip" title="ট্রেড লাইসেন্স দেখুন">
+                                <a href="{{ route('trade-license', $application->uuid) }}" class="btn btn-success btn-icon btn-sm me-1" data-bs-toggle="tooltip" title="ট্রেড লাইসেন্স দেখুন" target="_blank">
                                     <i class="fal fa-memo-circle-check fs-4"></i>
                                 </a>
                                 @endif
@@ -189,18 +189,18 @@
 
                                 @php
                                     $fees = [
-                                        'licenseFee' => number_format(round($application->license_fee), 0, ','),
-                                        'signboardCharge' => number_format(round($application->signboard_charge), 0, ','),
+                                        'licenseFee' => number_format(round($application->new_application_fee), 0, ','),
+                                        'signboardFee' => number_format(round($application->signboard_fee), 0, ','),
                                         'incomeTax' => number_format(round($application->incomeTaxAmount), 0, ','),
                                         'vat' => number_format(round($application->vatAmount), 0, ','),
                                         'surcharge' => number_format(Helpers::SURCHARGE, 0, ','),
-                                        'total' => number_format($application->license_fee + $application->signboard_charge + $application->incomeTaxAmount + $application->vatAmount + Helpers::SURCHARGE, 0, ','),
-                                        'totalInBangla' => Helpers::numToBanglaWords($application->license_fee + $application->signboard_charge + $application->incomeTaxAmount + $application->vatAmount + Helpers::SURCHARGE),
-                                        'applicationId' => $application->id
+                                        'total' => number_format($application->new_application_fee + $application->signboard_fee + $application->incomeTaxAmount + $application->vatAmount + Helpers::SURCHARGE, 0, ','),
+                                        'totalInBangla' => Helpers::numToBanglaWords($application->new_application_fee + $application->signboard_fee + $application->incomeTaxAmount + $application->vatAmount + Helpers::SURCHARGE),
+                                        'id' => $application->id
                                     ]
                                 @endphp
 
-                                @if ($application->status === Helpers::PENDING_LICENSE_FEE_PAYMENT)
+                                @if ($application->status === Helpers::PENDING_LICENSE_FEE_PAYMENT || $application->status === Helpers::DENIED_LICENSE_FEE_VERIFICATION)
                                 <a href="#" class="btn btn-primary btn-icon btn-sm me-1" data-bs-toggle="modal" data-bs-target="#license_fee_payment_modal" data-bs-toggle="tooltip" title="লাইসেন্স ফি পরিশোধ করুন" onclick="displayLicenseForm({{ json_encode($fees) }})">
                                     <i class="far fa-bangladeshi-taka-sign fs-4"></i>
                                 </a>
@@ -642,7 +642,7 @@
                                         পরিমান
                                     </h3>
                     
-                                    <div class="stepper-desc font-kohinoor">
+                                    <div class="stepper-desc font-kohinoor" id="totalAmountModalSub">
                                         {{ Helpers::convertToBanglaDigits(number_format($form_fee, 0, ',')) }} টাকা
                                     </div>
                                 </div>
@@ -721,7 +721,7 @@
                     <!--end::Nav-->
                     
                     <!--begin::Form-->
-                    <form action="{{ route('user.trade_license_applications.payments.form_fee.store') }}" method="POST" enctype="multipart/form-data" class="form mx-auto font-kohinoor" novalidate="novalidate" id="license_fee_payment_stepper_form">
+                    <form action="{{ route('user.trade_license_applications.payments.license_fee.store') }}" method="POST" enctype="multipart/form-data" class="form mx-auto font-kohinoor" novalidate="novalidate" id="license_fee_payment_stepper_form">
                         @csrf
                         @method('POST')
 
@@ -735,7 +735,7 @@
                                         <thead>
                                             <tr class="fw-semibold fs-6 text-gray-800">
                                                 <th class="py-2 px-2">ক্ষেত্র</th>
-                                                <th class="py-2 px-2 text-end">টাকার পরিমাণ</th>
+                                                <th class="py-2 px-2 text-end">টাকার পরিমাণ (৳)</th>
                                             </tr>
                                         </thead>
                                         <tbody class="fs-5">
@@ -759,12 +759,12 @@
                                                 <td class="py-2 px-2 text-end" id="displaySurcharge"></td>
                                             </tr>
                                             <tr>
-                                                <td class="py-2 px-2 fs-3 fw-semibold">মোট</td>
-                                                <td class="py-2 px-2 fs-3 text-end fw-semibold text-danger" id="displayTotalFee"></td>
+                                                <td class="py-2 px-2 fs-4 fw-semibold">মোট</td>
+                                                <td class="py-2 px-2 fs-4 text-end fw-semibold text-danger" id="displayTotalFee"></td>
                                             </tr>
                                             <tr>
-                                                <td class="py-2 px-2 fs-3 fw-semibold">মোট (কথায়)</td>
-                                                <td class="py-2 px-2 fs-3 text-end fw-semibold text-danger" id="displayTotalFeeInBangla"></td>
+                                                <td class="py-2 px-2 fs-4 fw-semibold">মোট (কথায়)</td>
+                                                <td class="py-2 px-2 fs-4 text-end fw-semibold text-danger" id="displayTotalFeeInBangla"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -964,22 +964,15 @@
 <script>
 
     const displayLicenseForm  = (data) => {
-        const licenseFee = data.licenseFee;
-        const signboardCharge = data.signboardCharge;
-        const incomeTax = data.incomeTax;
-        const vat = data.vat;
-        const surcharge = data.surcharge;
-        const total = data.total;
-        const applicationId = data.applicationId;
-
-        console.log(data);
-
-        document.getElementById('displayLicenseFee').innerText = convertToBanglaDigits(licenseFee);
-        document.getElementById('displaySignboardFee').innerText = convertToBanglaDigits(signboardCharge);
-        document.getElementById('displayIncomeTax').innerText = convertToBanglaDigits(incomeTax);
-        document.getElementById('displayVat').innerText = convertToBanglaDigits(vat);
-        document.getElementById('displaySurcharge').innerText = convertToBanglaDigits(surcharge);
-        document.getElementById('displayTotalFee').innerText = convertToBanglaDigits(total);
+        document.getElementById('displayLicenseFee').innerText = convertToBanglaDigits(data.licenseFee);
+        document.getElementById('displaySignboardFee').innerText = convertToBanglaDigits(data.signboardFee);
+        document.getElementById('displayIncomeTax').innerText = convertToBanglaDigits(data.incomeTax);
+        document.getElementById('displayVat').innerText = convertToBanglaDigits(data.vat);
+        document.getElementById('displaySurcharge').innerText = convertToBanglaDigits(data.surcharge);
+        document.getElementById('displayTotalFee').innerText = convertToBanglaDigits(data.total);
+        document.getElementById('displayTotalFeeInBangla').innerText = convertToBanglaDigits(data.totalInBangla)+' টাকা মাত্র';
+        document.getElementById('applicationIdLicenseFee').value = data.id;
+        document.getElementById('totalAmountModalSub').innerText = convertToBanglaDigits(data.total)+' টাকা';
     }
 
     const form = document.getElementById('form_fee_payment_stepper_form');

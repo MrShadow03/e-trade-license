@@ -45,25 +45,12 @@ Route::group(['middleware' => 'auth:admin', 'as' => 'admin.', 'prefix' => 'admin
         Route::get('/{trade_license_application}', [TradeLicenseApplicationController::class, 'show'])->name('.show');
         Route::get('/{trade_license_application}/inspect', [TradeLicenseApplicationController::class, 'inspect'])->name('.inspect');
         Route::post('/verify-form-fee-payment', [TradeLicenseApplicationController::class, 'verifyFormFeePayment'])->name('.verify_form_fee_payment')->can('verify-form-fee-payment');
+        Route::post('/verify-license-fee-payment', [TradeLicenseApplicationController::class, 'verifyLicenseFeePayment'])->name('.verify_license_fee_payment')->can('verify-license-fee-payment');
 
         // Approval Routes...
         // Assistant Approval
-        Route::patch('/{trade_license_application}/approval', [TradeLicenseApplicationController::class, 'approveAssistant'])->name('.approve_assistant')->middleware('can_any:approve-pending-trade-license-assistant-approval-applications, approve-pending-trade-license-inspector-approval-applications, approve-pending-trade-license-superintendent-approval-applications, approve-pending-revenue-officer-approval-applications, approve-pending-chief-revenue-officer-approval-applications, approve-pending-chief-executive-officer-approval-applications');
+        Route::patch('/{trade_license_application}/approve', [TradeLicenseApplicationController::class, 'approve'])->name('.approve')->middleware('can_any:approve-pending-trade-license-assistant-approval-applications, approve-pending-trade-license-inspector-approval-applications, approve-pending-trade-license-superintendent-approval-applications, approve-pending-revenue-officer-approval-applications, approve-pending-chief-revenue-officer-approval-applications, approve-pending-chief-executive-officer-approval-applications');
 
-        // // Inspector Approval
-        // Route::patch('/{trade_license_application}/inspector-approval', [TradeLicenseApplicationController::class, 'approveInspector'])->name('.approve_inspector')->can('');
-
-        // // Superintendent Approval
-        // Route::patch('/{trade_license_application}/superintendent-approval', [TradeLicenseApplicationController::class, 'approveSuperintendent'])->name('.approve_superintendent')->can('approve-pending-trade-license-superintendent-approval-applications');
-
-        // // Revenue Officer Approval
-        // Route::patch('/{trade_license_application}/revenue-officer-approval', [TradeLicenseApplicationController::class, 'approveRevenueOfficer'])->name('.approve_revenue_officer')->can('approve-pending-revenue-officer-approval-applications');
-
-        // // Chief Revenue Officer Approval
-        // Route::patch('/{trade_license_application}/chief-revenue-officer-approval', [TradeLicenseApplicationController::class, 'approveChiefRevenueOfficer'])->name('.approve_chief_revenue_officer')->can('approve-pending-chief-revenue-officer-approval-applications');
-
-        // // Chief Executive Officer Approval
-        // Route::patch('/{trade_license_application}/chief-executive-officer-approval', [TradeLicenseApplicationController::class, 'approveChiefExecutiveOfficer'])->name('.approve_chief_executive_officer')->can('approve-pending-chief-executive-officer-approval-applications');
     });
 
     Route::group(['prefix' => 'admins', 'as' => 'admins'], function () {

@@ -67,15 +67,16 @@ class TradeLicenseApplicationController extends Controller {
         ]);
     }
 
-    public function approveAssistant(TradeLicenseApplication $trade_license_application, TradeLicenseApprovalRequest $request) {
+    public function approve(TradeLicenseApplication $trade_license_application, TradeLicenseApprovalRequest $request) {
         // Determine if the user has the appropriate role/permission to approve the application
         Gate::authorize('hasApprovalPermission', $trade_license_application);
 
+        
         $tlService = new TradeLicenseApplicationService($trade_license_application);
 
         try {
             $isApproved = $request->validated()['isApproved'];
-    
+            
             $commonData = [];
             if(auth()->user()->can('update-business-category') || auth()->user()->can('update-sign-board-fee')){
                 $commonData = [
@@ -85,6 +86,7 @@ class TradeLicenseApplicationController extends Controller {
             }
     
             if(!$isApproved){
+
                 $corrections = $request->validated()['corrections'] ?? [];
     
                 $trade_license_application->update([
@@ -93,9 +95,14 @@ class TradeLicenseApplicationController extends Controller {
                     ...$commonData
                 ]);
     
-                return redirect()->route('admin.trade_license_applications')->with('warning', 'অনুমোদন প্রত্যাখ্যাত করা হয়েছে।');
+                return redirect()->route('admin.trade_license_applications')->with('warning', 'অনুমোদন প্রত্যাখ্যান করা হয়েছে।');
             }
-    
+
+            if(auth()->user()->can('issue-trade-license')){
+                $this->issueTradeLicense($trade_license_application, $request);
+                return redirect()->route('admin.trade_license_applications')->with('info', 'ট্রেড লাইসেন্স ইস্যু সফল হয়েছে।');
+            }
+            
             $trade_license_application->update([
                 'status' => Helpers::APPROVED_STATES[$trade_license_application->status],
                 ...$commonData
@@ -103,15 +110,41 @@ class TradeLicenseApplicationController extends Controller {
     
             return redirect()->route('admin.trade_license_applications')->with('info', 'অনুমোদন সফল হয়েছে।');
         }catch (\Exception $e){
-            dd($e->getMessage());
             return redirect()->route('admin.trade_license_applications')->with('warning', 'অনুমোদন সম্ভব নয়।');
         }
     }
 
-    public function verifyFormFeePayment(TradeLicensePaymentVerificationRequest $request){
-        $paymentStatus = TradeLicensePaymentService::verifyFormFeePayment($request->validated());
+    public function issueTradeLicense(TradeLicenseApplication $trade_license_application){
+        // Generate 32 character long url-safe random string
+        do {
+            $uuid = Helpers::generateUuid('tl');
+            $uuidExists = TradeLicenseApplication::where('uuid', $uuid)->exists();
+        } while ($uuidExists);
+        
+        // Generate Trade License Number
+        $tradeLicenseNo = TradeLicenseApplication::max('trade_license_no') ? TradeLicenseApplication::max('trade_license_no') + 1 : 20500;
 
-        return $paymentStatus === 'verified' ? redirect()->route('admin.trade_license_applications')->with('success', 'ফর্ম ফি পেমেন্ট নিশ্চিত করা হয়েছে।') : redirect()->route('admin.trade_license_applications')->with('warning', 'ফর্ম ফি পেমেন্ট প্রত্যাখ্যাত করা হয়েছে।');
+        // Determine Expiry Date - 30th June of the next year
+        $expiryDate = now()->month >= 7 ? date('Y-m-d', strtotime('30th June next year')) : date('Y-m-d', strtotime('30th June'));
+
+        // Determine the status of the application - issued
+        $trade_license_application->update([
+            'status' => Helpers::ISSUED,
+            'trade_license_no' => $tradeLicenseNo,
+            'uuid' => $uuid,
+            'expiry_date' => $expiryDate,
+            'issued_at' => now(),
+        ]);
+    }
+
+    public function verifyFormFeePayment(TradeLicensePaymentVerificationRequest $request){
+        $paymentStatus = TradeLicensePaymentService::verifyPayment($request->validated());
+        return $paymentStatus === 'verified' ? redirect()->route('admin.trade_license_applications')->with('info', 'ফর্ম ফি পেমেন্ট নিশ্চিত করা হয়েছে।') : redirect()->route('admin.trade_license_applications')->with('warning', 'ফর্ম ফি পেমেন্ট প্রত্যাখ্যাত করা হয়েছে।');
+    }
+    
+    public function verifyLicenseFeePayment(TradeLicensePaymentVerificationRequest $request){
+        $paymentStatus = TradeLicensePaymentService::verifyPayment($request->validated(), Helpers::LICENSE_FEE);
+        return $paymentStatus === 'verified' ? redirect()->route('admin.trade_license_applications')->with('info', 'লাইসেন্স ফি পেমেন্ট নিশ্চিত করা হয়েছে।') : redirect()->route('admin.trade_license_applications')->with('warning', 'লাইসেন্স ফি পেমেন্ট প্রত্যাখ্যাত করা হয়েছে।');
     }
 
 }

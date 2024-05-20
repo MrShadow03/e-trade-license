@@ -396,7 +396,7 @@
                 <!--begin:::Tab content-->
                 <div class="tab-content" id="tabContent">
                     <!--begin:::Tab pane-->
-                    <form method="POST" action="{{ route('admin.trade_license_applications.approve_assistant', $application->id) }}" class="tab-pane fade show active" id="applicationCorrectionForm" role="tabpanel">
+                    <form method="POST" action="{{ route('admin.trade_license_applications.approve', $application->id) }}" class="tab-pane fade show active" id="applicationCorrectionForm" role="tabpanel">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="isApproved">
@@ -963,27 +963,6 @@
                                         </tr>
                                         <tr>
                                             <td class="ps-2 py-2">
-                                                <span class="{{ INFO_LABEL_CLASSES_EN }} label-ca_division label-pa_division">Division</span>
-                                            </td>
-                                            <td class="py-2 {{ INFO_CLASSES_EN }}">
-                                                <div class="form-check form-check-custom form-check-danger d-inline-block">
-                                                    <input class="form-check-input cursor-pointer" onchange="toggleMessage(this)" data-field-name="ca_division" name="corrections[ca_division][message]" type="checkbox" value="" />
-                                                    <input type="checkbox" name="corrections[ca_division][isCorrected]" value="0" hidden>
-                                                </div>
-                                                <span>{{ $application->ca_division ?? '---' }}</span>
-                                                <input type="text" placeholder="মন্তব্য" oninput="setMessage(this)" class="{{ MSG_INPUT_CLASSES }}" id="ca_division_correction_message">
-                                            </td>
-                                            <td class="py-2 {{ INFO_CLASSES_EN }}">
-                                                <div class="form-check form-check-custom form-check-danger d-inline-block">
-                                                    <input class="form-check-input cursor-pointer" onchange="toggleMessage(this)" data-field-name="pa_division" name="corrections[pa_division][message]" type="checkbox" value="" />
-                                                    <input type="checkbox" name="corrections[pa_division][isCorrected]" value="0" hidden>
-                                                </div>
-                                                <span>{{ $application->pa_division ?? '---' }}</span>
-                                                <input type="text" placeholder="মন্তব্য" oninput="setMessage(this)" class="{{ MSG_INPUT_CLASSES }}" id="pa_division_correction_message">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ps-2 py-2">
                                                 <span class="{{ INFO_LABEL_CLASSES }} label-ca_district_bn label-pa_district_bn">জেলা</span>
                                             </td>
                                             <td class="py-2 {{ INFO_CLASSES }}">
@@ -1001,27 +980,6 @@
                                                 </div>
                                                 <span>{{ $application->pa_district_bn ?? '---' }}</span>
                                                 <input type="text" placeholder="মন্তব্য" oninput="setMessage(this)" class="{{ MSG_INPUT_CLASSES }}" id="pa_district_bn_correction_message">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ps-2 py-2">
-                                                <span class="{{ INFO_LABEL_CLASSES_EN }} label-ca_district label-pa_district">District</span>
-                                            </td>
-                                            <td class="py-2 {{ INFO_CLASSES_EN }}">
-                                                <div class="form-check form-check-custom form-check-danger d-inline-block">
-                                                    <input class="form-check-input cursor-pointer" onchange="toggleMessage(this)" data-field-name="ca_district" name="corrections[ca_district][message]" type="checkbox" value="" />
-                                                    <input type="checkbox" name="corrections[ca_district][isCorrected]" value="0" hidden>
-                                                </div>
-                                                <span>{{ $application->ca_district ?? '---' }}</span>
-                                                <input type="text" placeholder="মন্তব্য" oninput="setMessage(this)" class="{{ MSG_INPUT_CLASSES }}" id="ca_district_correction_message">
-                                            </td>
-                                            <td class="py-2 {{ INFO_CLASSES_EN }}">
-                                                <div class="form-check form-check-custom form-check-danger d-inline-block">
-                                                    <input class="form-check-input cursor-pointer" onchange="toggleMessage(this)" data-field-name="pa_district" name="corrections[pa_district][message]" type="checkbox" value="" />
-                                                    <input type="checkbox" name="corrections[pa_district][isCorrected]" value="0" hidden>
-                                                </div>
-                                                <span>{{ $application->pa_district ?? '---' }}</span>
-                                                <input type="text" placeholder="মন্তব্য" oninput="setMessage(this)" class="{{ MSG_INPUT_CLASSES }}" id="pa_district_correction_message">
                                             </td>
                                         </tr>
                                         <tr>
@@ -1174,7 +1132,7 @@
                                                     <select type="text" class="form-control text-gray-900 form-select font-kohinoor" name="signboard_id" required>
                                                         @foreach ($signboards as $item)
                                                             <option value="{{ $item->id }}" @selected($application->signboard_id == $item->id)>
-                                                                {{ Helpers::convertToBanglaDigits($item->dimension) }} - {{ Helpers::convertToBanglaDigits(number_format(round($item->charge), 0, ',')) }} টাকা
+                                                                {{ Helpers::convertToBanglaDigits($item->dimension) }} - {{ Helpers::convertToBanglaDigits(number_format(round($item->fee), 0, ',')) }} টাকা
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -1226,6 +1184,18 @@
                                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                         </span>
                                     </button>
+
+                                    @can('issue-trade-license')
+                                    <button type="button" class="btn btn-success ms-3" onclick="submitForm(event, 1, this)">
+                                        <span class="indicator-label">
+                                            লাইসেন্স প্রদান করুন
+                                        </span>
+                                        <span class="indicator-progress">
+                                            অপেক্ষা করুন...
+                                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                        </span>
+                                    </button>
+                                    @else
                                     <button type="button" class="btn btn-success ms-3" onclick="submitForm(event, 1, this)">
                                         <span class="indicator-label">
                                             নিশ্চিত করুন
@@ -1235,6 +1205,7 @@
                                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                         </span>
                                     </button>
+                                    @endcan
                                 </div>
                             </div>
                             <!--end::Card header-->

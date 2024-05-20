@@ -72,7 +72,7 @@ class TradeLicenseApplicationController extends Controller
                 $query->select('id','name_bn', 'fee');
             }, 
             'signboard' => function ($query) {
-                $query->select('id', 'dimension', 'charge');
+                $query->select('id', 'dimension', 'fee');
             }
         ]);
 
@@ -144,7 +144,7 @@ class TradeLicenseApplicationController extends Controller
         }
 
         // mark as corrected
-        $tlService->markAsCorrected($request->validated());
+        $tlService->correctAndUpdate($request->validated());
 
         // if all fields are corrected, update status
         if($tlService->hasAllFieldsCorrected()){

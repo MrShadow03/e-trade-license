@@ -797,6 +797,38 @@ class Helpers
                     'icon' => 'fa-exclamation-triangle'
                 ];
                 break;
+            case self::PENDING_CRO_APPROVAL:
+                return [
+                    'msg_bn' => 'CRO অনুমোদনের জন্য অপেক্ষমাণ',
+                    'msg_en' => '',
+                    'theme' => 'warning',
+                    'icon' => 'fa-clock'
+                ];
+                break;
+            case self::DENIED_CRO_APPROVAL:
+                return [
+                    'msg_bn' => 'CRO অনুমোদন প্রত্যাখ্যান করেছেন<br>সংশোধন করে পুনরায় প্রেরণ করুন',
+                    'msg_en' => '',
+                    'theme' => 'danger',
+                    'icon' => 'fa-exclamation-triangle'
+                ];
+                break;
+            case self::PENDING_CEO_APPROVAL:
+                return [
+                    'msg_bn' => 'CEO অনুমোদনের জন্য অপেক্ষমাণ',
+                    'msg_en' => '',
+                    'theme' => 'warning',
+                    'icon' => 'fa-clock'
+                ];
+                break;
+            case self::DENIED_CEO_APPROVAL:
+                return [
+                    'msg_bn' => 'CEO অনুমোদন প্রত্যাখ্যান করেছেন<br>সংশোধন করে পুনরায় প্রেরণ করুন',
+                    'msg_en' => '',
+                    'theme' => 'danger',
+                    'icon' => 'fa-exclamation-triangle'
+                ];
+                break;
             case self::PENDING_INSPECTOR_RENEWAL_APPROVAL:
                 return [
                     'msg_bn' => 'পরিদর্শকের অনুমোদনের জন্য অপেক্ষমাণ',
@@ -1085,7 +1117,7 @@ class Helpers
         $number = (int) $number;
 
         if($number == 0){
-            return 'শূন্য';
+            return '';
         }
 
         if($number < 0){
@@ -1097,7 +1129,7 @@ class Helpers
         ];
 
         $numbersTo99 = [
-            0 => 'শূন্য',
+            0 => '',
             1 => 'এক',
             2 => 'দুই',
             3 => 'তিন',  
@@ -1237,5 +1269,9 @@ class Helpers
         $t = floor($number / 10000000);
         $r = $number % 10000000;
         return self::numToBanglaWords($t) . ' কোটি ' . self::numToBanglaWords($r);
+    }
+
+    public static function generateUuid($prefix = ''): string {
+        return $prefix.bin2hex(random_bytes(16));
     }
 }

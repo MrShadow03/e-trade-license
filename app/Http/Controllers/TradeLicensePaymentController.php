@@ -19,8 +19,26 @@ class TradeLicensePaymentController extends Controller{
 
         $formFee = Helpers::TRADE_LICENSE_FORM_FEE;
 
-        $payment = TradeLicensePaymentService::payWithBank($tradeLicenseApplication, $formFee);
+        TradeLicensePaymentService::payWithBank($tradeLicenseApplication, $formFee);
+
+        $tradeLicenseApplication->update([
+            'status' => Helpers::PENDING_FORM_FEE_VERIFICATION
+        ]);
 
         return redirect()->route('user.trade_license_applications')->with('success', 'ফর্ম ফি যাচাই করার জন্য অপেক্ষা করুন।');
+    }
+
+    public function storeLicenseFee(TradeLicensePaymentRequest $request){
+        $tradeLicenseApplication = TradeLicenseApplication::findOrFail($request->id);
+
+        Gate::authorize('payLicenseFee', $tradeLicenseApplication);
+
+        TradeLicensePaymentService::payWithBank($tradeLicenseApplication, $tradeLicenseApplication->total_license_fee, Helpers::LICENSE_FEE);
+
+        $tradeLicenseApplication->update([
+            'status' => Helpers::PENDING_LICENSE_FEE_VERIFICATION
+        ]);
+
+        return redirect()->route('user.trade_license_applications')->with('success', 'লাইসেন্স ফি যাচাই করার জন্য অপেক্ষা করুন।');
     }
 }
