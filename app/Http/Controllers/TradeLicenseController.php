@@ -18,7 +18,7 @@ class TradeLicenseController extends Controller{
         $application = TradeLicenseApplication::where('uuid', $uuid)->firstOrFail();    
         $url = request()->fullUrl();
         $qrcode = new DNS2D();
-        $qrcodeHTML = $qrcode->getBarcodeHTML($url, 'QRCODE', 3, 3);
+        $qrcodeHTML = $qrcode->getBarcodeHTML($url, 'QRCODE', 3.5, 3.5);
 
         return view('pages.trade-license', [
             'application' => $application,

@@ -15,10 +15,11 @@ class TestController extends Controller
 {
     public function store(){
 
-        $url = 'https://www.example.com';
+        $url = 'Valid till: 22-12-2024
+https://www.example.com';
         $qrcode = new DNS2D();
         $qrcode->setStorPath(__DIR__ . '/cache/');
-        $qrcodeHTML = $qrcode->getBarcodeHTML($url, 'QRCODE');
+        $qrcodeHTML = $qrcode->getBarcodeHTML($url, 'QRCODE', 3.5, 3.5);
 
         return $qrcodeHTML;
     }

@@ -25,11 +25,11 @@
         }
     </script>
     <style>
-        @media (min-width: 600px) {
+        /* @media (min-width: 600px) {
             body {
                 background-image: url('{{ asset("/assets/img/login-bg.png") }}');
             }
-        }
+        } */
     </style>
 </head>
 <!--end::Head-->
@@ -40,7 +40,7 @@
     <!--begin::Root-->
     <div class="d-flex flex-column flex-root" id="kt_app_root" data-bs-theme="light">
         <!--begin::Authentication - Sign-in -->
-        <div class="d-flex flex-column justify-content-center flex-column-fluid flex-lg-row" style="background-image: url('{{ asset('assets/img/login_bg.jpg') }}'); background-size: cover;">
+        <div class="d-flex flex-column justify-content-center flex-column-fluid flex-lg-row">
 
             <!--begin::Body-->
             <div class="d-flex flex-column-fluid flex-lg-row-auto justify-content-center justify-content-lg-end p-0 p-lg-20">

@@ -62,12 +62,6 @@
             <div class="card-toolbar">
                 <!--begin::Toolbar-->
                 <div class="d-flex justify-content-end" data-kt-filemanager-table-toolbar="base">
-                    <!--begin::Category-->
-                    <a class="btn btn-flex btn-success" href="{{ route('user.trade_license_applications.create') }}">
-                        <i class="ki-outline ki-plus-circle fs-6 me-1"></i>
-                        নতুন আবেদন
-                    </a>
-                    <!--end::Category--> 
                 </div>
                 <!--end::Toolbar-->       
             </div>
@@ -223,7 +217,7 @@
                                 
 
                                 @if (auth()->user()->can('verify-form-fee-payment') && $application->status === Helpers::PENDING_FORM_FEE_VERIFICATION)
-                                <a href="#" class="btn btn-success btn-icon btn-sm me-1" data-bs-toggle="modal" data-bs-target="#view_payment_details" title="ফর্ম ফি নিশ্চিত করুন" onclick="enterPaymentData({{ json_encode($application->getFormFeePayment()) }}, '{{ Helpers::getImageUrl($application->getFormFeePayment(), $paymentSlipCollectionName) }}', '{{ Helpers::convertToBanglaDigits(number_format($application->getFormFeePayment()->amount, 0, ',')) }}')">
+                                <a href="#" class="btn btn-success btn-icon btn-sm me-1" data-bs-toggle="modal" data-bs-target="#view_payment_details" title="ফর্ম ফি নিশ্চিত করুন" onclick="enterFormFeePaymentData({{ json_encode($application->getFormFeePayment()) }}, '{{ Helpers::getImageUrl($application->getFormFeePayment(), $paymentSlipCollectionName) }}', '{{ Helpers::convertToBanglaDigits(number_format($application->getFormFeePayment()->amount, 0, ',')) }}')">
                                     <i class="far fa-bangladeshi-taka-sign fs-4"></i>
                                 </a>
                                 @endif
@@ -311,7 +305,7 @@
                         <label class="text-start d-block fw-bold fs-5 text-gray-800 mb-3">আপনার মন্তব্য</label>
                         <textarea name="message" class="font-kohinoor text-dark fw-normal form-control fs-4" rows="3" placeholder="আপনার মন্তব্য লিখুন (যদি থাকে)"></textarea>
                     </div>
-                    <input type="hidden" name="application_id">
+                    <input type="hidden" name="application_id" id="applicationId">
                     <input type="hidden" name="isVerified">
                     <button type="button" class="btn btn-danger" onclick="submitForm(event, 0)">
                         <span class="indicator-label">
@@ -484,6 +478,16 @@
         document.getElementById('bankInvoiveNoLF').innerText = data.bank_invoice_no || 'N/A';
         document.getElementById('draftImageLF').src = imageUrl;
         document.getElementById('draftImageUrlLF').href = imageUrl;
+    }
+
+    const enterFormFeePaymentData = (data, imageUrl) => {
+        document.getElementById('bank').innerText = data.bank || 'N/A';
+        document.getElementById('bankBranch').innerText = data.bank_branch || 'N/A';
+        document.getElementById('bankInvoiveNo').innerText = data.bank_invoice_no || 'N/A';
+        document.getElementById('amount').innerText = convertToBanglaDigits(data.amount);
+        document.getElementById('draftImage').src = imageUrl;
+        document.getElementById('draftImageUrl').href = imageUrl;
+        document.getElementById('applicationId').value = data.trade_license_application_id;
     }
 
     const convertToBanglaDigits = (text) => {

@@ -159,6 +159,10 @@ class TradeLicenseApplication extends Model implements HasMedia
         return $this->user_id === auth()->id() && ($this->status === Helpers::PENDING_FORM_FEE_PAYMENT || $this->status === Helpers::DENIED_FORM_FEE_VERIFICATION);
     }
 
+    public function getTypeOfBusinessBnAttribute(){
+        return $this->businessCategory?->name_bn ?? '';
+    }
+
     public function getFormFeePayment(){
         return $this->payments()->where('type', Helpers::FORM_FEE)->first();
     }
