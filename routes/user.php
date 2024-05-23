@@ -18,32 +18,35 @@ use App\Http\Controllers\Auth\User\EmailVerificationNotificationController;
 
 Route::group(['middleware' => ['auth:web', 'phone_verified'], 'as' => 'user.', 'prefix' => 'user'], function () {
     
-    Route::get('/dashboard', function () {
-        return view('user.pages.dashboard');
-    })->name('dashboard');
-    
-    // Application Routes...
-    Route::group(['prefix' => 'trade-license-applications', 'as' => 'trade_license_applications'], function () {
-        Route::get('/', [TradeLicenseApplicationController::class, 'index'])->name('');
-        Route::get('/apply', [TradeLicenseApplicationController::class, 'create'])->name('.create');
-        Route::post('/', [TradeLicenseApplicationController::class, 'store'])->name('.store');
-        Route::get('/{trade_license_application}', [TradeLicenseApplicationController::class, 'show'])->name('.show');
-        Route::get('/{trade_license_application}/edit', [TradeLicenseApplicationController::class, 'edit'])->name('.edit');
-        Route::get('/{trade_license_application}/review', [TradeLicenseApplicationController::class, 'review'])->name('.review');
-        Route::patch('/{trade_license_application}', [TradeLicenseApplicationController::class, 'update'])->name('.update');
-        Route::patch('/{trade_license_application}/correction', [TradeLicenseApplicationController::class, 'correction'])->name('.correction');
-        Route::delete('/{trade_license_application}', [TradeLicenseApplicationController::class, 'destroy'])->name('.destroy');
+    Route::group(['middleware' => 'has_pure_password'], function () {
+
+        Route::get('/dashboard', function () {
+            return view('user.pages.dashboard');
+        })->name('dashboard');
         
-        // Payment Routes...
-        Route::post('/payments/form-fee', [TradeLicensePaymentController::class, 'storeFromFee'])->name('.payments.form_fee.store');
-        Route::post('/payments/license-fee', [TradeLicensePaymentController::class, 'storeLicenseFee'])->name('.payments.license_fee.store');
+        // Application Routes...
+        Route::group(['prefix' => 'trade-license-applications', 'as' => 'trade_license_applications'], function () {
+            Route::get('/', [TradeLicenseApplicationController::class, 'index'])->name('');
+            Route::get('/apply', [TradeLicenseApplicationController::class, 'create'])->name('.create');
+            Route::post('/', [TradeLicenseApplicationController::class, 'store'])->name('.store');
+            Route::get('/{trade_license_application}', [TradeLicenseApplicationController::class, 'show'])->name('.show');
+            Route::get('/{trade_license_application}/edit', [TradeLicenseApplicationController::class, 'edit'])->name('.edit');
+            Route::get('/{trade_license_application}/review', [TradeLicenseApplicationController::class, 'review'])->name('.review');
+            Route::patch('/{trade_license_application}', [TradeLicenseApplicationController::class, 'update'])->name('.update');
+            Route::patch('/{trade_license_application}/correction', [TradeLicenseApplicationController::class, 'correction'])->name('.correction');
+            Route::delete('/{trade_license_application}', [TradeLicenseApplicationController::class, 'destroy'])->name('.destroy');
+            
+            // Payment Routes...
+            Route::post('/payments/form-fee', [TradeLicensePaymentController::class, 'storeFromFee'])->name('.payments.form_fee.store');
+            Route::post('/payments/license-fee', [TradeLicensePaymentController::class, 'storeLicenseFee'])->name('.payments.license_fee.store');
+        });
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     });
 
 
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/password', [ProfileController::class, 'passwordUpdate'])->name('profile.password');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
@@ -68,7 +71,7 @@ Route::group(['middleware' => 'guest:web', 'as' => 'user.', 'prefix' => 'user'],
     Route::post('verify-otp/verify', [UserOneTimePasswordController::class, 'verify'])->name('verify-otp.verify');
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.send');
 
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
     Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');

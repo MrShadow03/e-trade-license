@@ -14,6 +14,7 @@ use Spatie\Permission\Models\Permission;
 class TestController extends Controller
 {
     public function store(){
+        $host = request()->getHttpHost();
 
         $url = 'Valid till: 22-12-2024
 https://www.example.com';

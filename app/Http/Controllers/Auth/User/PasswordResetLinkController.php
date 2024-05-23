@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Auth\User;
 
+use App\Models\User;
+use Illuminate\View\View;
+use Illuminate\Http\Request;
+use App\Models\UserOneTimePassword;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
-use Illuminate\View\View;
+use App\Services\OtpService;
 
 class PasswordResetLinkController extends Controller
 {
@@ -15,7 +18,7 @@ class PasswordResetLinkController extends Controller
      */
     public function create(): View
     {
-        return view('auth.forgot-password');
+        return view('user.pages.forgot-password');
     }
 
     /**
@@ -23,22 +26,99 @@ class PasswordResetLinkController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'email'],
+            'phone' => ['required', 'min:11', 'max:11', 'exists:users,phone'],
         ]);
 
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
+        // get the user by phone number
+        $user = User::where('phone', $request->phone)->first();
 
-        return $status == Password::RESET_LINK_SENT
-                    ? back()->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                            ->withErrors(['email' => __($status)]);
+        // if the user is not found then show the error message
+        if(!$user){
+            return redirect()->back()->with('error', 'এই ফোন নম্বরে কোন অ্যাকাউন্ট পাওয়া যায়নি।');
+        }
+
+        $otp = UserOneTimePassword::where('user_id', $user?->id)->latest()->first();
+        $sendTo = config('constants.OTP_METHOD') === 'email' ? $user?->email : $user?->phone;
+
+        $otpService = new OtpService();
+
+        // if the user is not verified sent the user to the verification page 
+        if(!$user->isVerified()){
+            if(!$otp){
+                // send otp
+                $newOtp = $otpService->generateOtp($user);
+                $otpService->sendOtp($user, $newOtp);
+                return redirect()->route('user.verify-otp', ['send_to' => $sendTo])->with(
+                    [
+                        "success"  => "OTP পাঠানো হয়েছে।",
+                        "is_sent" => true,
+                    ]
+                );
+            }else{
+                if($otp->isExpired()){
+                    // delete otp and send new otp
+                    $otpService->deleteOtp($user);
+                    $newOtp = $otpService->generateOtp($user);
+                    $otpService->sendOtp($user, $newOtp);
+                    return redirect()->route('user.verify-otp', ['send_to' => $sendTo])->with(
+                        [
+                            "success"  => "OTP পাঠানো হয়েছে।",
+                            "is_sent" => true,
+                        ]
+                    );
+                }else{
+                    if(!$otp->hasAttempts()){
+                        // delete otp and send to otp page with error message
+                        $otpService->deleteOtp($user);
+                        return redirect()->route('user.verify-otp', ['send_to' => $sendTo])->with([
+                            'error' => 'আপনার সকল প্রচেষ্টা শেষ হয়েছে।',
+                            'cool_down' => $otp->coolDown(),
+                        ]);
+                    }else{
+                        return redirect()->route('user.verify-otp', ['send_to' => $sendTo])->with('success', 'OTP পাঠানো হয়েছে।');
+                    }
+                }
+            }
+        }
+
+        $otp = UserOneTimePassword::where('user_id', $user->id)->where('type', 'password_reset')->latest()->first();
+        if(!$otp){
+            // send otp
+            $newOtp = $otpService->generateOtp($user, 'password_reset');
+            $otpService->sendOtp($user, $newOtp);
+            return redirect()->route('user.verify-otp', ['send_to' => $sendTo])->with(
+                [
+                    "success"  => "পাসওয়ার্ড রিসেট OTP পাঠানো হয়েছে।",
+                    "is_sent" => true,
+                ]
+            );
+        }else{
+            if($otp->isExpired()){
+                // delete otp and send new otp
+                $otpService->deleteOtp($user);
+                $newOtp = $otpService->generateOtp($user, 'password_reset');
+                $otpService->sendOtp($user, $newOtp);
+                return redirect()->route('user.verify-otp', ['send_to' => $sendTo])->with(
+                    [
+                        "success"  => "পাসওয়ার্ড রিসেট OTP পাঠানো হয়েছে।",
+                        "is_sent" => true,
+                    ]
+                );
+            }else{
+                if(!$otp->hasAttempts()){
+                    // delete otp and send to otp page with error message
+                    $otpService->deleteOtp($user);
+                    return redirect()->route('user.verify-otp', ['send_to' => $sendTo])->with([
+                        'error' => 'আপনার সকল প্রচেষ্টা শেষ হয়েছে।',
+                        'cool_down' => $otp->coolDown(),
+                    ]);
+                }else{
+                    return redirect()->route('user.verify-otp', ['send_to' => $sendTo])->with('success', 'OTP পাঠানো হয়েছে।');
+                }
+            }
+        }
     }
 }

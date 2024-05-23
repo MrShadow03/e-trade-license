@@ -24,7 +24,7 @@ class UserOneTimePasswordController extends Controller
             $user = User::Where('phone', $destination)->first();
         }
     
-        if (!$user || $user?->isVerified() || !$user->otp) {
+        if (!$user || !$user->otp) {
             return redirect()->route('user.login');
         }
 
@@ -44,7 +44,7 @@ class UserOneTimePasswordController extends Controller
             $user = User::Where('phone', $send_to)->first();
         }
 
-        if (!$user || $user?->isVerified()) {
+        if (!$user || !$user->otp) {
             return redirect()->route('user.login');
         }
 
@@ -72,10 +72,19 @@ class UserOneTimePasswordController extends Controller
             return redirect()->route('user.login');
         }
 
+        
+        $otpType = $userOtp->type;
         $otpService->deleteOtp($user);
-        $user->markUserPhoneAsVerified();
         Auth::login($user);
         $request->session()->regenerate();
-        return redirect()->route('user.dashboard');
+
+        if($otpType === 'password_reset'){
+            $user->needs_password_reset = true;
+            $user->save();
+            return redirect()->route('user.profile.edit');
+        }else{
+            $user->markUserPhoneAsVerified();
+            return redirect()->route('user.dashboard');
+        }
     }
 }

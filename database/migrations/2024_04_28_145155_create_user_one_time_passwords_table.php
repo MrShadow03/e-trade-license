@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('otp');
+            $table->string('type')->default('verification');
             $table->timestamp('expires_at')->required();
             $table->boolean('is_used')->default(false);
             $table->string('last_used_ip')->nullable();

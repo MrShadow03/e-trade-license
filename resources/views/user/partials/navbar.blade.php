@@ -94,7 +94,7 @@
 
             <!--begin::Menu item-->
             <div class="menu-item px-5">
-                <a href="#" class="menu-link px-5">আমার প্রোফাইল</a>
+                <a href="{{ route('user.profile.edit') }}" class="menu-link px-5">আমার প্রোফাইল</a>
             </div>
             <!--end::Menu item-->
 
