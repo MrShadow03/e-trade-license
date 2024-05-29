@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Mail;
 class OtpService
 {
     use MessageHandling;
-    public function generateOtp(User $user)
-    {
+    public function generateOtp(User $user, $type = 'verification') {
         $otp = $this->OTPGenerator();
         $user->otp()->create([
             'otp' => $otp,
+            'type' => $type,
             'expires_at' => now()->addMinutes(config('constants.EXPIRES_IN')),
             'left_attempts' => config('constants.MAX_ATTEMPTS'),
             'last_used_ip' => request()->ip(),
@@ -23,13 +23,32 @@ class OtpService
         return $otp;
     }
 
+    public function generateOtpUrl(User $user, $type = 'password_reset') {
+        $otp = $this->OTPGenerator();
+
+        $user->otp()->create([
+            'otp' => $otp,
+            'type' => $type,
+            'expires_at' => now()->addMinutes(config('constants.EXPIRES_IN')),
+            'left_attempts' => config('constants.MAX_ATTEMPTS'),
+            'last_used_ip' => request()->ip(),
+        ]);
+
+        return route('user.password.reset', $otp);
+    }
+
     public function sendOtp(User $user, $otp)
     {
         if (config('constants.OTP_METHOD') === 'email') {
             Mail::to($user->email)->send(new OtpMail($otp, $user->name));
         } else {
-            $message = "Your BCC OTP is: $otp";
-            $this->sendSMS($user->phone, $message);
+            $message = explode(' ', $user->name)[0].", your BCC OTP is: $otp";
+            $isSent = $this->sendSMS($user->phone, $message);
+
+            if (!$isSent) {
+                $user->otp()->delete();
+                return false;
+            }
         }
 
         return true;

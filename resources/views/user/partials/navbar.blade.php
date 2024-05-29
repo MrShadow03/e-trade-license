@@ -60,7 +60,7 @@
         <div class="cursor-pointer symbol symbol-30px symbol-md-40px"
             data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent"
             data-kt-menu-placement="bottom-end">
-            <img class="object-fit-cover" src="{{ asset('storage').'/'.auth()->user()->image }}" alt="user" />
+            <img class="object-fit-cover" src="{{ Helpers::getImageUrl(auth()->user(), 'dp', 'thumb', 'users') }}" alt="user" />
         </div>
 
         <!--begin::User account menu-->
@@ -71,7 +71,7 @@
                 <div class="menu-content d-flex align-items-center px-3">
                     <!--begin::Avatar-->
                     <div class="symbol symbol-50px me-5">
-                        <img class="object-fit-cover" alt="Logo" src="{{ asset('storage').'/'.auth()->user()->image }}" />
+                        <img class="object-fit-cover" alt="Logo" src="{{ Helpers::getImageUrl(auth()->user(), 'dp', 'thumb', 'users') }}" />
                     </div>
                     <!--end::Avatar-->
 
@@ -94,7 +94,7 @@
 
             <!--begin::Menu item-->
             <div class="menu-item px-5">
-                <a href="#" class="menu-link px-5">আমার প্রোফাইল</a>
+                <a href="{{ route('user.profile.edit') }}" class="menu-link px-5">আমার প্রোফাইল</a>
             </div>
             <!--end::Menu item-->
 

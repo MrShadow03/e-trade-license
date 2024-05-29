@@ -45,12 +45,12 @@
             <!--begin::Body-->
             <div class="d-flex flex-column-fluid flex-lg-row-auto justify-content-center justify-content-lg-end p-0 p-lg-20">
                 <!--begin::Card-->
-                <div class="bg-body shadow d-flex flex-column align-items-stretch flex-center rounded-4 w-sm-600px w-100 p-10">
+                <div class="bg-body d-flex flex-column align-items-stretch flex-center rounded-4 w-sm-600px w-100 p-10">
                     <!--begin::Wrapper-->
-                    <div class="d-flex flex-center flex-column flex-column-fluid px-lg-5 pb-15 pb-lg-20">
+                    <div class="d-flex flex-center flex-column flex-column-fluid px-lg-10 pb-15 pb-lg-20">
 
                         <!--begin::Form-->
-                        <form class="form w-100 font-bn" novalidate="novalidate" id="sign_in_form" method="POST" action="{{ route('user.login.store') }}">
+                        <form class="form w-100 font-bn" novalidate="novalidate" id="sign_in_form" method="POST" action="{{ route('user.password.send') }}">
                             @csrf
                             <!--begin::Heading-->
                             <div class="text-center mb-11">
@@ -60,12 +60,16 @@
                                 <!--end::Title-->
 
                                 <!--begin::Subtitle-->
-                                <div class="text-gray-700 fw-semibold fs-6 font-bn">ফোন নম্বর এবং পাসওয়ার্ড দিয়ে লগইন করুন</div>
+                                <div class="text-gray-700 fw-semibold fs-6 font-bn">পাসওয়ার্ড ফিরে পেতে ফোন নাম্বার প্রদান করুন</div>
                                 <!--end::Subtitle--->
                             </div>
                             @error('phone')
-                            <div class="text-center text-danger fs-base pb-5 font-bn">ফোন নম্বর কিংবা পাসওয়ার্ড সঠিক নয়!</div>
+                            <div class="text-center text-danger fs-base pb-5 font-bn">ফোন নম্বর সঠিক নয়!</div>
                             @enderror
+
+                            @if(session()->has('success'))
+                            <div class="text-center text-success fs-base pb-5 font-bn">{{ session('success') }}</div>
+                            @endif
                             <!--begin::Heading-->
 
                             <!--begin::Input group--->
@@ -80,42 +84,12 @@
                                 <!--end::Email-->
                             </div>
 
-                            <!--end::Input group--->
-                            <div class="fv-row mb-3">
-                                <!--begin::Password-->
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="fal fa-lock fs-3"></i>
-                                    </span>
-                                    <input type="password" placeholder="পাসওয়ার্ড" name="password" autocomplete="off" class="form-control font-bn">
-                                </div>
-                                <!--end::Password-->
-                            </div>
-                            <!--end::Input group--->
-                            
-                            <!--begin::Wrapper-->
-                            <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8 mt-5">
-
-                                <label class="form-check form-check-custom">
-                                    <input class="form-check-input h-20px w-20px" type="checkbox" name="remember">
-                                    <span class="form-check-label fw-semibold font-bn">আমার ডিভাইস মনে রাখুন</span>
-                                </label>
-
-                                <!--begin::Link-->
-                                <a href="{{ route('user.password.request') }}" class="text-primary text-hover-underline font-bn">
-                                    পাসওয়ার্ড মনে নেই ?
-                                </a>
-                                <!--end::Link-->
-                            </div>
-                            <!--end::Wrapper-->
-
                             <!--begin::Submit button-->
                             <div class="d-grid mb-10">
                                 <button type="submit" id="sign_in_submit" class="btn btn-success font-bn">
 
                                     <!--begin::Indicator label-->
-                                    <span class="indicator-label">
-                                        লগইন</span>
+                                    <span class="indicator-label">প্রেরণ করুন</span>
                                     <!--end::Indicator label-->
 
                                     <!--begin::Indicator progress-->
@@ -130,8 +104,6 @@
                         <!--end::Form-->
 
                         <div class="text-gray-700 text-center fw-semibold fs-6 font-bn">
-                            একাউন্ট নেই ?&nbsp;
-                    
                             <a href="{{ route('user.register') }}" class="text-primary text-hover-underline">
                                 নিবন্ধন করুন
                             </a>

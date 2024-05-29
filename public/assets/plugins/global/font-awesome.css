@@ -326,7 +326,9 @@
 .fa-bell-ring:before {
   content: "\e62c";
 }
-
+.fa-eye-slash:before {
+  content: "\f070";
+}
 .fa-duotone.fa-trash-alt:after,
 .fa-duotone.fa-trash-can:after,
 .fad.fa-trash-alt:after,

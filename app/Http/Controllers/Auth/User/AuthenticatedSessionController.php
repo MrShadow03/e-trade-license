@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
     {
         try{
             $user = User::where('phone', $request->phone)->first();
-            $match = Hash::check($request->password, $user->password);
+            $match = $user ? Hash::check($request->password, $user->password) : false;
 
             if(!$user || !$match){
                 throw ValidationException::withMessages([
@@ -45,7 +45,7 @@ class AuthenticatedSessionController extends Controller
                 ]);
             }
 
-            $otp = UserOneTimePassword::where('user_id', $user->id)->latest()->first();
+            $otp = UserOneTimePassword::where('user_id', $user->id)->where('type', 'verification')->latest()->first();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
             $sendTo = config('constants.OTP_METHOD') === 'email' ? $user->email : $user->phone;
 
             

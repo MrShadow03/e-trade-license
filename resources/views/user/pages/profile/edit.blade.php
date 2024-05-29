@@ -7,12 +7,6 @@
 
 <!--begin::Page Custom Styles(used by this page)-->
 @section('exclusive_styles')
-    <!--begin::Vendor Stylesheets(used for this page only)-->
-    <link href="{{ asset('assets/admin/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet"
-        type="text/css">
-    <link href="{{ asset('assets/admin/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet"
-        type="text/css">
-    <!--end::Vendor Stylesheets-->
     <style>
         tbody.hide-child {
             display: none;
@@ -29,9 +23,62 @@
 @endsection
 <!--end::Page Custom Styles-->
 
+@section('toolbar')
+    <div id="kt_app_toolbar" class="app-toolbar  py-3 py-lg-6 ">
+
+        <!--begin::Toolbar container-->
+        <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
+
+            <!--begin::Page title-->
+            <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3 font-bn">
+                <!--begin::Title-->
+                <h2 class="page-heading d-flex text-dark flex-column justify-content-center font-ador fw-semibold">
+                    আমার প্রোফাইল
+                </h2>
+                <!--end::Title-->
+                <ol class="breadcrumb text-muted fs-6 fw-normal">
+                    <li class="breadcrumb-item"><a href="{{ route('user.dashboard') }}" class="">ড্যাশবোর্ড</a></li>
+                    <li class="breadcrumb-item text-muted">প্রোফাইল</li>
+                </ol>  
+            </div>
+            <!--end::Page title-->
+        </div>
+        <!--end::Toolbar container-->
+    </div>
+@endsection
+
 <!--begin::Main Content-->
 @section('content')
-    <div id="kt_app_content_container" class="app-container container-xxl mt-7 font-bn">
+    <div id="kt_app_content_container" class="app-container container-xxl mt-5 font-bn">
+
+        @if(session()->has('pass-error'))
+         <!--begin::Alert-->
+         <div class="alert alert-dismissible alert-danger d-flex flex-column flex-sm-row p-5 mb-10">
+            <!--begin::Icon-->
+            <i class="fas fa-warning fs-2hx text-danger me-4 mb-5 mb-sm-0"></i>
+            <!--end::Icon-->
+
+            <!--begin::Wrapper-->
+            <div class="d-flex flex-column pe-0 pe-sm-10">
+                <!--begin::Title-->
+                <h5 class="mb-1 text-danger font-bn fs-4">পাসওয়ার্ড পরিবর্তন করে নিন</h5>
+                <!--end::Title-->
+
+                <!--begin::Content-->
+                <span class="font-kohinoor fs-5">
+                    আপনার একাউন্টের সুরক্ষার জন্য পাসওয়ার্ড পরিবর্তন করুন।
+                </span>
+                <!--end::Content-->
+            </div>
+            <!--end::Wrapper-->
+
+            <!--begin::Close-->
+            <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+                <i class="fal fa-times fs-1 text-danger"></i>
+            </button>
+            <!--end::Close-->
+        </div>
+        @endif            
         <div class="d-flex flex-column flex-xl-row">
             <!--begin::Sidebar-->
             <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-10 d-none d-md-block">
@@ -44,7 +91,7 @@
                         <div class="d-flex flex-center flex-column mb-5">
                             <!--begin::Avatar-->
                             <div class="symbol symbol-150px symbol-circle mb-7">
-                                <img src="{{ asset('storage').'/'.auth()->user()->image }}" alt="" class="object-fit-cover">
+                                <img src="{{ Helpers::getImageUrl(auth()->user(), 'dp', 'dp', 'users') }}" alt="" class="object-fit-cover">
                             </div>
                             <!--end::Avatar-->
 
@@ -53,9 +100,7 @@
                             <!--end::Name-->
 
                             <!--begin::Email-->
-                            @if (auth()->user()->company)
-                            <a href="#" class="fs-5 fw-semibold text-muted text-hover-primary mb-6">{{ auth()->user()->company }}</a>
-                            @else
+                            @if (auth()->user()->email)
                             <a href="#" class="fs-5 fw-semibold text-muted text-hover-primary mb-6">{{ auth()->user()->email }}</a>
                             @endif
                             <!--end::Email-->
@@ -93,7 +138,7 @@
                             <!--begin::Details item-->
                             <!--begin::Details item-->
                             <div class="fw-bold mt-5">ফোন নম্বর</div>
-                            <div class="text-gray-600">{{ auth()->user()->phone_number ?? '' }}</div>
+                            <div class="text-gray-600">{{ auth()->user()->phone ?? '' }}</div>
                             <!--begin::Details item-->
                         </div>
                         <!--end::Details content-->
@@ -123,31 +168,33 @@
                     <div class="tab-pane fade show active" id="customer_general" role="tabpanel">
                         <!--begin::Card-->
                         <div class="card pt-4 mb-6 mb-xl-9">
+                            <!--begin::Card header-->
+                            <div class="card-header border-0">
+                                <!--begin::Card title-->
+                                <div class="card-title">
+                                    <h2>প্রোফাইল পরিবর্তন করুন</h2>
+                                </div>
+                                <!--end::Card title-->
+                            </div>
+                            <!--end::Card header-->
                             <!--begin::Card body-->
                             <div class="card-body pt-0 pb-5">
                                 <!--begin::Form-->
                                 <form class="form" action="{{ route('user.profile.update') }}" method="POST" enctype="multipart/form-data" id="profile_form">
                                     @csrf
                                     @method('PATCH')
+
+                                    <input type="hidden" id="needsPasswordReset" value="{{ auth()->user()->needs_password_reset }}">
                                     <!--begin::Input group-->
                                     <div class="mb-7">
                                         <!--begin::Label-->
-                                        <label class="fs-6 fw-semibold mb-2">
+                                        <label class="fs-6 font-bn fw-bold mb-2">
                                             <span>ছবি</span>
-
-                                            <span class="ms-1" data-bs-toggle="tooltip"
-                                                title="Allowed file types: png, jpg, jpeg.">
-                                                <i class="ki-duotone ki-information fs-7">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                    <span class="path3"></span>
-                                                </i>
-                                            </span>
                                         </label>
                                         <!--end::Label-->
 
                                         <!--begin::Image input wrapper-->
-                                        <div class="mt-1">
+                                        <div class="mt-1 fv-row">
                                             <!--begin::Image input placeholder-->
                                             <!--end::Image input placeholder-->
 
@@ -156,7 +203,7 @@
                                                 data-kt-image-input="true">
                                                 <!--begin::Preview existing avatar-->
                                                 <div class="image-input-wrapper w-125px h-125px"
-                                                    style="background-image: url({{ asset('storage').'/'.auth()->user()->image }})">
+                                                    style="background-image: url({{ Helpers::getImageUrl(auth()->user(), 'dp', 'dp', 'users') }})">
                                                 </div>
                                                 <!--end::Preview existing avatar-->
 
@@ -165,7 +212,7 @@
                                                     class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                                                     data-kt-image-input-action="change" data-bs-toggle="tooltip"
                                                     title="পরবর্তন করুন">
-                                                    <i class="ki-duotone ki-pencil fs-7">
+                                                    <i class="fal fa-cloud-upload fs-7">
                                                         <span class="path1"></span>
                                                         <span class="path2"></span>
                                                     </i>
@@ -180,7 +227,7 @@
                                                     class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                                                     data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
                                                     title="বাতিল করুন">
-                                                    <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span
+                                                    <i class="fal fa-times fs-2"><span class="path1"></span><span
                                                             class="path2"></span></i> </span>
                                                 <!--end::Cancel-->
                                             </div>
@@ -190,27 +237,6 @@
                                     </div>
                                     <!--end::Input group-->
 
-                                    <div class="row row-cols-1">
-                                        <!--begin::Input group-->
-                                        <div class="fv-row mb-7">
-                                            <!--begin::Label-->
-                                            <label class="fs-6 fw-semibold mb-2 required">নাম</label>
-                                            <!--end::Label-->
-                                            <!--begin::Input-->
-                                            <div class="input-group">
-                                                <div class="input-group-text">
-                                                    <i class="bi bi-person fs-3"></i>
-                                                </div>
-                                                <input type="text" class="form-control" placeholder="" name="name" value="{{ auth()->user()->name }}" required/> 
-                                            </div>
-                                            <!--end::Input-->
-                                            @error('name')
-                                            <div class="fv-plugins message-container invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        <!--end::Input group-->
-                                    </div>
-
                                     <!--begin::Row-->
                                     <div class="row row-cols-1 row-cols-md-2">
                                         <!--begin::Col-->
@@ -218,23 +244,15 @@
                                             <!--begin::Input group-->
                                             <div class="fv-row mb-7">
                                                 <!--begin::Label-->
-                                                <label class="fs-6 fw-semibold mb-2">
+                                                <label class="fs-6 font-bn fw-bold mb-2">
                                                     <span class="required">ই-মেইল</span>
-
-                                                    <span class="ms-1" data-bs-toggle="tooltip" title="আপনি এই ই-মেইল ব্যবহার করে লগইন করতে পারেন">
-                                                        <i class="ki-duotone ki-information fs-7">
-                                                            <span class="path1"></span>
-                                                            <span class="path2"></span>
-                                                            <span class="path3"></span>
-                                                        </i> 
-                                                    </span>
                                                 </label>
                                                 <!--end::Label-->
 
                                                 <!--begin::Input-->
                                                 <div class="input-group">
                                                     <div class="input-group-text">
-                                                        <i class="bi bi-envelope fs-3"></i>
+                                                        <i class="fal fa-envelope fs-3"></i>
                                                     </div>  
                                                     <input type="email" class="form-control" placeholder="" name="email" value="{{ auth()->user()->email }}" />
                                                 </div>
@@ -247,71 +265,39 @@
                                             <!--end::Input group-->
                                         </div>
                                         <!--end::Col-->
-
-                                        <!--begin::Col-->
                                         <div class="col">
                                             <!--begin::Input group-->
                                             <div class="fv-row mb-7">
                                                 <!--begin::Label-->
-                                                <label class="fs-6 fw-semibold mb-2">
-                                                    <span class="required">ফোন নম্বর</span>
-
-                                                    <span class="ms-1" data-bs-toggle="tooltip" title="আপনার ফোন নম্বর যাতে আমরা আপনার সাথে যোগাযোগ করতে পারি">
-                                                        <i class="ki-duotone ki-information fs-7">
-                                                            <span class="path1"></span>
-                                                            <span class="path2"></span>
-                                                            <span class="path3"></span>
-                                                        </i>
-                                                    </span>
-                                                </label>
+                                                <label class="fs-6 font-bn fw-bold mb-2">ঠিকানা</label>
                                                 <!--end::Label-->
-
+                                                <!--begin::Input-->
                                                 <div class="input-group">
                                                     <div class="input-group-text">
-                                                        <i class="bi bi-telephone fs-3"></i>
+                                                        <i class="fal fa-location-dot fs-3"></i>
                                                     </div>
-                                                    <input type="text" class="form-control" placeholder="" name="phone_number" value="{{ auth()->user()->phone_number }}" required/>
+                                                    <input type="text" class="form-control" name="address" value="{{ auth()->user()->address }}" />
                                                 </div>
-                                                <!--begin::Input-->
                                                 <!--end::Input-->
-                                                @error('phone_number')
+                                                @error('address')
                                                     <div class="fv-plugins message-container invalid-feedback">{{ $message }}</div>
                                                 @enderror
-                                            </div>  
+                                            </div>
                                             <!--end::Input group-->
                                         </div>
-                                        <!--end::Col-->
                                     </div>
                                     <!--end::Row-->
 
-                                    <!--begin::Input group-->
-                                    <div class="fv-row mb-7">
-                                        <!--begin::Label-->
-                                        <label class="fs-6 fw-semibold mb-2">ঠিকানা</label>
-                                        <!--end::Label-->
-                                        <!--begin::Input-->
-                                        <div class="input-group">
-                                            <div class="input-group-text">
-                                                <i class="bi bi-geo-alt fs-3"></i>
-                                            </div>
-                                            <input type="text" class="form-control" name="address" value="{{ auth()->user()->address }}" />
-                                        </div>
-                                        <!--end::Input-->
-                                        @error('address')
-                                            <div class="fv-plugins message-container invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <!--end::Input group-->
 
                                     <!--begin::Input group-->
                                     <div class="fv-row mb-7">
                                         <!--begin::Label-->
-                                        <label class="fs-6 fw-semibold mb-2">বর্তমান পাসওয়ার্ড</label>
+                                        <label class="fs-6 font-bn fw-bold mb-2">বর্তমান পাসওয়ার্ড</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
                                         <div class="input-group">
                                             <div class="input-group-text">
-                                                <i class="la la-key fs-3"></i>
+                                                <i class="fal fa-key fs-3"></i>
                                             </div>
                                             <input type="password" class="form-control" name="current_password" />
                                         </div>
@@ -325,7 +311,7 @@
                                     <div class="d-flex justify-content-end">
                                         <!--begin::Button-->
                                         <button type="submit" id="profile_submit"
-                                            class="btn btn-light-primary">
+                                            class="btn btn-success">
                                             <span class="indicator-label">পরিবর্তন করুন</span>
                                             <span class="indicator-progress">অপেক্ষা করুন...
                                                 <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
@@ -368,7 +354,7 @@
                                                     <button type="button"
                                                         class="btn btn-icon btn-active-light-danger w-30px h-30px ms-auto"
                                                         data-bs-toggle="modal" data-bs-target="#kt_modal_update_password">
-                                                        <i class="ki-duotone ki-pencil fs-3"><span
+                                                        <i class="fal fa-edit fs-3"><span
                                                                 class="path1"></span><span class="path2"></span></i>
                                                     </button>
                                                 </td>
@@ -405,7 +391,7 @@
 
                     <!--begin::Close-->
                     <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
-                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                        <i class="fal fa-times fs-1"></i>
                     </div>
                     <!--end::Close-->
                 </div>
@@ -419,9 +405,11 @@
                         @method('PATCH')
                         <!--begin::Input group -->
                         <div class="fv-row mb-10">
-                            <label class="required form-label fs-6 mb-2">বর্তমান পাসওয়ার্ড</label>
-
+                            <label class="form-label fs-6 mb-2">বর্তমান পাসওয়ার্ড</label>
                             <input class="form-control form-control-lg" type="password" placeholder="****" name="current_password" autocomplete="off" />
+                            @if(auth()->user()->needs_password_reset)
+                                <div class="text-info mt-2">বর্তমান পাসওয়ার্ড দেয়া জরুরি নয়।</div>
+                            @endif
                         </div>
                         <!--end::Input group--->
 
@@ -442,11 +430,18 @@
 
                                     <span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2"
                                         data-kt-password-meter-control="visibility">
-                                        <i class="ki-duotone ki-eye-slash fs-1"><span class="path1"></span><span
-                                                class="path2"></span><span class="path3"></span><span
-                                                class="path4"></span></i> <i class="ki-duotone ki-eye d-none fs-1"><span
-                                                class="path1"></span><span class="path2"></span><span
-                                                class="path3"></span></i> </span>
+                                        <i class="fal fa-eye-slash fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                            <span class="path4"></span>
+                                        </i>
+                                        <i class="fal fa-eye d-none fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                        </i>
+                                    </span>
                                 </div>
                                 <!--end::Input wrapper-->
 
@@ -524,10 +519,16 @@
                     form,
                     {
                         fields: {
-                            'name': {
+                            'image': {
                                 validators: {
                                     notEmpty: {
-                                        message: 'নাম অবশ্যই প্রয়োজন'
+                                        message: 'ছবি অবশ্যই প্রয়োজন'
+                                    },
+                                    file: {
+                                        extension: 'jpg,jpeg,png',
+                                        type: 'image/jpeg,image/png',
+                                        maxSize: 2097152,   // 2048 * 1024
+                                        message: 'একটি বৈধ ছবি প্রদান করুন (jpg, jpeg, png)'
                                     }
                                 }
                             },
@@ -535,21 +536,6 @@
                                 validators: {
                                     emailAddress: {
                                         message: 'একটি বৈধ ই-মেইল ঠিকানা প্রদান করুন'
-                                    },
-                                    notEmpty: {
-                                        message: 'ই-মেইল অবশ্যই প্রয়োজন'
-                                    }
-                                }
-                            },
-                            'phone_number': {
-                                validators: {
-                                    notEmpty: {
-                                        message: 'ফোন নম্বর অবশ্যই প্রয়োজন'
-                                    },
-                                    stringLength: {
-                                        min: 11,
-                                        max: 11,
-                                        message: 'ফোন নম্বর অবশ্যই ১১ অক্ষরের হতে হবে'
                                     },
                                 }
                             },
@@ -566,7 +552,7 @@
                             bootstrap: new FormValidation.plugins.Bootstrap5({
                                 rowSelector: '.fv-row',
                                 eleInvalidClass: '',
-                                eleValidClass: ''
+                                // eleValidClass: ''
                             })
                         }
                     }
@@ -578,8 +564,18 @@
                         fields: {
                             'current_password': {
                                 validators: {
-                                    notEmpty: {
-                                        message: 'বর্তমান পাসওয়ার্ড অবশ্যই প্রয়োজন'
+                                    callback: {
+                                        message: 'বর্তমান পাসওয়ার্ড অবশ্যই প্রয়োজন',
+                                        callback: function(input) {
+                                            let needsPasswordReset = document.getElementById('needsPasswordReset').value;
+                                            console.log(input.value)
+                                            if (needsPasswordReset == 1) {
+                                                console.log('needsPasswordReset')
+                                                return true;
+                                            }
+
+                                            return input.value !== '';
+                                        }
                                     }
                                 }
                             },

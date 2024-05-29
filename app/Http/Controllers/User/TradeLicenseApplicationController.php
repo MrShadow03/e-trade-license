@@ -33,7 +33,8 @@ class TradeLicenseApplicationController extends Controller
             'businessCategories' => BusinessCategory::all(),
             'requiredDocuments' => TradeLicenseRequiredDocument::all(),
             'districts' => Helpers::DISTRICTS,
-            'signboards' => Signboard::all()
+            'signboards' => Signboard::all(),
+            'latestApplication' => TradeLicenseApplication::where('user_id', auth()->id())->latest()->first() ?? null
         ]);
     }
 

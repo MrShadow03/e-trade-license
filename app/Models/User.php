@@ -9,10 +9,12 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use HasFactory, Notifiable, HasRoles, LogsActivity;
+    use HasFactory, Notifiable, HasRoles, LogsActivity, InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -20,6 +22,7 @@ class User extends Authenticatable
         'email',
         'address',
         'password',
+        'needs_password_reset',
         'phone_verified_at',
     ];
 
@@ -62,5 +65,21 @@ class User extends Authenticatable
     {
         $this->phone_verified_at = now();
         $this->save();
+    }
+
+    public function hasPurePassword(): bool
+    {
+        return $this->needs_password_reset == false;
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('dp')
+            ->singleFile();
+
+        $this->addMediaConversion('thumb')
+            ->width(60)
+            ->height(60)
+            ->nonQueued();
     }
 }

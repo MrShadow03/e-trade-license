@@ -135,10 +135,10 @@
                         <!--end::Label-->
                         <!--begin::Input-->
                         <div class="input-group">
-                            <div class="input-group-text">
-                                <i class="fal fa-user fs-3"></i>
+                            <div class="input-group-text text-white border-info bg-info">
+                                <i class="text-white fal fa-user fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder="" name="owner_name_bn" value="{{ old('owner_name_bn') }}" required/> 
+                            <input type="text" class="form-control border-info text-gray-900" placeholder="" name="owner_name_bn" value="{{ auth()->user()->name }}" required readonly/> 
                         </div>
                         <!--end::Input-->
                         @error('owner_name_bn')
@@ -157,10 +157,10 @@
                         <!--end::Label-->
                         <!--begin::Input-->
                         <div class="input-group">
-                            <div class="input-group-text">
-                                <i class="fal fa-user fs-3"></i>
+                            <div class="input-group-text {{ $latestApplication?->owner_name ? 'text-white border-info bg-info' : ''}}">
+                                <i class="{{ $latestApplication?->owner_name ? 'text-white' : '' }} fal fa-user fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder="" name="owner_name" value="{{ old('owner_name') }}" required/> 
+                            <input type="text" class="form-control {{ $latestApplication?->owner_name ? 'border-info' : '' }} text-gray-900" placeholder="" name="owner_name" value="{{ old('owner_name', $latestApplication?->owner_name) }}" @readonly($latestApplication?->owner_name)  required/> 
                         </div>
                         <!--end::Input-->
                         @error('owner_name')
@@ -182,10 +182,10 @@
                         <!--end::Label-->
                         <!--begin::Input-->
                         <div class="input-group">
-                            <div class="input-group-text">
-                                <i class="fal fa-{{ COMMON_ICON }} fs-3"></i>
+                            <div class="input-group-text {{ $latestApplication?->father_name_bn ? 'text-white border-info bg-info' : ''}}">
+                                <i class="{{ $latestApplication?->father_name_bn ? 'text-white' : '' }} fal fa-{{ COMMON_ICON }} fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="father_name_bn" value="{{ old('father_name_bn') }}" required/>
+                            <input type="text" class="form-control {{ $latestApplication?->father_name_bn ? 'border-info' : '' }} text-gray-900" placeholder name="father_name_bn" value="{{ old('father_name_bn', $latestApplication?->father_name_bn) }}" @readonly($latestApplication?->father_name_bn)  required/>
                         </div> 
                         <!--end::Input-->
                         @error('father_name_bn')
@@ -204,10 +204,10 @@
                         <!--end::Label-->
                         <!--begin::Input-->
                         <div class="input-group">
-                            <div class="input-group-text">
-                                <i class="fal fa-{{ COMMON_ICON }} fs-3"></i>
+                            <div class="input-group-text {{ $latestApplication?->father_name ? 'text-white border-info bg-info' : ''}}">
+                                <i class="{{ $latestApplication?->father_name ? 'text-white' : '' }} fal fa-{{ COMMON_ICON }} fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder="" name="father_name" value="{{ old('father_name') }}" required/> 
+                            <input type="text" class="form-control {{ $latestApplication?->father_name ? 'border-info' : '' }} text-gray-900" placeholder="" name="father_name" value="{{ old('father_name', $latestApplication?->father_name) }}" @readonly($latestApplication?->father_name)  required/> 
                         </div>
                         <!--end::Input-->
                         @error('father_name')
@@ -229,10 +229,10 @@
                         <!--end::Label-->
                         <!--begin::Input-->
                         <div class="input-group">
-                            <div class="input-group-text">
-                                <i class="fal fa-{{ COMMON_ICON }} fs-3"></i>
+                            <div class="input-group-text {{ $latestApplication?->mother_name_bn ? 'text-white border-info bg-info' : ''}}">
+                                <i class="{{ $latestApplication?->mother_name_bn ? 'text-white' : '' }} fal fa-{{ COMMON_ICON }} fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="mother_name_bn" value="{{ old('mother_name_bn') }}" required/>
+                            <input type="text" class="form-control {{ $latestApplication?->mother_name_bn ? 'border-info' : '' }} text-gray-900" placeholder name="mother_name_bn" value="{{ old('mother_name_bn', $latestApplication?->mother_name_bn) }}" @readonly($latestApplication?->mother_name_bn)  required/>
                         </div>
                         <!--end::Input-->
                         @error('mother_name_bn')
@@ -251,10 +251,10 @@
                         <!--end::Label-->
                         <!--begin::Input-->
                         <div class="input-group">
-                            <div class="input-group-text">
-                                <i class="fal fa-{{ COMMON_ICON }} fs-3"></i>
+                            <div class="input-group-text {{ $latestApplication?->mother_name ? 'text-white border-info bg-info' : ''}}">
+                                <i class="{{ $latestApplication?->mother_name ? 'text-white' : '' }} fal fa-{{ COMMON_ICON }} fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder="" name="mother_name" value="{{ old('mother_name') }}" required/>
+                            <input type="text" class="form-control {{ $latestApplication?->mother_name ? 'border-info' : '' }} text-gray-900" placeholder="" name="mother_name" value="{{ old('mother_name', $latestApplication?->mother_name) }}" @readonly($latestApplication?->mother_name)  required/>
                         </div>
                         <!--end::Input-->
                         @error('mother_name')
@@ -276,10 +276,10 @@
                         <!--end::Label-->
                         <!--begin::Input-->
                         <div class="input-group">
-                            <div class="input-group-text">
-                                <i class="fal fa-{{ COMMON_ICON }} fs-3"></i>
+                            <div class="input-group-text {{ $latestApplication?->spouse_name_bn ? 'text-white border-info bg-info' : ''}}">
+                                <i class="{{ $latestApplication?->spouse_name_bn ? 'text-white' : '' }} fal fa-{{ COMMON_ICON }} fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="spouse_name_bn" value="{{ old('spouse_name_bn') }}"/> 
+                            <input type="text" class="form-control {{ $latestApplication?->spouse_name_bn ? 'border-info' : '' }} text-gray-900" placeholder name="spouse_name_bn" value="{{ old('spouse_name_bn', $latestApplication?->spouse_name_bn) }}" @readonly($latestApplication?->spouse_name_bn) /> 
                         </div>
                         <!--end::Input-->
                         @error('spouse_name_bn')
@@ -298,10 +298,10 @@
                         <!--end::Label-->
                         <!--begin::Input-->
                         <div class="input-group">
-                            <div class="input-group-text">
-                                <i class="fal fa-{{ COMMON_ICON }} fs-3"></i>
+                            <div class="input-group-text {{ $latestApplication?->spouse_name ? 'text-white border-info bg-info' : ''}}">
+                                <i class="{{ $latestApplication?->spouse_name ? 'text-white' : '' }} fal fa-{{ COMMON_ICON }} fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder="" name="spouse_name" value="{{ old('spouse_name') }}"/>
+                            <input type="text" class="form-control {{ $latestApplication?->spouse_name ? 'border-info' : '' }} text-gray-900" placeholder="" name="spouse_name" value="{{ old('spouse_name', $latestApplication?->spouse_name) }}" @readonly($latestApplication?->spouse_name) />
                         </div>
                         <!--end::Input-->
                         @error('spouse_name')
@@ -323,10 +323,10 @@
                         <!--end::Label-->
                         <!--begin::Input-->
                         <div class="input-group">
-                            <div class="input-group-text">
-                                <i class="fal fa-address-card fs-3"></i>
+                            <div class="input-group-text {{ $latestApplication?->national_id_no ? 'text-white border-info bg-info' : ''}}">
+                                <i class="{{ $latestApplication?->national_id_no ? 'text-white' : '' }} fal fa-address-card fs-3"></i>
                             </div>
-                            <input type="text" maxlength="17" pattern="/^[0-9]+$/" class="ls-2 font-roboto fw-normal form-control text-gray-900" name="national_id_no" value="{{ old('national_id_no') }}"/>
+                            <input type="text" maxlength="17" {{ $latestApplication?->national_id_no ? 'border-info' : '' }} pattern="/^[0-9]+$/" class="ls-2 font-roboto fw-normal form-control text-gray-900" name="national_id_no" value="{{ old('national_id_no', $latestApplication?->national_id_no) }}" @readonly($latestApplication?->national_id_no) />
                         </div>
                         <!--end::Input-->
                         @error('national_id_no')
@@ -345,10 +345,10 @@
                         <!--end::Label-->
                         <!--begin::Input-->
                         <div class="input-group">
-                            <div class="input-group-text">
-                                <i class="fal fa-address-card fs-3"></i>
+                            <div class="input-group-text {{ $latestApplication?->birth_registration_no ? 'text-white border-info bg-info' : ''}}">
+                                <i class="{{ $latestApplication?->birth_registration_no ? 'text-white' : '' }} fal fa-address-card fs-3"></i>
                             </div>
-                            <input type="text" maxlength="17" class="ls-2 font-roboto fw-normal form-control text-gray-900" name="birth_registration_no" value="{{ old('birth_registration_no') }}"/> 
+                            <input type="text" maxlength="17" {{ $latestApplication?->birth_registration_no ? 'border-info' : '' }} class="ls-2 font-roboto fw-normal form-control text-gray-900" name="birth_registration_no" value="{{ old('birth_registration_no', $latestApplication?->birth_registration_no) }}" @readonly($latestApplication?->birth_registration_no) /> 
                         </div>
                         <!--end::Input-->
                         @error('birth_registration_no')
@@ -367,10 +367,10 @@
                         <!--end::Label-->
                         <!--begin::Input-->
                         <div class="input-group">
-                            <div class="input-group-text">
-                                <i class="fal fa-address-card fs-3"></i>
+                            <div class="input-group-text {{ $latestApplication?->passport_no ? 'text-white border-info bg-info' : ''}}">
+                                <i class="{{ $latestApplication?->passport_no ? 'text-white' : '' }} fal fa-address-card fs-3"></i>
                             </div>
-                            <input type="text"  maxlength="9" class="ls-2 font-roboto fw-normal form-control text-gray-900" name="passport_no" value="{{ old('passport_no') }}"/>
+                            <input type="text"  maxlength="9" {{ $latestApplication?->passport_no ? 'border-info' : '' }} class="ls-2 font-roboto fw-normal form-control text-gray-900" name="passport_no" value="{{ old('passport_no', $latestApplication?->passport_no) }}" @readonly($latestApplication?->passport_no) />
                         </div>
                         <!--end::Input-->
                         @error('passport_no')

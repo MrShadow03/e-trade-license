@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 21, 2024 at 06:00 AM
+-- Generation Time: May 29, 2024 at 07:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -68,9 +68,9 @@ CREATE TABLE `admins` (
 
 INSERT INTO `admins` (`id`, `name`, `email`, `phone`, `address`, `image`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Galib Jaman', 'gj.emon35@gmail.com', '01766555213', NULL, 'admins/default.png', NULL, '$2y$12$D.D5hFf8BH1wcQJS5MQyyOXAts7s1WMCKHW3/66DJOf9zlPN.jMfO', 'xDMTOpn4gAf1b2JZ9Q7sb6KrUshpUvde5LXmSHd3MWiwcxYSZJouwbi9BsbB', NULL, NULL),
-(3, 'Farhana Akter', 'assistant@admin.com', '01631907778', 'N. Hossain Avenue', 'admins/default.png', NULL, '$2y$12$A2ISujUEc9C8aQnoZqK8mOQ9owenkl6FFalPLPka/aWskOd70wl9y', '67xHJEAbkrIBgVEBSOT9zQylV9hf7iTdOlTIndrKuMsjHmSF7QkR77P2V23n', '2024-05-14 13:00:18', '2024-05-14 13:00:18'),
+(3, 'Farhana Akter', 'assistant@admin.com', '01631907778', 'N. Hossain Avenue', 'admins/default.png', NULL, '$2y$12$A2ISujUEc9C8aQnoZqK8mOQ9owenkl6FFalPLPka/aWskOd70wl9y', '5rEAJfJZtJ7SzRgMAhOuqmZco8cVsxGNgGaKIQqv8DMscigW4olLZBTlfNam', '2024-05-14 13:00:18', '2024-05-14 13:00:18'),
 (4, 'টম হোসেন', 'inspector@admin.com', '01766555214', NULL, 'admins/default.png', NULL, '$2y$12$D10LsgiLCx04vg9E/faIMOJS4Ex7e.QZhGMBYn6r9.ZK.0t3YLgv2', NULL, '2024-05-19 06:39:52', '2024-05-19 06:39:52'),
-(5, 'সুপারিন স্পঞ্জবব', 'supt@admin.com', '01766555215', NULL, 'admins/default.png', NULL, '$2y$12$LFCKf0AtmPPTAZvJxZqeUeBtjV3aF6K3EKzfQLwvt9LY06Kf2.G/W', NULL, '2024-05-19 06:41:08', '2024-05-19 06:41:08'),
+(5, 'সুপারিন স্পঞ্জবব', 'supt@admin.com', '01766555215', NULL, 'admins/default.png', NULL, '$2y$12$LFCKf0AtmPPTAZvJxZqeUeBtjV3aF6K3EKzfQLwvt9LY06Kf2.G/W', 'wW2nqBOOxdzADKoL2Swl5h6eDIi1PdJ4ptE2cTDrBQ71D8xetV1aPD19K6QG', '2024-05-19 06:41:08', '2024-05-19 06:41:08'),
 (6, 'রেভেনিউ চারমেন্ডার', 'revenue@admin.com', '01766555216', NULL, 'admins/default.png', NULL, '$2y$12$rwLcsJF6/Xofgmv0KDB8x.JYuZ38aODkms5bZFTbakeXfHQ8FEEPC', NULL, '2024-05-19 06:42:32', '2024-05-19 06:42:32'),
 (7, 'চিফ রেভেনিউ বোলবাসর', 'cro@admin.com', '01766555217', NULL, 'admins/default.png', NULL, '$2y$12$VFviygT5xHvB7pS.ut3Ydu6DiMwn4EJoCKpRNyMh9wU./RDZhpCWm', NULL, '2024-05-19 06:43:41', '2024-05-19 06:43:41'),
 (8, 'প্রধান নির্বাহী পিকাচু', 'ceo@admin.com', '01766555218', NULL, 'admins/default.png', NULL, '$2y$12$3CdNnNWVRpj07UVJTflOZ.KrBOBiAy6JVmRYFHLBBjjfRZUqPDdaK', NULL, '2024-05-19 06:45:10', '2024-05-19 06:45:10');
@@ -530,7 +530,7 @@ CREATE TABLE `cache` (
 --
 
 INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
-('spatie.permission.cache', 'a:3:{s:5:\"alias\";a:4:{s:1:\"a\";s:2:\"id\";s:1:\"b\";s:4:\"name\";s:1:\"c\";s:10:\"guard_name\";s:1:\"r\";s:5:\"roles\";}s:11:\"permissions\";a:22:{i:0;a:4:{s:1:\"a\";i:13;s:1:\"b\";s:23:\"verify-form-fee-payment\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:1;}}i:1;a:4:{s:1:\"a\";i:14;s:1:\"b\";s:21:\"deny-form-fee-payment\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:1;}}i:2;a:4:{s:1:\"a\";i:15;s:1:\"b\";s:61:\"approve-pending-trade-license-assistant-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:1;}}i:3;a:4:{s:1:\"a\";i:16;s:1:\"b\";s:58:\"deny-pending-trade-license-assistant-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:1;}}i:4;a:4:{s:1:\"a\";i:17;s:1:\"b\";s:61:\"approve-pending-trade-license-inspector-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:2;}}i:5;a:4:{s:1:\"a\";i:18;s:1:\"b\";s:58:\"deny-pending-trade-license-inspector-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:2;}}i:6;a:4:{s:1:\"a\";i:19;s:1:\"b\";s:24:\"update-business-category\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:2:{i:0;i:2;i:1;i:3;}}i:7;a:4:{s:1:\"a\";i:20;s:1:\"b\";s:21:\"update-sign-board-fee\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:2:{i:0;i:2;i:1;i:3;}}i:8;a:4:{s:1:\"a\";i:21;s:1:\"b\";s:26:\"verify-license-fee-payment\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:3;}}i:9;a:4:{s:1:\"a\";i:22;s:1:\"b\";s:24:\"deny-license-fee-payment\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:3;}}i:10;a:4:{s:1:\"a\";i:23;s:1:\"b\";s:66:\"approve-pending-trade-license-superintendent-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:3;}}i:11;a:4:{s:1:\"a\";i:24;s:1:\"b\";s:63:\"deny-pending-trade-license-superintendent-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:3;}}i:12;a:4:{s:1:\"a\";i:25;s:1:\"b\";s:53:\"approve-pending-revenue-officer-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:4;}}i:13;a:4:{s:1:\"a\";i:26;s:1:\"b\";s:50:\"deny-pending-revenue-officer-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:4;}}i:14;a:4:{s:1:\"a\";i:27;s:1:\"b\";s:59:\"approve-pending-chief-revenue-officer-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:5;}}i:15;a:4:{s:1:\"a\";i:28;s:1:\"b\";s:56:\"deny-pending-chief-revenue-officer-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:5;}}i:16;a:4:{s:1:\"a\";i:29;s:1:\"b\";s:61:\"approve-pending-chief-executive-officer-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:6;}}i:17;a:4:{s:1:\"a\";i:30;s:1:\"b\";s:58:\"deny-pending-chief-executive-officer-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:6;}}i:18;a:3:{s:1:\"a\";i:31;s:1:\"b\";s:13:\"create-admins\";s:1:\"c\";s:5:\"admin\";}i:19;a:3:{s:1:\"a\";i:32;s:1:\"b\";s:13:\"update-admins\";s:1:\"c\";s:5:\"admin\";}i:20;a:3:{s:1:\"a\";i:33;s:1:\"b\";s:13:\"delete-admins\";s:1:\"c\";s:5:\"admin\";}i:21;a:4:{s:1:\"a\";i:34;s:1:\"b\";s:19:\"issue-trade-license\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:6;}}}s:5:\"roles\";a:6:{i:0;a:3:{s:1:\"a\";i:1;s:1:\"b\";s:23:\"trade-license-assistant\";s:1:\"c\";s:5:\"admin\";}i:1;a:3:{s:1:\"a\";i:2;s:1:\"b\";s:23:\"trade-license-inspector\";s:1:\"c\";s:5:\"admin\";}i:2;a:3:{s:1:\"a\";i:3;s:1:\"b\";s:28:\"trade-license-superintendent\";s:1:\"c\";s:5:\"admin\";}i:3;a:3:{s:1:\"a\";i:4;s:1:\"b\";s:15:\"revenue-officer\";s:1:\"c\";s:5:\"admin\";}i:4;a:3:{s:1:\"a\";i:5;s:1:\"b\";s:21:\"chief-revenue-officer\";s:1:\"c\";s:5:\"admin\";}i:5;a:3:{s:1:\"a\";i:6;s:1:\"b\";s:23:\"chief-executive-officer\";s:1:\"c\";s:5:\"admin\";}}}', 1716285554);
+('spatie.permission.cache', 'a:3:{s:5:\"alias\";a:4:{s:1:\"a\";s:2:\"id\";s:1:\"b\";s:4:\"name\";s:1:\"c\";s:10:\"guard_name\";s:1:\"r\";s:5:\"roles\";}s:11:\"permissions\";a:22:{i:0;a:4:{s:1:\"a\";i:13;s:1:\"b\";s:23:\"verify-form-fee-payment\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:1;}}i:1;a:4:{s:1:\"a\";i:14;s:1:\"b\";s:21:\"deny-form-fee-payment\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:1;}}i:2;a:4:{s:1:\"a\";i:15;s:1:\"b\";s:61:\"approve-pending-trade-license-assistant-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:1;}}i:3;a:4:{s:1:\"a\";i:16;s:1:\"b\";s:58:\"deny-pending-trade-license-assistant-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:1;}}i:4;a:4:{s:1:\"a\";i:17;s:1:\"b\";s:61:\"approve-pending-trade-license-inspector-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:2;}}i:5;a:4:{s:1:\"a\";i:18;s:1:\"b\";s:58:\"deny-pending-trade-license-inspector-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:2;}}i:6;a:4:{s:1:\"a\";i:19;s:1:\"b\";s:24:\"update-business-category\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:2:{i:0;i:2;i:1;i:3;}}i:7;a:4:{s:1:\"a\";i:20;s:1:\"b\";s:21:\"update-sign-board-fee\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:2:{i:0;i:2;i:1;i:3;}}i:8;a:4:{s:1:\"a\";i:21;s:1:\"b\";s:26:\"verify-license-fee-payment\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:3;}}i:9;a:4:{s:1:\"a\";i:22;s:1:\"b\";s:24:\"deny-license-fee-payment\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:3;}}i:10;a:4:{s:1:\"a\";i:23;s:1:\"b\";s:66:\"approve-pending-trade-license-superintendent-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:3;}}i:11;a:4:{s:1:\"a\";i:24;s:1:\"b\";s:63:\"deny-pending-trade-license-superintendent-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:3;}}i:12;a:4:{s:1:\"a\";i:25;s:1:\"b\";s:53:\"approve-pending-revenue-officer-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:4;}}i:13;a:4:{s:1:\"a\";i:26;s:1:\"b\";s:50:\"deny-pending-revenue-officer-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:4;}}i:14;a:4:{s:1:\"a\";i:27;s:1:\"b\";s:59:\"approve-pending-chief-revenue-officer-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:5;}}i:15;a:4:{s:1:\"a\";i:28;s:1:\"b\";s:56:\"deny-pending-chief-revenue-officer-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:5;}}i:16;a:4:{s:1:\"a\";i:29;s:1:\"b\";s:61:\"approve-pending-chief-executive-officer-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:6;}}i:17;a:4:{s:1:\"a\";i:30;s:1:\"b\";s:58:\"deny-pending-chief-executive-officer-approval-applications\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:6;}}i:18;a:3:{s:1:\"a\";i:31;s:1:\"b\";s:13:\"create-admins\";s:1:\"c\";s:5:\"admin\";}i:19;a:3:{s:1:\"a\";i:32;s:1:\"b\";s:13:\"update-admins\";s:1:\"c\";s:5:\"admin\";}i:20;a:3:{s:1:\"a\";i:33;s:1:\"b\";s:13:\"delete-admins\";s:1:\"c\";s:5:\"admin\";}i:21;a:4:{s:1:\"a\";i:34;s:1:\"b\";s:19:\"issue-trade-license\";s:1:\"c\";s:5:\"admin\";s:1:\"r\";a:1:{i:0;i:6;}}}s:5:\"roles\";a:6:{i:0;a:3:{s:1:\"a\";i:1;s:1:\"b\";s:23:\"trade-license-assistant\";s:1:\"c\";s:5:\"admin\";}i:1;a:3:{s:1:\"a\";i:2;s:1:\"b\";s:23:\"trade-license-inspector\";s:1:\"c\";s:5:\"admin\";}i:2;a:3:{s:1:\"a\";i:3;s:1:\"b\";s:28:\"trade-license-superintendent\";s:1:\"c\";s:5:\"admin\";}i:3;a:3:{s:1:\"a\";i:4;s:1:\"b\";s:15:\"revenue-officer\";s:1:\"c\";s:5:\"admin\";}i:4;a:3:{s:1:\"a\";i:5;s:1:\"b\";s:21:\"chief-revenue-officer\";s:1:\"c\";s:5:\"admin\";}i:5;a:3:{s:1:\"a\";i:6;s:1:\"b\";s:23:\"chief-executive-officer\";s:1:\"c\";s:5:\"admin\";}}}', 1717044960);
 
 -- --------------------------------------------------------
 
@@ -621,47 +621,6 @@ CREATE TABLE `media` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `media`
---
-
-INSERT INTO `media` (`id`, `model_type`, `model_id`, `uuid`, `collection_name`, `name`, `file_name`, `mime_type`, `disk`, `conversions_disk`, `size`, `manipulations`, `custom_properties`, `generated_conversions`, `responsive_images`, `order_column`, `created_at`, `updated_at`) VALUES
-(12, 'App\\Models\\TradeLicenseDocument', 22, '44b7ee2f-8e97-4162-8868-89a251920839', 'document', 'cb49eb8cbfe18caf374c1d969fbc848a', 'cb49eb8cbfe18caf374c1d969fbc848a.pdf', 'application/pdf', 'public', 'public', 215532, '[]', '[]', '{\"document-preview\":true}', '[]', 1, '2024-05-09 05:39:24', '2024-05-09 05:39:25'),
-(13, 'App\\Models\\TradeLicenseDocument', 23, 'ec686c85-2c63-483a-a498-739ba241c7ca', 'document', '7995e722228a91db84b1d1631cdf8385', '7995e722228a91db84b1d1631cdf8385.pdf', 'application/pdf', 'public', 'public', 173152, '[]', '[]', '{\"document-preview\":true}', '[]', 1, '2024-05-09 05:39:25', '2024-05-09 05:39:26'),
-(23, 'App\\Models\\TradeLicenseDocument', 24, 'e7f629a3-47f7-4e47-ae17-efdcdad7783d', 'document', '44a6d8251f3dc883c68ade8688c74b03', '44a6d8251f3dc883c68ade8688c74b03.pdf', 'application/pdf', 'public', 'public', 491367, '[]', '[]', '{\"document-preview\":true}', '[]', 1, '2024-05-09 11:54:56', '2024-05-09 11:54:58'),
-(26, 'App\\Models\\TradeLicenseApplication', 20, '3414782e-9cea-4d65-9ae5-31960d2202d8', 'owner_image', 'QMFJ4vwa2vb6AKfU9bneE6kn8fvTfi6t15tgEY6Q', 'QMFJ4vwa2vb6AKfU9bneE6kn8fvTfi6t15tgEY6Q.jpg', 'image/jpeg', 'public', 'public', 8687, '[]', '[]', '{\"thumb\":true}', '[]', 1, '2024-05-09 16:30:16', '2024-05-09 16:30:16'),
-(29, 'App\\Models\\TradeLicenseDocument', 27, '5af69fec-488e-432f-8088-3ab6df6b8ea8', 'document', '3b3e8f9da80748ec69cb046499bd62df', '3b3e8f9da80748ec69cb046499bd62df.pdf', 'application/pdf', 'public', 'public', 265252, '[]', '[]', '{\"document-preview\":true}', '[]', 1, '2024-05-10 09:10:19', '2024-05-10 09:10:25'),
-(30, 'App\\Models\\TradeLicenseDocument', 25, 'fa86e619-8e2b-4e05-b1ae-c9dc2bb6e15b', 'document', '7ea7297b5d0d1fc6ad04c6c8e97d2251', '7ea7297b5d0d1fc6ad04c6c8e97d2251.png', 'image/png', 'public', 'public', 263124, '[]', '[]', '{\"document-preview\":true}', '[]', 1, '2024-05-10 10:22:02', '2024-05-10 10:22:02'),
-(36, 'App\\Models\\TradeLicenseApplication', 21, '6ddb4d75-b9c3-463e-8a62-d735d9b77084', 'owner_image', 'xLWPC2ZKtSNWmuYEQkSgVgzG0nsXffmmJh1ZO7Qb', 'xLWPC2ZKtSNWmuYEQkSgVgzG0nsXffmmJh1ZO7Qb.jpg', 'image/jpeg', 'public', 'public', 16040, '[]', '[]', '{\"thumb\":true}', '[]', 1, '2024-05-12 06:49:44', '2024-05-12 06:49:44'),
-(54, 'App\\Models\\TradeLicenseApplication', 23, 'e488956d-c006-4aa3-b9c0-1a6b770c74e6', 'owner_image', 'eMNCYfwqHZgF3LUR3NXQbv4gpgdLaTemJ7rh8MV8', 'eMNCYfwqHZgF3LUR3NXQbv4gpgdLaTemJ7rh8MV8.jpg', 'image/jpeg', 'public', 'public', 24215, '[]', '[]', '{\"thumb\":true}', '[]', 1, '2024-05-14 08:40:25', '2024-05-14 08:40:25'),
-(55, 'App\\Models\\TradeLicenseDocument', 28, 'fe5944d7-e645-4757-9bf7-b81571d50761', 'document', '43f3ca9d6b4f3174e6f838bb14611d80', '43f3ca9d6b4f3174e6f838bb14611d80.pdf', 'application/pdf', 'public', 'public', 41438, '[]', '[]', '{\"document-preview\":true}', '[]', 1, '2024-05-14 08:40:25', '2024-05-14 08:40:27'),
-(56, 'App\\Models\\TradeLicenseDocument', 29, '65fbecf8-7015-4871-aaf2-58c084e39d25', 'document', 'bde93f08c65a8461ccd15d15706a4383', 'bde93f08c65a8461ccd15d15706a4383.pdf', 'application/pdf', 'public', 'public', 124478, '[]', '[]', '{\"document-preview\":true}', '[]', 1, '2024-05-14 08:40:27', '2024-05-14 08:40:28'),
-(58, 'App\\Models\\Admin', 3, '9be29bb3-faa7-4840-9ee0-59b7efb2542e', 'dp', 'LaaLcAtpDgCcjKdpzcmf4yya5WwdURb93lERVeaI', 'LaaLcAtpDgCcjKdpzcmf4yya5WwdURb93lERVeaI.png', 'image/jpeg', 'public', 'public', 11827, '[]', '[]', '{\"thumb\":true}', '[]', 1, '2024-05-14 13:00:19', '2024-05-14 13:00:19'),
-(63, 'App\\Models\\TradeLicenseDocument', 30, '6ce6d0a4-dcc1-49e8-bce8-ccab56973d6d', 'document', '499da4c0108d0053af2549ffb4a0f734', '499da4c0108d0053af2549ffb4a0f734.pdf', 'application/pdf', 'public', 'public', 41438, '[]', '[]', '{\"document-preview\":true}', '[]', 1, '2024-05-15 04:21:19', '2024-05-15 04:21:20'),
-(64, 'App\\Models\\TradeLicenseDocument', 31, '0f709059-2f4f-404e-82ef-5a53703ccca1', 'document', '5e06c5cf3855ab3af330662f6be13c61', '5e06c5cf3855ab3af330662f6be13c61.pdf', 'application/pdf', 'public', 'public', 137679, '[]', '[]', '{\"document-preview\":true}', '[]', 1, '2024-05-15 04:21:20', '2024-05-15 04:21:23'),
-(66, 'App\\Models\\TradeLicensePayment', 11, '1dcbb75b-1e5b-4815-afe8-a4e6253b3366', 'form-fee-payment-slip', 'H8z0PztQKpZazuZYOyvikyloXUNQX7L1u6nxDPkG', 'H8z0PztQKpZazuZYOyvikyloXUNQX7L1u6nxDPkG.jpg', 'image/jpeg', 'public', 'public', 46062, '[]', '[]', '[]', '[]', 1, '2024-05-15 05:17:01', '2024-05-15 05:17:01'),
-(67, 'App\\Models\\TradeLicensePayment', 12, '1f6727b1-2bfe-437f-9891-b4af0021c5eb', 'form-fee-payment-slip', 'BVjwGDlvAKtEsfJBjwrMIx6BFPKPAs7N1HWe6p5s', 'BVjwGDlvAKtEsfJBjwrMIx6BFPKPAs7N1HWe6p5s.jpg', 'image/jpeg', 'public', 'public', 46062, '[]', '[]', '[]', '[]', 1, '2024-05-15 05:34:02', '2024-05-15 05:34:02'),
-(68, 'App\\Models\\TradeLicensePayment', 13, 'ccd71579-d56c-4490-a212-88da997f6736', 'form-fee-payment-slip', 'fFI4jfG1aUuOhz3OM0QBIkM0V5idSQ8EvUFhesgV', 'fFI4jfG1aUuOhz3OM0QBIkM0V5idSQ8EvUFhesgV.jpg', 'image/jpeg', 'public', 'public', 92170, '[]', '[]', '[]', '[]', 1, '2024-05-15 11:47:41', '2024-05-15 11:47:41'),
-(69, 'App\\Models\\TradeLicensePayment', 14, 'e358afec-9d46-4231-910e-62e834954b10', 'form-fee-payment-slip', 'zXjAYWC6iD1tf5Jxbpdsmesw0YSjmwS1UwlbqFpW', 'zXjAYWC6iD1tf5Jxbpdsmesw0YSjmwS1UwlbqFpW.jpg', 'image/jpeg', 'public', 'public', 46062, '[]', '[]', '[]', '[]', 1, '2024-05-15 12:02:07', '2024-05-15 12:02:07'),
-(70, 'App\\Models\\TradeLicensePayment', 15, '4a410608-1d45-41bd-91ae-8d411fd61527', 'form-fee-payment-slip', 'r0l8rsvqfuKEKh7kFbPgkLrScxtoE0S1aHFCILrc', 'r0l8rsvqfuKEKh7kFbPgkLrScxtoE0S1aHFCILrc.jpg', 'image/jpeg', 'public', 'public', 51362, '[]', '[]', '[]', '[]', 1, '2024-05-15 12:07:01', '2024-05-15 12:07:01'),
-(76, 'App\\Models\\TradeLicensePayment', 21, '81a5c679-c1e8-4b77-98fe-4dfd28bf573d', 'form-fee-payment-slip', 'CllMLpuCz1jRfjX08LkgtBansmRDFjajgxIXqmlA', 'CllMLpuCz1jRfjX08LkgtBansmRDFjajgxIXqmlA.jpg', 'image/jpeg', 'public', 'public', 58790, '[]', '[]', '[]', '[]', 1, '2024-05-17 10:29:08', '2024-05-17 10:29:08'),
-(83, 'App\\Models\\TradeLicenseDocument', 26, '07c0a255-7147-44d2-aa05-e67ddc85c922', 'document', '14cc8aef457ff806355e2f93d17a98cb', '14cc8aef457ff806355e2f93d17a98cb.png', 'image/png', 'public', 'public', 96257, '[]', '[]', '{\"document-preview\":true}', '[]', 1, '2024-05-18 10:51:19', '2024-05-18 10:51:20'),
-(85, 'App\\Models\\TradeLicenseApplication', 25, '9f32dfe4-a963-4373-8fff-6e9f51ccdfe1', 'owner_image', 'KaXklqmTQG47bPAagzWSgIBt9RCe7w1UBLelaqaN', 'KaXklqmTQG47bPAagzWSgIBt9RCe7w1UBLelaqaN.jpg', 'image/jpeg', 'public', 'public', 13844, '[]', '[]', '{\"thumb\":true}', '[]', 1, '2024-05-19 06:14:32', '2024-05-19 06:14:33'),
-(86, 'App\\Models\\TradeLicenseDocument', 32, '5f0619af-df3f-41bc-aff3-97d499848173', 'document', '298ee48a831a6e83d126a0a2be2b5bf0', '298ee48a831a6e83d126a0a2be2b5bf0.jpg', 'image/jpeg', 'public', 'public', 88301, '[]', '[]', '{\"document-preview\":true}', '[]', 1, '2024-05-19 06:14:33', '2024-05-19 06:14:33'),
-(87, 'App\\Models\\TradeLicenseDocument', 33, '02674a32-d033-4dfb-ba40-43827c551168', 'document', '36434d363c35c5623525d665ad1b9c63', '36434d363c35c5623525d665ad1b9c63.pdf', 'application/pdf', 'public', 'public', 219711, '[]', '[]', '{\"document-preview\":true}', '[]', 1, '2024-05-19 06:14:33', '2024-05-19 06:14:35'),
-(88, 'App\\Models\\TradeLicenseApplication', 22, '4a66ed40-6215-4285-a23d-4aa4c615b88b', 'owner_image', 'GOb8KwY9Ma10st532PObt4rniv5um180Dp9SMVlx', 'GOb8KwY9Ma10st532PObt4rniv5um180Dp9SMVlx.jpg', 'image/jpeg', 'public', 'public', 19347, '[]', '[]', '{\"thumb\":true}', '[]', 1, '2024-05-19 06:20:24', '2024-05-19 06:20:25'),
-(89, 'App\\Models\\Admin', 4, 'd8545676-3ec6-40bb-8df8-96bd820403b0', 'dp', 'oU6oAnBTVs710mkTxd2Q6P2WS0VsCVhC1hX6otxP', 'oU6oAnBTVs710mkTxd2Q6P2WS0VsCVhC1hX6otxP.jpg', 'image/jpeg', 'public', 'public', 13844, '[]', '[]', '{\"thumb\":true}', '[]', 1, '2024-05-19 06:39:52', '2024-05-19 06:39:52'),
-(90, 'App\\Models\\Admin', 5, '5d4af935-bedc-4a5b-882d-e6104e11c4c9', 'dp', 'V0aAEipJDY8PUdxu5oiIuwcsmtnOD1hMoWc0YmtR', 'V0aAEipJDY8PUdxu5oiIuwcsmtnOD1hMoWc0YmtR.jpg', 'image/jpeg', 'public', 'public', 18661, '[]', '[]', '{\"thumb\":true}', '[]', 1, '2024-05-19 06:41:08', '2024-05-19 06:41:09'),
-(91, 'App\\Models\\Admin', 6, 'fa9a9408-c705-42e9-bcd9-bc665889d6de', 'dp', 'MhEgDREzmSoOdrAL7FoUKKFavp9Efm7PsRcmtvwA', 'MhEgDREzmSoOdrAL7FoUKKFavp9Efm7PsRcmtvwA.png', 'image/jpeg', 'public', 'public', 10363, '[]', '[]', '{\"thumb\":true}', '[]', 1, '2024-05-19 06:42:32', '2024-05-19 06:42:33'),
-(92, 'App\\Models\\Admin', 7, 'a031fec6-675b-415c-bf8a-50177cd5c300', 'dp', '48PWnoXnutMQQYjhOEnmno56MCftat9JRai7NjUK', '48PWnoXnutMQQYjhOEnmno56MCftat9JRai7NjUK.png', 'image/jpeg', 'public', 'public', 12353, '[]', '[]', '{\"thumb\":true}', '[]', 1, '2024-05-19 06:43:41', '2024-05-19 06:43:41'),
-(93, 'App\\Models\\Admin', 8, 'f8434a73-0f4e-4761-b560-60c1ccc329fa', 'dp', 'Mn7Vvne3WaGGyoBFYbSWuhAITnH4YdBVNUEIpxpC', 'Mn7Vvne3WaGGyoBFYbSWuhAITnH4YdBVNUEIpxpC.png', 'image/jpeg', 'public', 'public', 9363, '[]', '[]', '{\"thumb\":true}', '[]', 1, '2024-05-19 06:45:10', '2024-05-19 06:45:10'),
-(94, 'App\\Models\\TradeLicenseApplication', 24, '9233610b-ca19-481b-88f0-13e51cd3201b', 'owner_image', '0hzlcUqp1hYlm8IULf9Cb0ilGZkLU3D2XXSEwHud', '0hzlcUqp1hYlm8IULf9Cb0ilGZkLU3D2XXSEwHud.png', 'image/jpeg', 'public', 'public', 10444, '[]', '[]', '{\"thumb\":true}', '[]', 1, '2024-05-19 07:23:28', '2024-05-19 07:23:28'),
-(96, 'App\\Models\\TradeLicensePayment', 23, 'ca402609-f2fe-42f8-a82a-74cb1cfddcc9', 'form-fee-payment-slip', 'mibLifbUQj9NXaJ51o36HQmXWojza2QhzVJT5MkM', 'mibLifbUQj9NXaJ51o36HQmXWojza2QhzVJT5MkM.jpg', 'image/jpeg', 'public', 'public', 59913, '[]', '[]', '[]', '[]', 1, '2024-05-19 18:57:59', '2024-05-19 18:57:59'),
-(97, 'App\\Models\\TradeLicensePayment', 24, '9ef3501a-e81c-4547-b882-951fa6fc1b6c', 'license-fee-payment-slip', 'whlY9SNPFPbZqjrenfoyjYXbp8MpUFsZjV7DiqGZ', 'whlY9SNPFPbZqjrenfoyjYXbp8MpUFsZjV7DiqGZ.png', 'image/jpeg', 'public', 'public', 23037, '[]', '[]', '[]', '[]', 1, '2024-05-20 07:37:22', '2024-05-20 07:37:22'),
-(98, 'App\\Models\\TradeLicensePayment', 25, 'b045cb59-1454-4ee5-b702-ff7b1939257a', 'license-fee-payment-slip', 'YgwLcAGUeWJuYpJ0CXwPZdi9PAjbm48TRbC27S8V', 'YgwLcAGUeWJuYpJ0CXwPZdi9PAjbm48TRbC27S8V.png', 'image/jpeg', 'public', 'public', 91493, '[]', '[]', '[]', '[]', 1, '2024-05-20 11:57:15', '2024-05-20 11:57:15'),
-(99, 'App\\Models\\TradeLicensePayment', 26, 'dd05535b-c237-4c75-b79c-078917399745', 'license-fee-payment-slip', 'aHGlw6G4GqCV9wB7Mk7mhJCrvrTLzBtBtxXoJ9fa', 'aHGlw6G4GqCV9wB7Mk7mhJCrvrTLzBtBtxXoJ9fa.png', 'image/jpeg', 'public', 'public', 22473, '[]', '[]', '[]', '[]', 1, '2024-05-20 11:58:26', '2024-05-20 11:58:26'),
-(100, 'App\\Models\\TradeLicensePayment', 27, '9c7f8206-59fa-4bb5-98d7-98bdb0086e2c', 'license-fee-payment-slip', 'GdSJ3NzK2mblTGcKWMgq6tFZExT41UOpxUiMF9ES', 'GdSJ3NzK2mblTGcKWMgq6tFZExT41UOpxUiMF9ES.jpg', 'image/jpeg', 'public', 'public', 54870, '[]', '[]', '[]', '[]', 1, '2024-05-20 12:01:45', '2024-05-20 12:01:45');
 
 -- --------------------------------------------------------
 
@@ -872,7 +831,11 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('52KQgNhQzccjmeo5lFexydjLVhNdSOcjylKcqt3r', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiRHh4U3ZIWUgxNlJUMURBRlNLZGVQUFdHaUl6MlJSSUlON3dOVGRGSSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czo3MDoiaHR0cDovL2xvY2FsaG9zdDo4MDAwL3RyYWRlLWxpY2Vuc2UvdGxkYzhkNDQ2NDRmOTAzMmViMjY1NDIwNGVmNTdkM2U4MiI7fX0=', 1716229906);
+('5WHCGSLUQpMUO6jjVdrqIh2H754rMrePYfHkL8dC', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSWRhRjFHaVJ3eVI1N3pJR2hQUWpYc1hBMjNEa3puS084VGxGRUUwcSI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM3OiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYWRtaW4vZGFzaGJvYXJkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fYWRtaW5fNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo1O30=', 1716894280),
+('MyJ7ajmQNXFc6TU9Xsfs4ZwmmXtbfnDpxDSLbRl8', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:127.0) Gecko/20100101 Firefox/127.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiWXI5elJXWHQ0QlRzU1lPMWswbXRER1l6eFpwdHZBQ3l4NzRVZTJ3ZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9hZG1pbl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjY7fQ==', 1716889168),
+('pAj1MxwKb0dhk9Fki5qqf5Kgv94wQbkYqLB65jcU', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:127.0) Gecko/20100101 Firefox/127.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiY0huejlFNE5OUEV2Y2E4ZmpPdXozd0wyS250eDdGb3RRY216MThwZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9hZG1pbi9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9hZG1pbl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjU7fQ==', 1716892877),
+('Ty6wxGEhK5TWPEOxh6uotuMDslD32NnQAy6ow1Wt', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiMG1mVzdqMmtNOXRSYmVMeGx3UXljSnMzaUFJekxYUlRjZjYwS1NuNSI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM3OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYWRtaW4vZGFzaGJvYXJkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fYWRtaW5fNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo1O30=', 1716892776),
+('xUIf0dhC8BpTt179pgU3KB8Q7rhqrgTXFTYQDO78', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiR3NwanlOTEU4ZUVMeWF0Vkc4WjhJcWhxSGJjWjkxazI5c29Ocm9tYSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC91c2VyL2xvZ2luIjt9fQ==', 1716958795);
 
 -- --------------------------------------------------------
 
@@ -912,75 +875,6 @@ CREATE TABLE `trade_license_activities` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `trade_license_activities`
---
-
-INSERT INTO `trade_license_activities` (`id`, `trade_license_application_id`, `activity`, `message`, `payment_amount`, `created_at`, `updated_at`) VALUES
-(6, 23, 'form created', NULL, NULL, '2024-05-14 08:40:24', '2024-05-14 08:40:24'),
-(8, 22, 'form fee submitted', NULL, NULL, '2024-05-14 14:27:17', '2024-05-14 14:27:17'),
-(9, 21, 'form fee submitted', NULL, NULL, '2024-05-15 04:14:37', '2024-05-15 04:14:37'),
-(10, 20, 'form fee submitted', NULL, NULL, '2024-05-15 04:14:56', '2024-05-15 04:14:56'),
-(11, 24, 'form created', NULL, NULL, '2024-05-15 04:21:17', '2024-05-15 04:21:17'),
-(13, 24, 'form fee submitted', NULL, NULL, '2024-05-15 05:34:02', '2024-05-15 05:34:02'),
-(14, 20, 'form fee rejected', NULL, NULL, '2024-05-15 09:21:35', '2024-05-15 09:21:35'),
-(15, 21, 'form fee rejected', 'নকোল ফরম সাবমিট করেছেন', NULL, '2024-05-15 09:29:30', '2024-05-15 09:29:30'),
-(16, 22, 'form fee rejected', 'ব্যাংক, ব্রাঞ্চ এবং চালান নম্বর দিতে হবে', NULL, '2024-05-15 09:31:03', '2024-05-15 09:31:03'),
-(17, 24, 'form fee verified', 'চালান নাম্বার পরবর্তী থেকে অবশ্যই প্রদান করবেন', NULL, '2024-05-15 09:32:41', '2024-05-15 09:32:41'),
-(18, 22, 'form fee submitted', NULL, NULL, '2024-05-15 11:47:41', '2024-05-15 11:47:41'),
-(19, 21, 'form fee submitted', NULL, NULL, '2024-05-15 12:02:07', '2024-05-15 12:02:07'),
-(20, 20, 'form fee submitted', NULL, NULL, '2024-05-15 12:07:01', '2024-05-15 12:07:01'),
-(21, 22, 'form fee verified', NULL, NULL, '2024-05-15 16:00:00', '2024-05-15 16:00:00'),
-(22, 20, 'form fee verified', NULL, NULL, '2024-05-16 04:30:20', '2024-05-16 04:30:20'),
-(30, 20, 'assistant rejected', 'pending_assistant_approval', NULL, '2024-05-16 14:58:48', '2024-05-16 14:58:48'),
-(31, 22, 'assistant rejected', 'ব্যবসা প্রতিষ্ঠান নিজ ঘরে হইলে হোল্ডিং ট্যাক্স এর ফটোকপি', NULL, '2024-05-16 15:00:27', '2024-05-16 15:00:27'),
-(32, 24, 'assistant approved', NULL, NULL, '2024-05-17 06:21:20', '2024-05-17 06:21:20'),
-(37, 21, 'form fee verified', NULL, NULL, '2024-05-17 06:35:41', '2024-05-17 06:35:41'),
-(38, 21, 'assistant approved', NULL, NULL, '2024-05-17 06:35:55', '2024-05-17 06:35:55'),
-(43, 23, 'form fee submitted', NULL, NULL, '2024-05-17 08:26:56', '2024-05-17 08:26:56'),
-(44, 23, 'form fee rejected', 'পেমেন্ট নিশ্চিত করুন। ফর্ম ফি প্রত্যাখ্যান করা হয়েছে।\r\nসংশোধন করে পুনরায় প্রেরণ করুন।', NULL, '2024-05-17 08:27:22', '2024-05-17 08:27:22'),
-(45, 23, 'form fee resubmitted', NULL, NULL, '2024-05-17 10:29:08', '2024-05-17 10:29:08'),
-(46, 23, 'form fee verified', 'ঠিক আছে কিন্তু পরবর্তী থেকে সোনালী ব্যাংকে জমা করবেন', NULL, '2024-05-17 10:31:07', '2024-05-17 10:31:07'),
-(48, 23, 'assistant rejected', 'জীবনের নাম যদি রাখা হয় ভুল\r\nস্মৃতির নাম তবে বেদনার ফুল\r\nভুল সবই ভুল', NULL, '2024-05-17 13:51:35', '2024-05-17 13:51:35'),
-(49, 25, 'form created', NULL, NULL, '2024-05-19 06:14:32', '2024-05-19 06:14:32'),
-(50, 22, 'user correction', NULL, NULL, '2024-05-19 06:35:40', '2024-05-19 06:35:40'),
-(51, 24, 'user correction', NULL, NULL, '2024-05-19 06:36:50', '2024-05-19 06:36:50'),
-(52, 24, 'inspector rejected', 'সঠিক ছবি প্রদান করুন', NULL, '2024-05-19 07:21:07', '2024-05-19 07:21:07'),
-(53, 24, 'user correction', NULL, NULL, '2024-05-19 07:23:29', '2024-05-19 07:23:29'),
-(54, 24, 'inspector approved', NULL, NULL, '2024-05-19 07:23:59', '2024-05-19 07:23:59'),
-(55, 24, 'license fee submitted', NULL, NULL, '2024-05-19 18:56:15', '2024-05-19 18:56:15'),
-(56, 25, 'form fee submitted', NULL, NULL, '2024-05-19 18:57:59', '2024-05-19 18:57:59'),
-(57, 22, 'assistant approved', 'আবেদনটিকে পরবর্তী ধাপে প্রেরণ করা হবে।', NULL, '2024-05-19 19:00:58', '2024-05-19 19:00:58'),
-(58, 25, 'form fee verified', 'সোনালী ব্যাংক লিমিটেড', NULL, '2024-05-19 19:15:21', '2024-05-19 19:15:21'),
-(59, 25, 'assistant approved', NULL, NULL, '2024-05-19 19:16:27', '2024-05-19 19:16:27'),
-(60, 24, 'license fee rejected', 'এগারো হাজার নয় শত টাকা মাত্র ?', NULL, '2024-05-20 07:14:00', '2024-05-20 07:14:00'),
-(61, 24, 'license fee resubmitted', NULL, NULL, '2024-05-20 07:37:23', '2024-05-20 07:37:23'),
-(62, 24, 'license fee verified', NULL, NULL, '2024-05-20 07:43:08', '2024-05-20 07:43:08'),
-(63, 24, 'supt approved', NULL, NULL, '2024-05-20 08:55:11', '2024-05-20 08:55:11'),
-(64, 24, 'ro rejected', 'বরিশাল এর জেলা এটা?', NULL, '2024-05-20 09:07:52', '2024-05-20 09:07:52'),
-(65, 24, 'user correction', NULL, NULL, '2024-05-20 09:08:46', '2024-05-20 09:08:46'),
-(66, 24, 'ro rejected', 'বরিশাল এর জেলা এটা?', NULL, '2024-05-20 09:11:19', '2024-05-20 09:11:19'),
-(67, 24, 'user correction', NULL, NULL, '2024-05-20 09:25:45', '2024-05-20 09:25:45'),
-(68, 24, 'ro rejected', 'বরিশাল বিভাগের জেলা এটা?', NULL, '2024-05-20 09:30:47', '2024-05-20 09:30:47'),
-(69, 24, 'user correction', NULL, NULL, '2024-05-20 09:31:46', '2024-05-20 09:31:46'),
-(70, 24, 'ro approved', NULL, NULL, '2024-05-20 09:32:18', '2024-05-20 09:32:18'),
-(71, 24, 'cro rejected', 'বরিশাল বিভাগের হতে হবে', NULL, '2024-05-20 09:36:25', '2024-05-20 09:36:25'),
-(72, 24, 'user correction', NULL, NULL, '2024-05-20 09:37:01', '2024-05-20 09:37:01'),
-(73, 24, 'cro approved', NULL, NULL, '2024-05-20 09:37:36', '2024-05-20 09:37:36'),
-(74, 24, 'issued', NULL, NULL, '2024-05-20 11:43:51', '2024-05-20 11:43:51'),
-(75, 25, 'inspector approved', NULL, NULL, '2024-05-20 11:55:22', '2024-05-20 11:55:22'),
-(76, 22, 'inspector approved', NULL, NULL, '2024-05-20 11:55:32', '2024-05-20 11:55:32'),
-(77, 21, 'inspector approved', NULL, NULL, '2024-05-20 11:55:44', '2024-05-20 11:55:44'),
-(78, 21, 'license fee submitted', NULL, NULL, '2024-05-20 11:57:15', '2024-05-20 11:57:15'),
-(79, 22, 'license fee submitted', NULL, NULL, '2024-05-20 11:58:26', '2024-05-20 11:58:26'),
-(80, 25, 'license fee submitted', NULL, NULL, '2024-05-20 12:01:45', '2024-05-20 12:01:45'),
-(81, 21, 'license fee verified', NULL, NULL, '2024-05-20 12:05:50', '2024-05-20 12:05:50'),
-(82, 21, 'supt approved', NULL, NULL, '2024-05-20 12:06:03', '2024-05-20 12:06:03'),
-(83, 22, 'license fee verified', NULL, NULL, '2024-05-20 12:06:20', '2024-05-20 12:06:20'),
-(84, 22, 'supt approved', NULL, NULL, '2024-05-20 12:06:33', '2024-05-20 12:06:33'),
-(85, 25, 'license fee verified', NULL, NULL, '2024-05-20 12:06:51', '2024-05-20 12:06:51'),
-(86, 25, 'supt approved', NULL, NULL, '2024-05-20 12:07:24', '2024-05-20 12:07:24');
 
 -- --------------------------------------------------------
 
@@ -1073,18 +967,6 @@ CREATE TABLE `trade_license_applications` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `trade_license_applications`
---
-
-INSERT INTO `trade_license_applications` (`id`, `user_id`, `business_category_id`, `signboard_id`, `business_organization_name_bn`, `business_organization_name`, `owner_name_bn`, `owner_name`, `father_name_bn`, `father_name`, `mother_name_bn`, `mother_name`, `spouse_name_bn`, `spouse_name`, `nature_of_business_bn`, `nature_of_business`, `address_of_business_organization_bn`, `address_of_business_organization`, `zone_bn`, `zone`, `ward_no`, `national_id_no`, `birth_registration_no`, `passport_no`, `tin_no`, `bin_no`, `phone_no`, `email`, `fiscal_year`, `business_starting_date`, `ca_holding_no`, `ca_road_no`, `ca_village_bn`, `ca_village`, `ca_post_office_bn`, `ca_post_office`, `ca_post_code`, `ca_upazilla_bn`, `ca_upazilla`, `ca_district_bn`, `ca_district`, `ca_division_bn`, `ca_division`, `ca_country_bn`, `ca_country`, `pa_holding_no`, `pa_road_no`, `pa_village_bn`, `pa_village`, `pa_post_office_bn`, `pa_post_office`, `pa_post_code`, `pa_upazilla_bn`, `pa_upazilla`, `pa_district_bn`, `pa_district`, `pa_division_bn`, `pa_division`, `pa_country_bn`, `pa_country`, `image`, `application_type`, `ccmts_2016_serial_no`, `form_fee`, `new_application_fee`, `renewal_application_fee`, `arrear`, `surcharge`, `amendment_fee`, `signboard_fee`, `income_tax`, `vat`, `other_fee`, `total_fee`, `uuid`, `trade_license_no`, `issued_at`, `expiry_date`, `status`, `corrections`, `created_at`, `updated_at`) VALUES
-(20, 1, 16, 2, 'বিটস একাডেমী', 'Bits Academy', 'গালিব জামান', 'Galib Jaman', 'মোঃ আবু ছালেহ', 'Md Abu Saleh', 'আঞ্জুমানআরা বেগম', 'Anjumanara Begum', 'ফারহানা আক্তার', 'Farhana Akter', 'একক', 'Individual', 'বটতলা', 'Police Lines, Barishal Sadar, Barishal', 'পুলিশ লাইন', NULL, '16', NULL, '01456124424545489', NULL, NULL, NULL, '01766555213', NULL, '2024-2025', '2024-05-31', '154', NULL, 'পুলিশ লাইন', 'Police Lines', 'আলেকান্দা', 'Alekanda', NULL, 'বরিশাল সদর', 'Barishal Sadar', 'বরিশাল', 'Barishal', 'বরিশাল', 'Barishal', 'বাংলাদেশ', 'Bangladesh', '154', NULL, 'পুলিশ লাইন', 'Police Lines', 'আলেকান্দা', 'Alekanda', NULL, 'বরিশাল সদর', 'Barishal Sadar', 'ঝালকাঠি', 'Jhalokathi', 'বরিশাল', 'Barishal', NULL, NULL, 'C:\\xampp\\tmp\\phpC75E.tmp', 'new', NULL, 200.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'pending_inspector_approval', '{\"image\":{\"message\":\"\\u09b8\\u09cd\\u09ac\\u09a4\\u09cd\\u09ac\\u09be\\u09a7\\u09bf\\u0995\\u09be\\u09b0\\u09c0\\u09b0 \\u099b\\u09ac\\u09bf\",\"isCorrected\":\"0\"}}', '2024-05-09 05:39:23', '2024-05-16 14:58:48'),
-(21, 1, 16, 1, 'ফিহরি ফিউরি', 'Fihri Fury', 'ফারহানা আক্তার', 'Farhana Akter', 'লুতফুর রহমান', 'Dewan Lutfur Rahman', 'ছালমা বেগম', 'Salma Begum', 'গালিব জামান', 'Galib Jaman', 'একক', 'Individual', 'পুলিশ লাইন', 'Police Lines', NULL, NULL, '14', '02346574651234544', NULL, NULL, NULL, NULL, '01631907778', NULL, '2024-2025', '2024-05-31', '1548', NULL, 'বরিশাল', 'Barishal', 'বরিশাল', 'Barishal', '8200', 'বরিশাল', 'Barishal', 'বরিশাল', 'Barishal', 'বরিশাল', 'Barishal', 'বাংলাদেশ', 'Bangladesh', '1548', NULL, 'বরিশাল', 'Barishal', 'বরিশাল', 'Barishal', '8200', 'বরিশাল', 'Barishal', 'কিশোরগঞ্জ', 'Kishoreganj', 'ঢাকা', 'Dhaka', NULL, NULL, 'C:\\xampp\\tmp\\phpA120.tmp', 'new', NULL, 200.00, 3500.00, NULL, NULL, 100.00, NULL, 500.00, 120.00, 600.00, NULL, NULL, NULL, NULL, NULL, NULL, 'pending_ro_approval', NULL, '2024-05-09 11:01:57', '2024-05-20 12:06:02'),
-(22, 1, 13, 2, 'ফার্মস্ অব ফারহানা', 'Farms of Farhana', 'ফারহানা আক্তার', 'Farhana Akter', 'লুতফুর রহমান', 'Dewan Lutfur Rahman', 'ছালমা বেগম', 'Salma Begum', 'গালিব জামান', 'Galib Jaman', 'একক', 'Individual', 'পুলিশ লাইন, বরিশাল সাদর, বরিশাল', 'Police Lines, Barishal Sadar, Barishal', NULL, NULL, '4', '02346574651234544', NULL, NULL, NULL, NULL, '01631907778', NULL, '2024-2025', '2024-05-31', '1548', NULL, 'বরিশাল', 'Barishal', 'বরিশাল', 'Barishal', '8200', 'বরিশাল', 'Barishal', 'বরিশাল', 'Barishal', 'বরিশাল', 'Barishal', 'বাংলাদেশ', 'Bangladesh', '1548', NULL, 'বরিশাল', 'Barishal', 'বরিশাল', 'Barishal', '8200', 'বরিশাল', 'Barishal', 'ঝালকাঠি', 'Jhalokathi', 'বরিশাল', 'Barishal', NULL, NULL, 'C:\\xampp\\tmp\\php7B5B.tmp', 'new', NULL, 200.00, 2000.00, NULL, NULL, 100.00, NULL, 1000.00, 90.00, 450.00, NULL, NULL, NULL, NULL, NULL, NULL, 'pending_ro_approval', '[]', '2024-05-10 09:10:12', '2024-05-20 12:06:33'),
-(23, 2, 13, 2, 'ফার্মস্ অব ফারহানা আক্তার', 'Farms of Farhana Akter', 'ফারহানা আক্তার', 'Farhana Akter', 'লুতফুর রহমান', 'Dewan Lutfur Rahman', 'ছালমা বেগম', 'Salma Begum', 'গালিব জামান', 'Galib Jaman', 'একক', 'Individual', 'পুলিশ লাইন', 'Police Lines, Barishal Sadar, Barishal', NULL, NULL, '2', '02346574651234544', NULL, NULL, NULL, NULL, '01631907778', NULL, '2024-2025', '2024-05-31', '1548', NULL, 'বরিশাল', 'Barishal', 'বরিশাল', 'Barishal', '8200', 'বরিশাল', 'Barishal', 'ঝালকাঠি', 'Jhalokathi', 'বরিশাল', 'Barishal', 'বাংলাদেশ', 'Bangladesh', '1548', NULL, 'বরিশাল', 'Barishal', 'বরিশাল', 'Barishal', '8200', 'বরিশাল', 'Barishal', 'ঝালকাঠি', 'Jhalokathi', 'বরিশাল', 'Barishal', NULL, NULL, 'C:\\xampp\\tmp\\phpAF97.tmp', 'new', NULL, 200.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'denied_assistant_approval', '{\"image\":{\"message\":null,\"isCorrected\":\"0\"},\"owner_name_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"owner_name\":{\"message\":null,\"isCorrected\":\"0\"},\"father_name_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"father_name\":{\"message\":null,\"isCorrected\":\"0\"},\"mother_name_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"mother_name\":{\"message\":null,\"isCorrected\":\"0\"},\"spouse_name_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"spouse_name\":{\"message\":null,\"isCorrected\":\"0\"},\"national_id_no\":{\"message\":null,\"isCorrected\":\"0\"},\"birth_registration_no\":{\"message\":null,\"isCorrected\":\"0\"},\"passport_no\":{\"message\":null,\"isCorrected\":\"0\"},\"business_organization_name_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"business_organization_name\":{\"message\":null,\"isCorrected\":\"0\"},\"nature_of_business_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"nature_of_business\":{\"message\":null,\"isCorrected\":\"0\"},\"phone_no\":{\"message\":null,\"isCorrected\":\"0\"},\"email\":{\"message\":null,\"isCorrected\":\"0\"},\"tin_no\":{\"message\":null,\"isCorrected\":\"0\"},\"bin_no\":{\"message\":null,\"isCorrected\":\"0\"},\"ward_no\":{\"message\":null},\"zone_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"business_starting_date\":{\"message\":null,\"isCorrected\":\"0\"},\"address_of_business_organization_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"address_of_business_organization\":{\"message\":null,\"isCorrected\":\"0\"},\"ca_holding_no\":{\"message\":null,\"isCorrected\":\"0\"},\"pa_holding_no\":{\"message\":null,\"isCorrected\":\"0\"},\"ca_road_no\":{\"message\":null,\"isCorrected\":\"0\"},\"pa_road_no\":{\"message\":null,\"isCorrected\":\"0\"},\"ca_post_code\":{\"message\":null,\"isCorrected\":\"0\"},\"pa_post_code\":{\"message\":null,\"isCorrected\":\"0\"},\"ca_village_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"pa_village_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"ca_village\":{\"message\":null,\"isCorrected\":\"0\"},\"pa_village\":{\"message\":null,\"isCorrected\":\"0\"},\"ca_post_office_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"pa_post_office_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"ca_post_office\":{\"message\":null,\"isCorrected\":\"0\"},\"pa_post_office\":{\"message\":null,\"isCorrected\":\"0\"},\"ca_division_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"pa_division_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"ca_division\":{\"message\":null,\"isCorrected\":\"0\"},\"pa_division\":{\"message\":null,\"isCorrected\":\"0\"},\"ca_district_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"pa_district_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"ca_district\":{\"message\":null,\"isCorrected\":\"0\"},\"pa_district\":{\"message\":null,\"isCorrected\":\"0\"},\"ca_upazilla_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"pa_upazilla_bn\":{\"message\":null,\"isCorrected\":\"0\"},\"ca_upazilla\":{\"message\":null,\"isCorrected\":\"0\"},\"pa_upazilla\":{\"message\":null,\"isCorrected\":\"0\"},\"document-1\":{\"message\":null,\"isCorrected\":\"0\"},\"document-2\":{\"message\":null,\"isCorrected\":\"0\"}}', '2024-05-14 08:40:24', '2024-05-17 13:51:35'),
-(24, 1, 24, 3, 'ফার্ম অফ চিকস্', 'Farm of Chicks', 'ছালমা বেগম', 'Salma Begum', 'মোঃ আবু ছালেহ', 'Yusuf Ali Dewan', 'সেনার মাতা', 'Anjumanara Begum', 'ফারহানা আক্তার', 'Farhana Akter', 'যৌথ', 'Joint', 'পুলিশ লাইন, বরিশাল সদর, বরিশাল', 'Police Lines, Barishal Sadar, Barishal', 'পুলিশ লাইন', NULL, '15', '19564456121245455', NULL, NULL, NULL, NULL, '01631907778', 'dev.gj@gmail.com', '2024-2025', '2024-05-24', '154', NULL, 'পুলিশ লাইন', 'Police Lines', 'আমিরাবাদ', 'Amirabad', '8200', 'বরিশাল সদর', 'Barishal Sadar', 'বরিশাল', 'Barishal', 'বরিশাল', 'Barishal', 'বাংলাদেশ', 'Bangladesh', '154', NULL, 'পুলিশ লাইন', 'Police Lines', 'আমিরাবাদ', 'Amirabad', '8200', 'বরিশাল সদর', 'Barishal Sadar', 'ঝালকাঠি', 'Jhalokathi', 'বরিশাল', 'Barishal', NULL, NULL, 'C:\\xampp\\tmp\\php45FA.tmp', 'new', NULL, 200.00, 5000.00, NULL, NULL, 100.00, NULL, 5000.00, 300.00, 1500.00, NULL, NULL, 'tldc8d44644f9032eb2654204ef57d3e82', '20500', '2024-05-20 11:43:51', '2024-06-30', 'issued', '[]', '2024-05-15 04:21:17', '2024-05-20 11:43:51'),
-(25, 1, 28, 2, 'ক্যাট ক্যানভাস', 'Cat Canvas', 'টম হোসেন', 'Tom Hossain', 'টমাস সিকদার', 'Tomas Shikdar', 'জুলিয়া বেগম', 'Julia Begum', NULL, NULL, 'যৌথ', 'Joint', 'বিলইর মোড়, চৌরাস্তা, বরিশাল', 'Biloir Mor, Chowrasta, Barishal', NULL, NULL, '5', NULL, NULL, 'AZ7944165', NULL, NULL, '01766555213', 'tom@catsociety.com', '2024-2025', '2026-01-21', '189', NULL, 'বিলই বারিয়া', 'Biloi Baria', 'বিলইর মোড়', 'Biloir Mor', '8200', 'বিলইকাঠি', 'Bilioikathi', 'ঝালকাঠি', 'Jhalokathi', 'বরিশাল', 'Barishal', 'বাংলাদেশ', 'Bangladesh', '189', NULL, 'বিলই বারিয়া', 'Biloi Baria', 'বিলইর মোড়', 'Biloir Mor', '8200', 'বিলইকাঠি', 'Bilioikathi', 'ঝালকাঠি', 'Jhalokathi', 'বরিশাল', 'Barishal', NULL, NULL, 'C:\\xampp\\tmp\\phpF07F.tmp', 'new', NULL, 200.00, 5000.00, NULL, NULL, 100.00, NULL, 1000.00, 180.00, 900.00, NULL, NULL, NULL, NULL, NULL, NULL, 'pending_ro_approval', NULL, '2024-05-19 06:14:32', '2024-05-20 12:07:24');
-
 -- --------------------------------------------------------
 
 --
@@ -1100,24 +982,6 @@ CREATE TABLE `trade_license_documents` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `trade_license_documents`
---
-
-INSERT INTO `trade_license_documents` (`id`, `trade_license_application_id`, `trade_license_required_document_id`, `document_name`, `document_path`, `created_at`, `updated_at`) VALUES
-(22, 20, 1, 'ব্যবসা প্রতিষ্ঠান নিজ ঘরে হইলে হোল্ডিং ট্যাক্স এর ফটোকপি /ভাড়াটিয়া চুক্তিপত্র (কাউন্সিলর দ্বারা সত্যায়িত)', 'http://localhost/storage/12/cb49eb8cbfe18caf374c1d969fbc848a.pdf', '2024-05-09 05:39:24', '2024-05-09 05:39:25'),
-(23, 20, 2, 'জাতীয় পরিচয়পত্র/পাসপোর্টের ফটোকপি ( কাউন্সিলর দ্বারা সত্যায়িত) ', 'http://localhost/storage/13/7995e722228a91db84b1d1631cdf8385.pdf', '2024-05-09 05:39:25', '2024-05-09 05:39:26'),
-(24, 21, 1, 'ব্যবসা প্রতিষ্ঠান নিজ ঘরে হইলে হোল্ডিং ট্যাক্স এর ফটোকপি /ভাড়াটিয়া চুক্তিপত্র (কাউন্সিলর দ্বারা সত্যায়িত)', 'http://localhost/storage/23/44a6d8251f3dc883c68ade8688c74b03.pdf', '2024-05-09 11:01:58', '2024-05-09 11:54:58'),
-(25, 21, 2, 'জাতীয় পরিচয়পত্র/পাসপোর্টের ফটোকপি ( কাউন্সিলর দ্বারা সত্যায়িত) ', 'http://localhost/storage/30/7ea7297b5d0d1fc6ad04c6c8e97d2251.png', '2024-05-09 11:02:00', '2024-05-10 10:22:03'),
-(26, 22, 1, 'ব্যবসা প্রতিষ্ঠান নিজ ঘরে হইলে হোল্ডিং ট্যাক্স এর ফটোকপি /ভাড়াটিয়া চুক্তিপত্র (কাউন্সিলর দ্বারা সত্যায়িত)', 'http://localhost/storage/83/14cc8aef457ff806355e2f93d17a98cb.png', '2024-05-10 09:10:14', '2024-05-18 10:51:20'),
-(27, 22, 2, 'জাতীয় পরিচয়পত্র/পাসপোর্টের ফটোকপি ( কাউন্সিলর দ্বারা সত্যায়িত) ', 'http://localhost/storage/29/3b3e8f9da80748ec69cb046499bd62df.pdf', '2024-05-10 09:10:19', '2024-05-10 09:10:25'),
-(28, 23, 1, 'ব্যবসা প্রতিষ্ঠান নিজ ঘরে হইলে হোল্ডিং ট্যাক্স এর ফটোকপি /ভাড়াটিয়া চুক্তিপত্র (কাউন্সিলর দ্বারা সত্যায়িত)', 'http://localhost/storage/55/43f3ca9d6b4f3174e6f838bb14611d80.pdf', '2024-05-14 08:40:25', '2024-05-14 08:40:27'),
-(29, 23, 2, 'জাতীয় পরিচয়পত্র/পাসপোর্টের ফটোকপি ( কাউন্সিলর দ্বারা সত্যায়িত) ', 'http://localhost/storage/56/bde93f08c65a8461ccd15d15706a4383.pdf', '2024-05-14 08:40:27', '2024-05-14 08:40:28'),
-(30, 24, 1, 'ব্যবসা প্রতিষ্ঠান নিজ ঘরে হইলে হোল্ডিং ট্যাক্স এর ফটোকপি /ভাড়াটিয়া চুক্তিপত্র (কাউন্সিলর দ্বারা সত্যায়িত)', 'http://localhost/storage/63/499da4c0108d0053af2549ffb4a0f734.pdf', '2024-05-15 04:21:19', '2024-05-15 04:21:20'),
-(31, 24, 2, 'জাতীয় পরিচয়পত্র/পাসপোর্টের ফটোকপি ( কাউন্সিলর দ্বারা সত্যায়িত) ', 'http://localhost/storage/64/5e06c5cf3855ab3af330662f6be13c61.pdf', '2024-05-15 04:21:20', '2024-05-15 04:21:23'),
-(32, 25, 1, 'ব্যবসা প্রতিষ্ঠান নিজ ঘরে হইলে হোল্ডিং ট্যাক্স এর ফটোকপি /ভাড়াটিয়া চুক্তিপত্র (কাউন্সিলর দ্বারা সত্যায়িত)', 'http://localhost/storage/86/298ee48a831a6e83d126a0a2be2b5bf0.jpg', '2024-05-19 06:14:33', '2024-05-19 06:14:33'),
-(33, 25, 2, 'জাতীয় পরিচয়পত্র/পাসপোর্টের ফটোকপি ( কাউন্সিলর দ্বারা সত্যায়িত) ', 'http://localhost/storage/87/36434d363c35c5623525d665ad1b9c63.pdf', '2024-05-19 06:14:33', '2024-05-19 06:14:35');
 
 -- --------------------------------------------------------
 
@@ -1143,22 +1007,6 @@ CREATE TABLE `trade_license_payments` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `trade_license_payments`
---
-
-INSERT INTO `trade_license_payments` (`id`, `trade_license_application_id`, `payment_id`, `gateway`, `amount`, `method`, `bank`, `bank_branch`, `bank_invoice_no`, `type`, `received_by`, `fields`, `status`, `received_at`, `created_at`, `updated_at`) VALUES
-(12, 24, NULL, NULL, 200.00, 'bank payment', 'Sonali Bank', 'Bogra Road', '10615151', 'form fee', NULL, '[]', 'verified', NULL, '2024-05-15 05:34:01', '2024-05-15 09:32:41'),
-(13, 22, NULL, NULL, 200.00, 'bank payment', 'সোনালী ব্যাংক লিমিটেড', 'বগুড়া রোড', '10615151', 'form fee', NULL, '[]', 'verified', NULL, '2024-05-15 11:47:40', '2024-05-15 16:00:00'),
-(14, 21, NULL, NULL, 200.00, 'bank payment', 'অগ্রণী ব্যাংক লিমিটেড', 'বগুড়া রোড', '154546523', 'form fee', NULL, '[]', 'verified', NULL, '2024-05-15 12:02:06', '2024-05-17 06:35:41'),
-(15, 20, NULL, NULL, 200.00, 'bank payment', 'সোনালী ব্যাংক লিমিটেড', 'বগুড়া রোড', '154546523', 'form fee', NULL, '[]', 'verified', NULL, '2024-05-15 12:07:01', '2024-05-16 04:30:20'),
-(21, 23, NULL, NULL, 200.00, 'bank payment', 'ব্র্যাক ব্যাংক লিমিটেড', 'Bogra Road', '15454652389', 'form fee', NULL, '[]', 'verified', NULL, '2024-05-17 10:29:07', '2024-05-17 10:31:07'),
-(23, 25, NULL, NULL, 200.00, 'bank payment', 'সোনালী ব্যাংক লিমিটেড', 'Bogra Road', '9635841', 'form fee', NULL, '[]', 'verified', NULL, '2024-05-19 18:57:59', '2024-05-19 19:15:21'),
-(24, 24, NULL, NULL, 11900.00, 'bank payment', 'সোনালী ব্যাংক লিমিটেড', 'ধানমন্ডি', '9865123', 'license fee', NULL, '{\"new_application_fee\":\"5000.00\",\"signboard_fee\":\"5000.00\",\"income_tax\":300,\"vat\":1500,\"surcharge\":100}', 'verified', NULL, '2024-05-20 07:37:22', '2024-05-20 07:43:08'),
-(25, 21, NULL, NULL, 4820.00, 'bank payment', 'সোনালী ব্যাংক লিমিটেড', 'ধানমন্ডি', '8996541', 'license fee', NULL, '{\"new_application_fee\":\"3500.00\",\"signboard_fee\":\"500.00\",\"income_tax\":120,\"vat\":600,\"surcharge\":100}', 'verified', NULL, '2024-05-20 11:57:15', '2024-05-20 12:05:50'),
-(26, 22, NULL, NULL, 3640.00, 'bank payment', 'ব্র্যাক ব্যাংক লিমিটেড', 'ধানমন্ডি', '984202325', 'license fee', NULL, '{\"new_application_fee\":\"2000.00\",\"signboard_fee\":\"1000.00\",\"income_tax\":90,\"vat\":450,\"surcharge\":100}', 'verified', NULL, '2024-05-20 11:58:26', '2024-05-20 12:06:20'),
-(27, 25, NULL, NULL, 7180.00, 'bank payment', 'বিলই ব্যাংক লিমিটেড', 'বিলই বারিয়া', '9863251', 'license fee', NULL, '{\"new_application_fee\":\"5000.00\",\"signboard_fee\":\"1000.00\",\"income_tax\":180,\"vat\":900,\"surcharge\":100}', 'verified', NULL, '2024-05-20 12:01:45', '2024-05-20 12:06:51');
 
 -- --------------------------------------------------------
 
@@ -1198,18 +1046,11 @@ CREATE TABLE `users` (
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `phone_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
+  `needs_password_reset` tinyint(1) NOT NULL DEFAULT 0,
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `name`, `email`, `phone`, `address`, `image`, `email_verified_at`, `phone_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'গালিব জামান', 'gj.emon35@gmail.com', '01766555213', 'N. avenue, Barishal, Bangladesh', 'users/default.png', NULL, '2024-05-08 13:15:27', '$2y$12$D.D5hFf8BH1wcQJS5MQyyOXAts7s1WMCKHW3/66DJOf9zlPN.jMfO', 'bzVo8n9OiUeZChJc9bnBMERkNz13FPLl0JXjK7WUpG9pE7vseGRRJ9k8fSxH', '2024-05-08 13:13:18', '2024-05-08 13:15:27'),
-(2, 'Richa Jaman', 'rj.rafi35@gmail.com', '01631907778', 'N. H avenue, Barishal, BangladeshR', 'users/default.png', NULL, '2024-05-02 03:27:25', '$2y$12$l7BWKWvFKQjE4YIYvDG6k.82Na23F8YXB8Ho7ftycqpIurGBgGUMC', NULL, '2024-04-30 00:32:06', '2024-05-02 03:27:25');
 
 -- --------------------------------------------------------
 
@@ -1221,6 +1062,7 @@ CREATE TABLE `user_one_time_passwords` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `otp` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL DEFAULT 'verification',
   `expires_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `is_used` tinyint(1) NOT NULL DEFAULT 0,
   `last_used_ip` varchar(255) DEFAULT NULL,
@@ -1463,7 +1305,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `media`
 --
 ALTER TABLE `media`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -1493,25 +1335,25 @@ ALTER TABLE `signboards`
 -- AUTO_INCREMENT for table `trade_license_activities`
 --
 ALTER TABLE `trade_license_activities`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `trade_license_applications`
 --
 ALTER TABLE `trade_license_applications`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `trade_license_documents`
 --
 ALTER TABLE `trade_license_documents`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `trade_license_payments`
 --
 ALTER TABLE `trade_license_payments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `trade_license_required_documents`
@@ -1523,13 +1365,13 @@ ALTER TABLE `trade_license_required_documents`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user_one_time_passwords`
 --
 ALTER TABLE `user_one_time_passwords`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables

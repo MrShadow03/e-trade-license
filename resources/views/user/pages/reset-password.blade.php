@@ -4,7 +4,7 @@
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 
 <head>
-    <title>Register | BCC E-Trade License</title>
+    <title>OTP | BCC E-Trade License</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/png" href="{{ asset('assets/img/Barisal_City_Corporation_logo.png') }}">
@@ -24,13 +24,13 @@
             window.top.location.replace(window.self.location.href);
         }
     </script>
-    <style>
-        /* @media (min-width: 600px) {
+    {{-- <style>
+        @media (min-width: 600px) {
             body {
                 background-image: url('{{ asset("/assets/img/login-bg.png") }}');
             }
-        } */
-    </style>
+        }
+    </style> --}}
 </head>
 <!--end::Head-->
 
@@ -40,7 +40,7 @@
     <!--begin::Root-->
     <div class="d-flex flex-column flex-root" id="kt_app_root">
         <!--begin::Authentication - Sign-in -->
-        <div class="d-flex flex-column justify-content-center flex-column-fluid flex-lg-row">
+        <div class="d-flex flex-column justify-content-center flex-column-fluid flex-lg-row" >
 
             <!--begin::Body-->
             <div class="d-flex flex-column-fluid flex-lg-row-auto justify-content-center justify-content-lg-end p-0 p-lg-20">
@@ -50,8 +50,10 @@
                     <div class="d-flex flex-center flex-column flex-column-fluid px-lg-10 pb-15 pb-lg-20">
 
                         <!--begin::Form-->
-                        <form class="form w-100 font-bn" novalidate="novalidate" id="kt_sign_in_form" method="POST" action="{{ route('user.register.store') }}">
+                        <form class="form w-100 font-bn" novalidate="novalidate" id="kt_sign_in_form" method="POST" action="{{ route('user.verify-otp.verify') }}">
                             @csrf
+
+                            <input type="hidden" name="send_to" value="">
                             <!--begin::Heading-->
                             <div class="text-center mb-11">
                                 <img class="w-150px mb-10" alt="Logo" src="{{ asset('assets/img/Barisal_City_Corporation_logo.png') }}" style="width: 150px; aspect-ratio: 1; object-fit:contain">
@@ -61,115 +63,45 @@
 
                                 <!--begin::Subtitle-->
                                 <div class="text-gray-700 fw-semibold fs-6 font-bn">
-                                    রেজিস্ট্রেশন করতে নিচের তথ্য সমূহ প্রদান করুন
+                                     {{-- {{ $method === 'email' ? 'ই-মেইলে' : 'নম্বরে' }} একটি কোড প্রেরণ করা হয়েছে। কোডটি প্রদান করুন। --}}
                                 </div>
                                 <!--end::Subtitle--->
                             </div>
-                            @error('phone')
-                            <div class="text-center text-danger fs-base pb-5 font-bn">ফোন নম্বর কিংবা পাসওয়ার্ড সঠিক নয়!</div>
+                            @error('otp')
+                            <div class="text-center text-danger fs-base pb-5 font-bn">
+                                {{ $message }}
+                            </div>
                             @enderror
+                            @if(session()->has('error'))
+                            <div class="text-center text-danger fs-base pb-2 font-bn">{{ session('error') }}</div>
+                            @endif
+                            @if(session()->has('attempts'))
+                            <div class="text-center text-danger fs-base pb-5 font-bn">
+                                আপনার আর {{ session('attempts') }} টি প্রচেষ্টা বাকি আছে।
+                            </div>
+                            @endif
                             <!--begin::Heading-->
 
                             <!--begin::Input group--->
-                            <div class="fv-row mb-3">
+                            <div class="fv-row mb-5">
                                 <div class="input-group">
                                     <span class="input-group-text">
-                                        <i class="fal fa-user fs-3"></i>
+                                        <i class="fal fa-key fs-3"></i>
                                     </span>
-                                    <input type="text" placeholder="আবেদনকারীর নাম" name="name" value="{{ old('name') }}" class="form-control font-bn" required>
+                                    <input type="text" placeholder="OTP" name="otp" value="" autocomplete="off" class="form-control font-bn" required>
                                 </div>
                                 <!--end::Name-->
-                                @error('name')
-                                <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
-                                @enderror
                             </div>
                             <!--end::Input group--->
-
-                            <!--begin::Input group--->
-                            <div class="fv-row mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <span class="fs-6 text-muted">+88</span>
-                                    </span>
-                                    <input type="text" placeholder="ফোন নম্বর" name="phone" value="{{ old('phone') }}" class="form-control font-bn" required>
-                                </div>
-                                <!--end::Phone-->
-                                @error('phone')
-                                <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <!--end::Input group--->
-
-                            <!--begin::Input group--->
-                            <div class="fv-row mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="fal fa-envelope fs-3"></i>
-                                    </span>
-                                    <input type="text" placeholder="ই-মেইল" name="email" value="{{ old('email') }}" class="form-control font-bn">
-                                </div>
-                                <!--end::Email-->
-                                @error('email')
-                                <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <!--end::Input group--->
-
-                            <!--begin::Input group--->
-                            <div class="fv-row mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="fal fa-location-dot fs-3"></i>
-                                    </span>
-                                    <input type="text" placeholder="ঠিকানা" name="address" value="{{ old('address') }}" class="form-control font-bn">
-                                </div>
-                                <!--end::Address-->
-                                @error('address')
-                                <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <!--end::Input group--->
-
-                            <!--begin::Input group--->
-                            <div class="fv-row mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="fal fa-lock fs-3"></i>
-                                    </span>
-                                    <input type="password" placeholder="পাসওয়ার্ড" name="password" autocomplete="off" class="form-control font-bn" required>
-                                </div>
-                                <!--end::Password-->
-                            </div>
-                            <!--end::Input group--->
-                            <!--begin::Input group--->
-                            <div class="fv-row mb-3">
-                                <!--begin::Password-->
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="fal fa-lock fs-3"></i>
-                                    </span>
-                                    <input type="password" placeholder="পাসওয়ার্ড নিশ্চিত করুন" name="password_confirmation" autocomplete="off" class="form-control font-bn">
-                                </div>
-                                <!--end::Password-->
-                                @error('password')
-                                <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <!--end::Input group--->
-                            
-                            <!--begin::Wrapper-->
-                            <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8 mt-5">
-
-                            </div>
-                            <!--end::Wrapper-->
 
                             <!--begin::Submit button-->
                             <div class="d-grid mb-10">
+                                @if(session()->has('can_resend'))
                                 <button type="submit" id="kt_sign_in_submit" class="btn btn-success font-bn">
 
                                     <!--begin::Indicator label-->
                                     <span class="indicator-label">
-                                        রেজিস্ট্রেশন করুন
+                                        পুনরায় প্রেরণ করুন
                                     </span>
                                     <!--end::Indicator label-->
 
@@ -179,19 +111,25 @@
                                     </span>
                                     <!--end::Indicator progress-->
                                 </button>
+                                @else
+                                <button type="submit" id="kt_sign_in_submit" class="btn btn-success font-bn">
+                                    
+                                    <!--begin::Indicator label-->
+                                    <span class="indicator-label">
+                                        লগইন করুন
+                                    </span>
+                                    <!--end::Indicator label-->
+                                    <!--begin::Indicator progress-->
+                                    <span class="indicator-progress">
+                                        অপেক্ষা করুন... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                    </span>
+                                    <!--end::Indicator progress-->
+                                </button>
+                                @endif
                             </div>
                             <!--end::Submit button-->
                         </form>
                         <!--end::Form-->
-
-                        <div class="text-gray-700 text-center fw-semibold fs-6 font-bn">
-                            একাউন্ট আছে?
-                    
-                            <a href="{{ route('user.login') }}" class="text-primary text-hover-underline">
-                                লগইন করুন
-                            </a>
-                        </div>
-
                     </div>
                     <!--end::Wrapper-->
                 </div>
@@ -228,30 +166,6 @@
                                 validators: {
                                     notEmpty: {
                                         message: 'নাম প্রদান করুন'
-                                    },
-                                    callback: {
-                                        message: 'শুধুমাত্র বাংলা অক্ষর গ্রহণযোগ্য',
-                                        callback: function(value, validator, field) {
-                                            // Check if value is either a valid email or a valid phone number
-                                            var input = value.element;
-                                            value = value.value;
-
-
-                                            if (value.trim() === '') {
-                                                return true; // Skip validation if field is empty
-                                            }
-                                            
-                                            var bengaliPattern = /^[\u0980-\u09FF ]+$/;
-
-                                            if (bengaliPattern.test(value)) {
-                                                return true;
-                                            }
-
-                                            //delete the last character from the input
-                                            input.value = input.value.slice(0, -1);
-                                            
-                                            return false;
-                                        }
                                     }
                                 }
                             },				
@@ -288,16 +202,6 @@
                                     }
                                 }
                             },
-                            'address': {
-                                validators: {
-                                    callback: {
-                                        message: 'ঠিকানা প্রদান করুন',
-                                        callback: function(value, validator, $field) {
-                                            return true;
-                                        }
-                                    }
-                                }
-                            },
                             'password': {
                                 validators: {
                                     notEmpty: {
@@ -321,7 +225,7 @@
                             bootstrap: new FormValidation.plugins.Bootstrap5({
                                 rowSelector: '.fv-row',
                                 eleInvalidClass: '',  // comment to enable invalid state icons
-                                // eleValidClass: ''
+                                eleValidClass: '' // comment to enable valid state icons
                             })
                         }
                     }
