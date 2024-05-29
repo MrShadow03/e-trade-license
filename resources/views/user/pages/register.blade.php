@@ -71,16 +71,12 @@
                             <!--begin::Heading-->
 
                             <!--begin::Input group--->
-                            <div class="fv-row mb-5">
-                                <!--begin::Name-->
-                                <label class="form-label fs-6 text-gray-800 font-bn">
-                                    <span class="required">নাম</span>
-                                </label>
+                            <div class="fv-row mb-3">
                                 <div class="input-group">
                                     <span class="input-group-text">
                                         <i class="fal fa-user fs-3"></i>
                                     </span>
-                                    <input type="text" placeholder="নাম" name="name" value="{{ old('name') }}" class="form-control font-bn" required>
+                                    <input type="text" placeholder="আবেদনকারীর নাম" name="name" value="{{ old('name') }}" class="form-control font-bn" required>
                                 </div>
                                 <!--end::Name-->
                                 @error('name')
@@ -90,11 +86,7 @@
                             <!--end::Input group--->
 
                             <!--begin::Input group--->
-                            <div class="fv-row mb-5">
-                                <!--begin::Phone-->
-                                <label class="form-label fs-6 text-gray-800 font-bn">
-                                    <span class="required">ফোন নম্বর</span>
-                                </label>
+                            <div class="fv-row mb-3">
                                 <div class="input-group">
                                     <span class="input-group-text">
                                         <span class="fs-6 text-muted">+88</span>
@@ -109,9 +101,7 @@
                             <!--end::Input group--->
 
                             <!--begin::Input group--->
-                            <div class="fv-row mb-5">
-                                <!--begin::Email-->
-                                <label class="form-label fs-6 text-gray-800 font-bn">ই-মেইল</label>
+                            <div class="fv-row mb-3">
                                 <div class="input-group">
                                     <span class="input-group-text">
                                         <i class="fal fa-envelope fs-3"></i>
@@ -124,10 +114,9 @@
                                 @enderror
                             </div>
                             <!--end::Input group--->
+
                             <!--begin::Input group--->
-                            <div class="fv-row mb-5">
-                                <!--begin::Address-->
-                                <label class="form-label fs-6 text-gray-800 font-bn">ঠিকানা</label>
+                            <div class="fv-row mb-3">
                                 <div class="input-group">
                                     <span class="input-group-text">
                                         <i class="fal fa-location-dot fs-3"></i>
@@ -135,15 +124,14 @@
                                     <input type="text" placeholder="ঠিকানা" name="address" value="{{ old('address') }}" class="form-control font-bn">
                                 </div>
                                 <!--end::Address-->
+                                @error('address')
+                                <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <!--end::Input group--->
 
                             <!--begin::Input group--->
                             <div class="fv-row mb-3">
-                                <!--begin::Password-->
-                                <label class="form-label fs-6 text-gray-800 font-bn">
-                                    <span class="required">পাসওয়ার্ড</span>
-                                </label>
                                 <div class="input-group">
                                     <span class="input-group-text">
                                         <i class="fal fa-lock fs-3"></i>
@@ -240,6 +228,30 @@
                                 validators: {
                                     notEmpty: {
                                         message: 'নাম প্রদান করুন'
+                                    },
+                                    callback: {
+                                        message: 'শুধুমাত্র বাংলা অক্ষর গ্রহণযোগ্য',
+                                        callback: function(value, validator, field) {
+                                            // Check if value is either a valid email or a valid phone number
+                                            var input = value.element;
+                                            value = value.value;
+
+
+                                            if (value.trim() === '') {
+                                                return true; // Skip validation if field is empty
+                                            }
+                                            
+                                            var bengaliPattern = /^[\u0980-\u09FF ]+$/;
+
+                                            if (bengaliPattern.test(value)) {
+                                                return true;
+                                            }
+
+                                            //delete the last character from the input
+                                            input.value = input.value.slice(0, -1);
+                                            
+                                            return false;
+                                        }
                                     }
                                 }
                             },				
@@ -276,6 +288,16 @@
                                     }
                                 }
                             },
+                            'address': {
+                                validators: {
+                                    callback: {
+                                        message: 'ঠিকানা প্রদান করুন',
+                                        callback: function(value, validator, $field) {
+                                            return true;
+                                        }
+                                    }
+                                }
+                            },
                             'password': {
                                 validators: {
                                     notEmpty: {
@@ -299,7 +321,7 @@
                             bootstrap: new FormValidation.plugins.Bootstrap5({
                                 rowSelector: '.fv-row',
                                 eleInvalidClass: '',  // comment to enable invalid state icons
-                                eleValidClass: '' // comment to enable valid state icons
+                                // eleValidClass: ''
                             })
                         }
                     }

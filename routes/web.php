@@ -12,9 +12,7 @@ Route::get('/', function () {
     return redirect()->route('user.login');
 })->name('login');
 
-Route::get('/test', function () {
-    return view('test');
-});
+Route::get('/test', [TestController::class, 'index']);
 
 Route::post('/test', [TestController::class, 'store'])->name('test.store');
 

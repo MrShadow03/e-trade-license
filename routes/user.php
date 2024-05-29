@@ -21,7 +21,7 @@ Route::group(['middleware' => ['auth:web', 'phone_verified'], 'as' => 'user.', '
     Route::group(['middleware' => 'has_pure_password'], function () {
 
         Route::get('/dashboard', function () {
-            return view('user.pages.dashboard');
+            return redirect()->route('user.trade_license_applications');
         })->name('dashboard');
         
         // Application Routes...
