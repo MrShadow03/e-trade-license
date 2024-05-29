@@ -48,9 +48,13 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         $otpService = new OtpService();
-        $otp = $otpService->generateOtp($user);
-        $otpService->sendOtp($user, $otp);
+        $otp = $otpService->generateOtp($user, 'verification');
+        $isSent = $otpService->sendOtp($user, $otp);
 
+        if (!$isSent) {
+            return redirect()->route('user.login')->with('error', 'কিছু সমস্যা হয়েছে। আবার চেষ্টা করুন।');
+        }
+        
         $sentTo = config('constants.OTP_METHOD') === 'email' ? $user->email : $user->phone;
 
         return redirect()->route('user.verify-otp', ['send_to' => $sentTo])->with([

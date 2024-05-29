@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
     {
         try{
             $user = User::where('phone', $request->phone)->first();
-            $match = Hash::check($request->password, $user->password);
+            $match = $user ? Hash::check($request->password, $user->password) : false;
 
             if(!$user || !$match){
                 throw ValidationException::withMessages([

@@ -25,11 +25,11 @@
         }
     </script>
     <style>
-        @media (min-width: 600px) {
+        /* @media (min-width: 600px) {
             body {
                 background-image: url('{{ asset("/assets/img/login-bg.png") }}');
             }
-        }
+        } */
     </style>
 </head>
 <!--end::Head-->
@@ -40,17 +40,17 @@
     <!--begin::Root-->
     <div class="d-flex flex-column flex-root" id="kt_app_root">
         <!--begin::Authentication - Sign-in -->
-        <div class="d-flex flex-column justify-content-center flex-column-fluid flex-lg-row" style="background-image: url('{{ asset('assets/img/login_bg.jpg') }}'); background-size: cover;">
+        <div class="d-flex flex-column justify-content-center flex-column-fluid flex-lg-row">
 
             <!--begin::Body-->
             <div class="d-flex flex-column-fluid flex-lg-row-auto justify-content-center justify-content-lg-end p-0 p-lg-20">
                 <!--begin::Card-->
-                <div class="bg-body d-flex flex-column align-items-stretch flex-center rounded-4 w-sm-600px w-100 p-10">
+                <div class="bg-body shadow-sm d-flex flex-column align-items-stretch flex-center rounded-4 w-sm-600px w-100 p-10">
                     <!--begin::Wrapper-->
                     <div class="d-flex flex-center flex-column flex-column-fluid px-lg-10 pb-15 pb-lg-20">
 
                         <!--begin::Form-->
-                        <form class="form w-100 font-bn" novalidate="novalidate" id="kt_sign_in_form" data-kt-redirect-url="/metronic8/demo1/../demo1/index.html" method="POST" action="{{ route('user.register.store') }}">
+                        <form class="form w-100 font-bn" novalidate="novalidate" id="kt_sign_in_form" method="POST" action="{{ route('user.register.store') }}">
                             @csrf
                             <!--begin::Heading-->
                             <div class="text-center mb-11">

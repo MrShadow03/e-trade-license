@@ -50,7 +50,6 @@ class UserOneTimePasswordController extends Controller
 
         $otpService = new OtpService();
         $userOtp = $user->otp;
-
         
         if ($userOtp && $userOtp->otp !== $otp) {
             $userOtp->decrement('left_attempts');

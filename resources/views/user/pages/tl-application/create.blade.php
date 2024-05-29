@@ -135,8 +135,8 @@
                         <!--end::Label-->
                         <!--begin::Input-->
                         <div class="input-group">
-                            <div class="input-group-text {{ $latestApplication?->owner_name_bn ? 'text-white border-info bg-info' : ''}}">
-                                <i class="{{ $latestApplication?->owner_name_bn ? 'text-white' : '' }} text-white fal fa-user fs-3"></i>
+                            <div class="input-group-text text-white border-info bg-info">
+                                <i class="text-white fal fa-user fs-3"></i>
                             </div>
                             <input type="text" class="form-control border-info text-gray-900" placeholder="" name="owner_name_bn" value="{{ auth()->user()->name }}" required readonly/> 
                         </div>
