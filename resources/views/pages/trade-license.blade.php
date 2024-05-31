@@ -300,7 +300,7 @@
                 </tr>
                 <tr>
                     <td class="font-noto fw-semibold fs-14">সর্বমোট (৳)</td>
-                    <td class="font-noto fw-semibold fs-14" style="color: #008738;">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits(number_format($application->total_license_fee, 0)) }} ({{ Helpers::numToBanglaWords($application->total_license_fee).' টাকা মাত্র'}})</td>
+                    <td class="font-noto fw-semibold fs-14" style="color: #008738;">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits(number_format($application->total_new_license_fee + Helpers::TRADE_LICENSE_FORM_FEE, 0)) }} ({{ Helpers::numToBanglaWords($application->total_new_license_fee + Helpers::TRADE_LICENSE_FORM_FEE).' টাকা মাত্র'}})</td>
                     <td class="label"></td>
                     <td class="value"></td>
                 </tr>

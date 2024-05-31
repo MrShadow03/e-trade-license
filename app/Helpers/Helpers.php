@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Carbon\Carbon;
+
 class Helpers
 {
     public static function convertFileSize($sizeInKB = 0)
@@ -1111,6 +1113,7 @@ class Helpers
     const SURCHARGE = 100.00;
     const INCOME_TAX_PERCENTAGE = 3.00;
     const VAT_PERCENTAGE = 15.00;
+    const SURCHARGE_PERCENTAGE = 0.00;
     
 
     public static function numToBanglaWords($number): string {
@@ -1273,5 +1276,13 @@ class Helpers
 
     public static function generateUuid($prefix = ''): string {
         return $prefix.bin2hex(random_bytes(16));
+    }
+
+    public static function getFiscalYear($date) {
+        $date = new Carbon($date);
+        $year = $date->year;
+        $month = $date->month;
+        
+        return $month >= 7 ? $year+1 : $year;
     }
 }

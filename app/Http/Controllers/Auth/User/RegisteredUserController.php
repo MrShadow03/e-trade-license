@@ -38,6 +38,7 @@ class RegisteredUserController extends Controller
     public function store(UserRegisterRequest $request): RedirectResponse
     {
         $user = User::create([
+            'national_id_no' => $request->national_id_no,
             'name' => $request->name,
             'phone' => $request->phone,
             'email' => $request->email,

@@ -33,7 +33,7 @@ class TradeLicensePaymentController extends Controller{
 
         Gate::authorize('payLicenseFee', $tradeLicenseApplication);
 
-        TradeLicensePaymentService::payWithBank($tradeLicenseApplication, $tradeLicenseApplication->total_license_fee, Helpers::LICENSE_FEE);
+        TradeLicensePaymentService::payWithBank($tradeLicenseApplication, $tradeLicenseApplication->total_new_license_fee, Helpers::LICENSE_FEE);
 
         $tradeLicenseApplication->update([
             'status' => Helpers::PENDING_LICENSE_FEE_VERIFICATION

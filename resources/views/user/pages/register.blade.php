@@ -30,6 +30,16 @@
                 background-image: url('{{ asset("/assets/img/login-bg.png") }}');
             }
         } */
+        .input-group-text {
+            width: 45px;
+            padding: 0 !important;
+            display: flex;
+            justify-content: center;
+        }
+        input{
+            font-size: 15px !important;
+            font-weight: 500 !important;
+        }
     </style>
 </head>
 <!--end::Head-->
@@ -70,6 +80,7 @@
                             @enderror
                             <!--begin::Heading-->
 
+                            
                             <!--begin::Input group--->
                             <div class="fv-row mb-3">
                                 <div class="input-group">
@@ -89,7 +100,22 @@
                             <div class="fv-row mb-3">
                                 <div class="input-group">
                                     <span class="input-group-text">
-                                        <span class="fs-6 text-muted">+88</span>
+                                        <i class="fal fa-vcard fs-3"></i>
+                                    </span>
+                                    <input type="number" placeholder="জাতীয় পরিচয়পত্র নম্বর" name="national_id_no" value="{{ old('national_id_no') }}" class="form-control font-bn" required>
+                                </div>
+                                <!--end::Name-->
+                                @error('national_id_no')
+                                <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <!--end::Input group--->
+
+                            <!--begin::Input group--->
+                            <div class="fv-row mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <span class="fs-5 font-roboto text-muted">+88</span>
                                     </span>
                                     <input type="text" placeholder="ফোন নম্বর" name="phone" value="{{ old('phone') }}" class="form-control font-bn" required>
                                 </div>
@@ -254,7 +280,23 @@
                                         }
                                     }
                                 }
-                            },				
+                            },
+                            'national_id_no': {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'জাতীয় পরিচয়পত্র নং প্রদান করুন'
+                                    },
+                                    stringLength: {
+                                        min: 13,
+                                        max: 17,
+                                        message: 'জাতীয় পরিচয়পত্র নং ১৩ থেকে ১৭ অক্ষরের মধ্যে হতে হবে'
+                                    },
+                                    regexp: {
+                                        regexp: /^[0-9]+$/,
+                                        message: 'শুধুমাত্র ইংরেজি সংখ্যা গ্রহণযোগ্য'
+                                    }
+                                }
+                            },			
                             'phone': {
                                 validators: {
                                     notEmpty: {
@@ -307,6 +349,9 @@
                             },
                             'password_confirmation': {
                                 validators: {
+                                    notEmpty: {
+                                        message: 'পাসওয়ার্ড নিশ্চিত করুন'
+                                    },
                                     identical: {
                                         compare: function() {
                                             return form.querySelector('[name="password"]').value;

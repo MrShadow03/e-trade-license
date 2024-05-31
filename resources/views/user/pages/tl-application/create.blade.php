@@ -323,10 +323,10 @@
                         <!--end::Label-->
                         <!--begin::Input-->
                         <div class="input-group">
-                            <div class="input-group-text {{ $latestApplication?->national_id_no ? 'text-white border-info bg-info' : ''}}">
-                                <i class="{{ $latestApplication?->national_id_no ? 'text-white' : '' }} fal fa-address-card fs-3"></i>
+                            <div class="input-group-text text-white border-info bg-info">
+                                <i class="text-white fal fa-address-card fs-3"></i>
                             </div>
-                            <input type="text" maxlength="17" {{ $latestApplication?->national_id_no ? 'border-info' : '' }} pattern="/^[0-9]+$/" class="ls-2 font-roboto fw-normal form-control text-gray-900" name="national_id_no" value="{{ old('national_id_no', $latestApplication?->national_id_no) }}" @readonly($latestApplication?->national_id_no) />
+                            <input type="text" maxlength="17" pattern="/^[0-9]+$/" class="ls-2 border-info font-roboto fw-normal form-control text-gray-900" name="national_id_no" value="{{ auth()->user()->national_id_no }}" @readonly($latestApplication?->national_id_no) readonly />
                         </div>
                         <!--end::Input-->
                         @error('national_id_no')

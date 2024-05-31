@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\TradeLicenseApplication;
 use Illuminate\Support\ServiceProvider;
 use App\Policies\TradeLicenseApplicationPolicy;
+use App\Services\TradeLicenseApplicationService;
 
 class AppServiceProvider extends ServiceProvider
 {

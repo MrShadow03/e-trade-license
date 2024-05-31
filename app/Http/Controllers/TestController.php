@@ -3,26 +3,59 @@
 namespace App\Http\Controllers;
 
 use Imagick;
+use App\Jobs\TestJob;
 use App\Helpers\Helpers;
 use Milon\Barcode\DNS2D;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Log;
 use App\Models\TradeLicenseDocument;
+use App\Jobs\TradeLicenseExpiringJob;
 use App\Models\TradeLicenseApplication;
 use Spatie\Permission\Models\Permission;
 
 class TestController extends Controller
 {
+    public function index(){
+        return view('test');
+    }
+
     public function store(){
-        $host = request()->getHttpHost();
+        $file = request()->file('pdf_file');
 
-        $url = 'Valid till: 22-12-2024
-https://www.example.com';
-        $qrcode = new DNS2D();
-        $qrcode->setStorPath(__DIR__ . '/cache/');
-        $qrcodeHTML = $qrcode->getBarcodeHTML($url, 'QRCODE', 3.5, 3.5);
+        $filePath = $file->getPathName();
+        $fileName = $file->getClientOriginalName();
+        $fileExtension = $file->getClientOriginalExtension();
 
-        return $qrcodeHTML;
+        $tempOutputPath = $file->store('pdfs', 'public');
+        $outputPath = storage_path('app/public/' . $tempOutputPath);
+
+
+
+        $this->optimizeWithGhostScript($filePath, $outputPath);
+
+        if (file_exists($outputPath)) {
+            return response()->download($outputPath);
+        } else {
+            return response()->json(['error' => 'Optimization failed or file not found.'], 500);
+        }
+        dd('Optimization done');
+    }
+
+    public function optimizeWithGhostScript($inputPath, $outputPath){
+        $command = "gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=" . escapeshellarg($outputPath) . " " . escapeshellarg($inputPath);
+        
+        // Capture both stdout and stderr
+        $output = [];
+        $returnVar = 0;
+        exec($command . " 2>&1", $output, $returnVar);
+
+        // Logging for debugging
+        Log::info('Ghostscript command executed', [
+            'command' => $command,
+            'output' => $output,
+            'returnVar' => $returnVar
+        ]);
     }
 
     public static function resizeImage($inputFileName = 'image', $width = 300, $preserveAspectRatio = false) {

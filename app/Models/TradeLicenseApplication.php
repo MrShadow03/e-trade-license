@@ -36,7 +36,6 @@ class TradeLicenseApplication extends Model implements HasMedia
             'expiry_date' => 'date',
             'corrections' => 'array',
         ];
-        
     }
 
     // initialize observer
@@ -195,7 +194,26 @@ class TradeLicenseApplication extends Model implements HasMedia
         return ($percentage / 100) * $totalFee;
     }
 
-    public function getTotalLicenseFeeAttribute(){
-        return $this->new_application_fee + $this->signboard_fee + $this->income_tax_amount + $this->vat_amount + Helpers::SURCHARGE;
+    public function getSurchargeAmountAttribute(){
+        $percentage = Helpers::SURCHARGE_PERCENTAGE;
+        $totalFee = $this->businessCategory->fee + $this->signboard->fee;
+        return ($percentage / 100) * $totalFee;
+    }
+
+    public function getTotalNewLicenseFeeAttribute(){
+        return $this->new_application_fee + $this->signboard_fee + $this->income_tax_amount + $this->vat_amount;
+    }
+
+    // public function getTotalRenewal
+
+    public function getArrearAmountAttribute(){
+        return $this->arrear_duration * ($this->businessCategory?->fee + $this->signboard_fee + $this->income_tax_amount + $this->vat_amount + $this->surcharge_amount);
+    }
+
+    public function arrearDuration() {
+        $lastActivationYear = Helpers::getFiscalYear($this->issued_at);
+        $currentFiscalYear = Helpers::getFiscalYear(now());
+
+        return $currentFiscalYear - $lastActivationYear;
     }
 }
