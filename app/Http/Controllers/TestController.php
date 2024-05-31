@@ -30,8 +30,6 @@ class TestController extends Controller
         $tempOutputPath = $file->store('pdfs', 'public');
         $outputPath = storage_path('app/public/' . $tempOutputPath);
 
-
-
         $this->optimizeWithGhostScript($filePath, $outputPath);
 
         if (file_exists($outputPath)) {
