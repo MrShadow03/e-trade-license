@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Log;
 use App\Models\TradeLicenseDocument;
 use App\Jobs\TradeLicenseExpiringJob;
 use App\Models\TradeLicenseApplication;
+use Mostafaznv\PdfOptimizer\Enums\ColorConversionStrategy;
+use Mostafaznv\PdfOptimizer\Enums\PdfSettings;
+use Mostafaznv\PdfOptimizer\Laravel\Facade\PdfOptimizer;
 use Spatie\Permission\Models\Permission;
 
 class TestController extends Controller
@@ -41,19 +44,11 @@ class TestController extends Controller
     }
 
     public function optimizeWithGhostScript($inputPath, $outputPath){
-        $command = "gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=" . escapeshellarg($outputPath) . " " . escapeshellarg($inputPath);
+        $command = "gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=D:\\Web_Projects\\html\\Officials\\Backend\\Laravel\\v11\\e-trade-license\\output.pdf D:\\Web_Projects\\html\\Officials\\Backend\\Laravel\\v11\\e-trade-license\\input.pdf";
         
-        // Capture both stdout and stderr
-        $output = [];
-        $returnVar = 0;
-        exec($command . " 2>&1", $output, $returnVar);
+        $commandRes = exec($command);
 
-        // Logging for debugging
-        Log::info('Ghostscript command executed', [
-            'command' => $command,
-            'output' => $output,
-            'returnVar' => $returnVar
-        ]);
+        return $commandRes;
     }
 
     public static function resizeImage($inputFileName = 'image', $width = 300, $preserveAspectRatio = false) {
