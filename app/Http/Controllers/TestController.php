@@ -12,9 +12,6 @@ use Illuminate\Support\Facades\Log;
 use App\Models\TradeLicenseDocument;
 use App\Jobs\TradeLicenseExpiringJob;
 use App\Models\TradeLicenseApplication;
-use Mostafaznv\PdfOptimizer\Enums\ColorConversionStrategy;
-use Mostafaznv\PdfOptimizer\Enums\PdfSettings;
-use Mostafaznv\PdfOptimizer\Laravel\Facade\PdfOptimizer;
 use Spatie\Permission\Models\Permission;
 
 class TestController extends Controller
@@ -25,22 +22,6 @@ class TestController extends Controller
 
     public function store(){
         $file = request()->file('pdf_file');
-
-        $filePath = $file->getPathName();
-        $fileName = $file->getClientOriginalName();
-        $fileExtension = $file->getClientOriginalExtension();
-
-        $tempOutputPath = $file->store('pdfs', 'public');
-        $outputPath = storage_path('app/public/' . $tempOutputPath);
-
-        $this->optimizeWithGhostScript($filePath, $outputPath);
-
-        if (file_exists($outputPath)) {
-            return response()->download($outputPath);
-        } else {
-            return response()->json(['error' => 'Optimization failed or file not found.'], 500);
-        }
-        dd('Optimization done');
     }
 
     public function optimizeWithGhostScript($inputPath, $outputPath){
