@@ -329,6 +329,19 @@
 .fa-eye-slash:before {
   content: "\f070";
 }
+.fa-arrows-rotate:before,
+.fa-refresh:before,
+.fa-sync:before {
+    content: "\f021";
+}
+.fa-book-sparkles:before,
+.fa-book-spells:before {
+    content: "\f6b8";
+}
+.fa-rotate-exclamation:before {
+  content: "\e23c";
+}
+
 .fa-duotone.fa-trash-alt:after,
 .fa-duotone.fa-trash-can:after,
 .fad.fa-trash-alt:after,

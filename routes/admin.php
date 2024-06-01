@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth:admin', 'as' => 'admin.', 'prefix' => 'admin
         Route::get('/{trade_license_application}/inspect', [TradeLicenseApplicationController::class, 'inspect'])->name('.inspect');
         Route::post('/verify-form-fee-payment', [TradeLicenseApplicationController::class, 'verifyFormFeePayment'])->name('.verify_form_fee_payment')->can('verify-form-fee-payment');
         Route::post('/verify-license-fee-payment', [TradeLicenseApplicationController::class, 'verifyLicenseFeePayment'])->name('.verify_license_fee_payment')->can('verify-license-fee-payment');
+        Route::post('/verify-license-renewal-fee-payment', [TradeLicenseApplicationController::class, 'verifyLicenseRenewalFeePayment'])->name('.verify_license_renewal_fee_payment')->can('verify-license-renewal-fee-payment');
 
         // Approval Routes...
         // Assistant Approval

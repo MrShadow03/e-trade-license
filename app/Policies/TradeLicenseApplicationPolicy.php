@@ -6,7 +6,6 @@ use App\Helpers\Helpers;
 use App\Models\Admin;
 use App\Models\TradeLicenseApplication;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class TradeLicenseApplicationPolicy
 {
@@ -25,6 +24,12 @@ class TradeLicenseApplicationPolicy
     public function create(User $user): bool
     {
         return true;
+    }
+
+    public function renew(User $user, TradeLicenseApplication $tradeLicenseApplication): bool
+    {
+        return  $user->id == $tradeLicenseApplication->user_id &&
+                $tradeLicenseApplication->status === Helpers::EXPIRED;
     }
 
     public function correct(User $user, TradeLicenseApplication $tradeLicenseApplication): bool
@@ -63,6 +68,11 @@ class TradeLicenseApplicationPolicy
     public function payLicenseFee(User $user, TradeLicenseApplication $tradeLicenseApplication): bool {
         return  $user->id == $tradeLicenseApplication->user_id &&
                 ($tradeLicenseApplication->status === Helpers::PENDING_LICENSE_FEE_PAYMENT || $tradeLicenseApplication->status === Helpers::DENIED_LICENSE_FEE_VERIFICATION);
+    }
+
+    public function payLicenseRenewalFee(User $user, TradeLicenseApplication $tradeLicenseApplication): bool {
+        return  $user->id == $tradeLicenseApplication->user_id &&
+                ($tradeLicenseApplication->status === Helpers::EXPIRED || $tradeLicenseApplication->status === Helpers::PENDING_LICENSE_RENEWAL_FEE_PAYMENT || $tradeLicenseApplication->status === Helpers::DENIED_LICENSE_RENEWAL_FEE_VERIFICATION);
     }
 
     public function hasApprovalPermission(Admin $admin, TradeLicenseApplication $tradeLicenseApplication): bool {

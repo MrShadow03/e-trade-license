@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Helpers;
 use App\Models\Signboard;
-use Illuminate\Http\Request;
 use App\Models\BusinessCategory;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
@@ -15,37 +14,10 @@ use App\Http\Requests\TradeLicenseApprovalRequest;
 use App\Http\Requests\TradeLicensePaymentVerificationRequest;
 
 class TradeLicenseApplicationController extends Controller {
+
     public function index() {
-        $tradeLicenseApplications = TradeLicenseApplication::query()->with('payments')->where('status', '!=', Helpers::PENDING_FORM_FEE_PAYMENT);
-
-        if (request()->user()->can('approve-pending-trade-license-assistant-approval-applications')) {
-            $tradeLicenseApplications->whereIn('status', [
-                Helpers::PENDING_FORM_FEE_VERIFICATION,
-                Helpers::PENDING_ASSISTANT_APPROVAL
-            ]);
-        } elseif (request()->user()->can('approve-pending-trade-license-inspector-approval-applications')) {
-            $tradeLicenseApplications->whereIn('status', [
-                Helpers::PENDING_INSPECTOR_APPROVAL
-            ]);
-        } elseif (request()->user()->can('approve-pending-trade-license-superintendent-approval-applications')) {
-            $tradeLicenseApplications->whereIn('status', [
-                Helpers::PENDING_LICENSE_FEE_VERIFICATION,
-                Helpers::PENDING_SUPT_APPROVAL
-            ]);
-        } elseif (request()->user()->can('approve-pending-revenue-officer-approval-applications')) {
-            $tradeLicenseApplications->whereIn('status', [
-                Helpers::PENDING_RO_APPROVAL
-            ]);
-        } elseif (request()->user()->can('approve-pending-chief-revenue-officer-approval-applications')) {
-            $tradeLicenseApplications->whereIn('status', [
-                Helpers::PENDING_CRO_APPROVAL
-            ]);
-        } elseif (request()->user()->can('approve-pending-chief-executive-officer-approval-applications')) {
-            $tradeLicenseApplications->whereIn('status', [
-                Helpers::PENDING_CEO_APPROVAL
-            ]);
-        }
-
+        $accessibleApplicationStatuses = TradeLicenseApplicationService::getAccessibleApplicationStatuses();
+        $tradeLicenseApplications = TradeLicenseApplication::query()->with('payments')->whereIn('status', $accessibleApplicationStatuses);
         return view('admin.pages.tl-application.index', [
             'applications' => $tradeLicenseApplications->get()
         ]);
@@ -86,15 +58,12 @@ class TradeLicenseApplicationController extends Controller {
             }
     
             if(!$isApproved){
-
                 $corrections = $request->validated()['corrections'] ?? [];
-    
                 $trade_license_application->update([
                     'status' => Helpers::DENIED_STATES[$trade_license_application->status],
                     'corrections' => $corrections,
                     ...$commonData
                 ]);
-    
                 return redirect()->route('admin.trade_license_applications')->with('warning', 'অনুমোদন প্রত্যাখ্যান করা হয়েছে।');
             }
 
@@ -145,6 +114,11 @@ class TradeLicenseApplicationController extends Controller {
     public function verifyLicenseFeePayment(TradeLicensePaymentVerificationRequest $request){
         $paymentStatus = TradeLicensePaymentService::verifyPayment($request->validated(), Helpers::LICENSE_FEE);
         return $paymentStatus === 'verified' ? redirect()->route('admin.trade_license_applications')->with('info', 'লাইসেন্স ফি পেমেন্ট নিশ্চিত করা হয়েছে।') : redirect()->route('admin.trade_license_applications')->with('warning', 'লাইসেন্স ফি পেমেন্ট প্রত্যাখ্যাত করা হয়েছে।');
+    }
+
+    public function verifyLicenseRenewalFeePayment(TradeLicensePaymentVerificationRequest $request){
+        $paymentStatus = TradeLicensePaymentService::verifyPayment($request->validated(), Helpers::LICENSE_RENEWAL_FEE);
+        return $paymentStatus === 'verified' ? redirect()->route('admin.trade_license_applications')->with('info', 'লাইসেন্স নবায়ন ফি নিশ্চিত করা হয়েছে।') : redirect()->route('admin.trade_license_applications')->with('warning', 'লাইসেন্স নবায়ন ফি পেমেন্ট প্রত্যাখ্যাত করা হয়েছে।');
     }
 
 }

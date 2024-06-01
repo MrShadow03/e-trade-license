@@ -170,6 +170,10 @@ class TradeLicenseApplication extends Model implements HasMedia
         return $this->payments()->where('type', Helpers::LICENSE_FEE)->first();
     }
 
+    public function getLicenseRenewalFeePayment(){
+        return $this->payments()->where('type', Helpers::LICENSE_RENEWAL_FEE)->first();
+    }
+
     public function getNewApplicationFeeAttribute(){
         return $this->businessCategory?->fee ?? 0;
     }
@@ -204,10 +208,16 @@ class TradeLicenseApplication extends Model implements HasMedia
         return $this->new_application_fee + $this->signboard_fee + $this->income_tax_amount + $this->vat_amount;
     }
 
+    public function getTotalLicenseRenewalFeeAttribute(){
+        return $this->businessCategory?->fee + $this->signboard_fee + $this->income_tax_amount + $this->vat_amount + $this->surcharge_amount + $this->arrear_amount;
+    }
+
     // public function getTotalRenewal
 
     public function getArrearAmountAttribute(){
-        return $this->arrear_duration * ($this->businessCategory?->fee + $this->signboard_fee + $this->income_tax_amount + $this->vat_amount + $this->surcharge_amount);
+        $amount = ($this->arrearDuration() - 1) * ($this->businessCategory?->fee + $this->signboard_fee + $this->income_tax_amount + $this->vat_amount + $this->surcharge_amount);
+
+        return $amount > 0 ? $amount : 0;
     }
 
     public function arrearDuration() {

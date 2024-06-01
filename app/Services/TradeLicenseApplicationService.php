@@ -170,6 +170,7 @@ class TradeLicenseApplicationService {
         }
         return true;
     }
+
     public function hasUpdatedData(array $requestData): bool {
         try{
             $requestData = collect($requestData)->except(['application_id'])->sortKeys()->toArray();
@@ -223,7 +224,32 @@ class TradeLicenseApplicationService {
 
         [Helpers::PENDING_CEO_APPROVAL, Helpers::DENIED_CEO_APPROVAL, Helpers::CEO_REJECTED],
         [Helpers::DENIED_CEO_APPROVAL, Helpers::PENDING_CEO_APPROVAL, Helpers::USER_CORRECTION],
-        [Helpers::PENDING_CEO_APPROVAL, Helpers::ISSUED, Helpers::ISSUED]
+        [Helpers::PENDING_CEO_APPROVAL, Helpers::ISSUED, Helpers::ISSUED],
+
+        //! Renewal Activities
+        [Helpers::EXPIRED, Helpers::PENDING_ASSISTANT_RENEWAL_APPROVAL, Helpers::RENEWAL_REQUESTED],
+        [Helpers::EXPIRED, Helpers::PENDING_LICENSE_RENEWAL_FEE_VERIFICATION, Helpers::LICENSE_RENEWAL_FEE_SUBMITTED],
+
+        [Helpers::PENDING_ASSISTANT_RENEWAL_APPROVAL, Helpers::DENIED_ASSISTANT_RENEWAL_APPROVAL, Helpers::ASSISTANT_RENEWAL_REJECTED],
+        [Helpers::DENIED_ASSISTANT_RENEWAL_APPROVAL, Helpers::PENDING_ASSISTANT_RENEWAL_APPROVAL, Helpers::USER_CORRECTION],
+        [Helpers::PENDING_ASSISTANT_RENEWAL_APPROVAL, Helpers::PENDING_INSPECTOR_RENEWAL_APPROVAL, Helpers::ASSISTANT_RENEWAL_APPROVED],
+
+        [Helpers::PENDING_INSPECTOR_RENEWAL_APPROVAL, Helpers::DENIED_INSPECTOR_RENEWAL_APPROVAL, Helpers::INSPECTOR_RENEWAL_REJECTED],
+        [Helpers::DENIED_INSPECTOR_RENEWAL_APPROVAL, Helpers::PENDING_INSPECTOR_RENEWAL_APPROVAL, Helpers::USER_CORRECTION],
+        [Helpers::PENDING_INSPECTOR_RENEWAL_APPROVAL, Helpers::PENDING_LICENSE_RENEWAL_FEE_PAYMENT, Helpers::INSPECTOR_RENEWAL_APPROVED],
+
+        [Helpers::PENDING_LICENSE_RENEWAL_FEE_PAYMENT, Helpers::PENDING_LICENSE_RENEWAL_FEE_VERIFICATION, Helpers::LICENSE_RENEWAL_FEE_SUBMITTED],
+        [Helpers::PENDING_LICENSE_RENEWAL_FEE_VERIFICATION, Helpers::DENIED_LICENSE_RENEWAL_FEE_VERIFICATION, Helpers::LICENSE_RENEWAL_FEE_REJECTED],
+        [Helpers::DENIED_LICENSE_RENEWAL_FEE_VERIFICATION, Helpers::PENDING_LICENSE_RENEWAL_FEE_VERIFICATION, Helpers::LICENSE_RENEWAL_FEE_RESUBMITTED],
+        [Helpers::PENDING_LICENSE_RENEWAL_FEE_VERIFICATION, Helpers::PENDING_SUPT_RENEWAL_APPROVAL, Helpers::LICENSE_RENEWAL_FEE_VERIFIED],
+
+        [Helpers::PENDING_SUPT_RENEWAL_APPROVAL, Helpers::DENIED_SUPT_RENEWAL_APPROVAL, Helpers::SUPT_RENEWAL_REJECTED],
+        [Helpers::DENIED_SUPT_RENEWAL_APPROVAL, Helpers::PENDING_SUPT_RENEWAL_APPROVAL, Helpers::USER_CORRECTION],
+        [Helpers::PENDING_SUPT_RENEWAL_APPROVAL, Helpers::PENDING_RO_RENEWAL_APPROVAL, Helpers::SUPT_RENEWAL_APPROVED],
+
+        [Helpers::PENDING_RO_RENEWAL_APPROVAL, Helpers::DENIED_RO_RENEWAL_APPROVAL, Helpers::RO_RENEWAL_REJECTED],
+        [Helpers::DENIED_RO_RENEWAL_APPROVAL, Helpers::PENDING_RO_RENEWAL_APPROVAL, Helpers::USER_CORRECTION],
+        [Helpers::PENDING_RO_RENEWAL_APPROVAL, Helpers::ISSUED, Helpers::LICENSE_RENEWED],
     ];
 
     public function determineActivity($prevStatus = null): string {
@@ -248,6 +274,33 @@ class TradeLicenseApplicationService {
         }
 
         return false;
+    }
+
+    public static function getAccessibleApplicationStatuses(): array {
+       $accessPermissions = [
+            'verify-form-fee-payment' => Helpers::PENDING_FORM_FEE_VERIFICATION,
+            'approve-pending-trade-license-assistant-approval-applications' => Helpers::PENDING_ASSISTANT_APPROVAL,
+            'approve-pending-trade-license-inspector-approval-applications' => Helpers::PENDING_INSPECTOR_APPROVAL,
+            'verify-license-fee-payment' => Helpers::PENDING_LICENSE_FEE_VERIFICATION,
+            'approve-pending-trade-license-superintendent-approval-applications' => Helpers::PENDING_SUPT_APPROVAL,
+            'approve-pending-revenue-officer-approval-applications' => Helpers::PENDING_RO_APPROVAL,
+            'approve-pending-chief-revenue-officer-approval-applications' => Helpers::PENDING_CRO_APPROVAL,
+            'approve-pending-chief-executive-officer-approval-applications' => Helpers::PENDING_CEO_APPROVAL,
+            'approve-pending-trade-license-assistant-renewal-approval-applications' => Helpers::PENDING_ASSISTANT_RENEWAL_APPROVAL,
+            'approve-pending-trade-license-inspector-renewal-approval-applications' => Helpers::PENDING_INSPECTOR_RENEWAL_APPROVAL,
+            'verify-license-renewal-fee-payment' => Helpers::PENDING_LICENSE_RENEWAL_FEE_VERIFICATION,
+            'approve-pending-trade-license-superintendent-renewal-approval-applications' => Helpers::PENDING_SUPT_RENEWAL_APPROVAL,
+            'approve-pending-revenue-officer-renewal-approval-applications' => Helpers::PENDING_RO_RENEWAL_APPROVAL,
+       ] ;
+
+        $accessibleStatuses = [];
+        foreach($accessPermissions as $permission => $status){
+            if(auth()->user()->can($permission)){
+                $accessibleStatuses[] = $status;
+            }
+        }
+        
+        return $accessibleStatuses;
     }
 }
 

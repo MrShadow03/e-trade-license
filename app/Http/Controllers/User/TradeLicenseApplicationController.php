@@ -172,4 +172,16 @@ class TradeLicenseApplicationController extends Controller
 
         return redirect()->route('user.trade_license_applications')->with('info', 'আবেদনটি ডিলিট করা হয়েছে।');
     }
+
+    // Renewal
+    public function renew(TradeLicenseApplication $tradeLicenseApplication){
+        Gate::authorize('renew', $tradeLicenseApplication);
+
+        $tradeLicenseApplication->update([
+            'status' => Helpers::PENDING_FORM_FEE_PAYMENT,
+            'fiscal_year' => date('Y').'-'.(date('Y')+1),
+        ]);
+
+        return redirect()->route('user.trade_license_applications')->with('info', 'আবেদনটি নতুন করে জমা দেয়া হয়েছে। ফর্ম ফি পরিশোধ করুন।');
+    }
 }

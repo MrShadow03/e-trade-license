@@ -23,7 +23,13 @@ class TradeLicensePaymentService {
             'contrast' => 10,
         ]);
 
-        $mediaCollection = $type === Helpers::FORM_FEE ? 'form-fee-payment-slip' : 'license-fee-payment-slip';
+        if($type === Helpers::FORM_FEE) {
+            $mediaCollection = 'form-fee-payment-slip';
+        }elseif($type === Helpers::LICENSE_FEE) {
+            $mediaCollection = 'license-fee-payment-slip';
+        }elseif($type === Helpers::LICENSE_RENEWAL_FEE) {
+            $mediaCollection = 'license-renewal-'.Helpers::getFiscalYear(date('Y-m-d')).'-fee-payment-slip';
+        }
 
         $payment->addMedia($image)->toMediaCollection($mediaCollection);
 
@@ -32,7 +38,14 @@ class TradeLicensePaymentService {
 
     public static function verifyPayment($request, $type = Helpers::FORM_FEE) {
         $tlApplication = TradeLicenseApplication::findOrFail($request['application_id']);
-        $payment = $type === Helpers::FORM_FEE ? $tlApplication->getFormFeePayment() : $tlApplication->getLicenseFeePayment();
+
+        if($type === Helpers::FORM_FEE) {
+            $payment = $tlApplication->getFormFeePayment();
+        }elseif($type === Helpers::LICENSE_FEE) {
+            $payment = $tlApplication->getLicenseFeePayment();
+        }elseif($type === Helpers::LICENSE_RENEWAL_FEE) {
+            $payment = $tlApplication->getLicenseRenewalFeePayment();
+        }
 
         if ($request['isVerified'] == '0') {
             self::denyPayment($tlApplication, $payment);
@@ -45,13 +58,21 @@ class TradeLicensePaymentService {
             $paymentData = [
                 'form_fee' => $payment->amount,
             ];
-        }else {
+        }elseif ($type === Helpers::LICENSE_FEE) {
             $paymentData = [
                 'new_application_fee' => $tlApplication->new_application_fee,
                 'signboard_fee' => $tlApplication->signboard_fee,
                 'income_tax' => $tlApplication->income_tax_amount,
                 'vat' => $tlApplication->vat_amount,
-                'surcharge' => Helpers::SURCHARGE,
+            ];
+        }elseif ($type === Helpers::LICENSE_RENEWAL_FEE) {
+            $paymentData = [
+                'renewal_application_fee' => $tlApplication->new_application_fee,
+                'signboard_fee' => $tlApplication->signboard_fee,
+                'income_tax' => $tlApplication->income_tax_amount,
+                'vat' => $tlApplication->vat_amount,
+                'surcharge' => $tlApplication->surcharge_amount,
+                'arrear' => $tlApplication->arrear_amount,
             ];
         }
 

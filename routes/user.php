@@ -35,10 +35,14 @@ Route::group(['middleware' => ['auth:web', 'phone_verified'], 'as' => 'user.', '
             Route::patch('/{trade_license_application}', [TradeLicenseApplicationController::class, 'update'])->name('.update');
             Route::patch('/{trade_license_application}/correction', [TradeLicenseApplicationController::class, 'correction'])->name('.correction');
             Route::delete('/{trade_license_application}', [TradeLicenseApplicationController::class, 'destroy'])->name('.destroy');
+
+            // Application Renewal Routes...
+            Route::patch('/{trade_license_application}/renew', [TradeLicenseApplicationController::class, 'renew'])->name('.renew');
             
             // Payment Routes...
             Route::post('/payments/form-fee', [TradeLicensePaymentController::class, 'storeFromFee'])->name('.payments.form_fee.store');
             Route::post('/payments/license-fee', [TradeLicensePaymentController::class, 'storeLicenseFee'])->name('.payments.license_fee.store');
+            Route::post('/payments/license-renewal-fee', [TradeLicensePaymentController::class, 'storeLicenseRenewalFee'])->name('.payments.license_renewal_fee.store');
         });
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     });

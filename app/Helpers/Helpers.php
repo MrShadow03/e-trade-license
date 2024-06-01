@@ -589,19 +589,29 @@ class Helpers
     const PENDING_CEO_APPROVAL = 'pending_ceo_approval';
     const DENIED_CEO_APPROVAL = 'denied_ceo_approval';
 
+    const ISSUED = 'issued';
+    const EXPIRED = 'expired';
+
+    // Renewal status
+
+    const PENDING_ASSISTANT_RENEWAL_APPROVAL = 'pending_assistant_renewal_approval';
+    const DENIED_ASSISTANT_RENEWAL_APPROVAL = 'denied_assistant_renewal_approval';
+
     const PENDING_INSPECTOR_RENEWAL_APPROVAL = 'pending_inspector_renewal_approval';
     const DENIED_INSPECTOR_RENEWAL_APPROVAL = 'denied_inspector_renewal_approval';
+
     const PENDING_LICENSE_RENEWAL_FEE_PAYMENT = 'pending_license_renewal_fee_payment';
     const PENDING_LICENSE_RENEWAL_FEE_VERIFICATION = 'pending_license_renewal_fee_verification';
+    const DENIED_LICENSE_RENEWAL_FEE_VERIFICATION = 'denied_license_renewal_fee_verification';
+
     const PENDING_SUPT_RENEWAL_APPROVAL = 'pending_supt_renewal_approval';
     const DENIED_SUPT_RENEWAL_APPROVAL = 'denied_supt_renewal_approval';
+
     const PENDING_RO_RENEWAL_APPROVAL = 'pending_ro_renewal_approval';
     const DENIED_RO_RENEWAL_APPROVAL = 'denied_ro_renewal_approval';
 
-    const ISSUED = 'issued';
     const RENEWED = 'renewed';
     const CANCELLED = 'cancelled';
-    const EXPIRED = 'expired';
 
     //Activity
     const DENIED_STATES = [
@@ -613,6 +623,13 @@ class Helpers
         self::PENDING_RO_APPROVAL => self::DENIED_RO_APPROVAL,
         self::PENDING_CRO_APPROVAL => self::DENIED_CRO_APPROVAL,
         self::PENDING_CEO_APPROVAL => self::DENIED_CEO_APPROVAL,
+
+        //! Renewal
+        self::PENDING_ASSISTANT_RENEWAL_APPROVAL => self::DENIED_ASSISTANT_RENEWAL_APPROVAL,
+        self::PENDING_INSPECTOR_RENEWAL_APPROVAL => self::DENIED_INSPECTOR_RENEWAL_APPROVAL,
+        self::PENDING_LICENSE_RENEWAL_FEE_VERIFICATION => self::DENIED_LICENSE_RENEWAL_FEE_VERIFICATION,
+        self::PENDING_SUPT_RENEWAL_APPROVAL => self::DENIED_SUPT_RENEWAL_APPROVAL,
+        self::PENDING_RO_RENEWAL_APPROVAL => self::DENIED_RO_RENEWAL_APPROVAL,
     ];
 
     const APPROVED_STATES = [
@@ -624,6 +641,13 @@ class Helpers
         self::PENDING_RO_APPROVAL => self::PENDING_CRO_APPROVAL,
         self::PENDING_CRO_APPROVAL => self::PENDING_CEO_APPROVAL,
         self::PENDING_CEO_APPROVAL => self::ISSUED,
+
+        //! Renewal
+        self::PENDING_ASSISTANT_RENEWAL_APPROVAL => self::PENDING_INSPECTOR_RENEWAL_APPROVAL,
+        self::PENDING_INSPECTOR_RENEWAL_APPROVAL => self::PENDING_LICENSE_RENEWAL_FEE_PAYMENT,
+        self::PENDING_LICENSE_RENEWAL_FEE_VERIFICATION => self::PENDING_SUPT_RENEWAL_APPROVAL,
+        self::PENDING_SUPT_RENEWAL_APPROVAL => self::PENDING_RO_RENEWAL_APPROVAL,
+        self::PENDING_RO_RENEWAL_APPROVAL => self::RENEWED,
     ];
 
     const CORRECTED_STATES = [
@@ -635,6 +659,13 @@ class Helpers
         self::DENIED_RO_APPROVAL => self::PENDING_RO_APPROVAL,
         self::DENIED_CRO_APPROVAL => self::PENDING_CRO_APPROVAL,
         self::DENIED_CEO_APPROVAL => self::PENDING_CEO_APPROVAL,
+
+        //! Renewal
+        self::DENIED_ASSISTANT_RENEWAL_APPROVAL => self::PENDING_ASSISTANT_RENEWAL_APPROVAL,
+        self::DENIED_INSPECTOR_RENEWAL_APPROVAL => self::PENDING_INSPECTOR_RENEWAL_APPROVAL,
+        self::DENIED_LICENSE_RENEWAL_FEE_VERIFICATION => self::PENDING_LICENSE_RENEWAL_FEE_VERIFICATION,
+        self::DENIED_SUPT_RENEWAL_APPROVAL => self::PENDING_SUPT_RENEWAL_APPROVAL,
+        self::DENIED_RO_RENEWAL_APPROVAL => self::PENDING_RO_RENEWAL_APPROVAL,
     ];
 
     //Activity
@@ -660,6 +691,25 @@ class Helpers
     const CRO_APPROVED = 'cro approved';
     const CEO_REJECTED = 'ceo rejected';
     const CEO_APPROVED = 'ceo approved';
+    const LICENSE_ISSUED = 'license issued';
+    const LICENSE_EXPIRED = 'license expired';
+    
+    //! Renewal
+    const RENEWAL_REQUESTED = 'renewal requested';
+    const ASSISTANT_RENEWAL_REJECTED = 'assistant renewal rejected';
+    const ASSISTANT_RENEWAL_APPROVED = 'assistant renewal approved';
+    const INSPECTOR_RENEWAL_REJECTED = 'inspector renewal rejected';
+    const INSPECTOR_RENEWAL_APPROVED = 'inspector renewal approved';
+    const LICENSE_RENEWAL_FEE_SUBMITTED = 'license renewal fee submitted';
+    const LICENSE_RENEWAL_FEE_RESUBMITTED = 'license renewal fee resubmitted';
+    const LICENSE_RENEWAL_FEE_REJECTED = 'license renewal fee rejected';
+    const LICENSE_RENEWAL_FEE_VERIFIED = 'license renewal fee verified';
+    const SUPT_RENEWAL_REJECTED = 'supt renewal rejected';
+    const SUPT_RENEWAL_APPROVED = 'supt renewal approved';
+    const RO_RENEWAL_REJECTED = 'ro renewal rejected';
+    const RO_RENEWAL_APPROVED = 'ro renewal approved';
+    const LICENSE_RENEWED = 'license renewed';
+
     const UNKNOWN_ACTIVITY = 'unknown activity';
 
     //Payment Types
@@ -682,6 +732,12 @@ class Helpers
             self::DENIED_RO_APPROVAL,
             self::DENIED_CRO_APPROVAL,
             self::DENIED_CEO_APPROVAL,
+
+            //! Renewal
+            self::DENIED_ASSISTANT_RENEWAL_APPROVAL,
+            self::DENIED_INSPECTOR_RENEWAL_APPROVAL,
+            self::DENIED_SUPT_RENEWAL_APPROVAL,
+            self::DENIED_RO_RENEWAL_APPROVAL,
         ]);
     }
 
@@ -855,46 +911,6 @@ class Helpers
                     'icon' => 'fa-clock'
                 ];
                 break;
-            case self::PENDING_LICENSE_RENEWAL_FEE_VERIFICATION:
-                return [
-                    'msg_bn' => 'লাইসেন্স ফি যাচাই করার জন্য অপেক্ষমাণ',
-                    'msg_en' => '',
-                    'theme' => 'warning',
-                    'icon' => 'fa-clock'
-                ];
-                break;
-            case self::PENDING_SUPT_RENEWAL_APPROVAL:
-                return [
-                    'msg_bn' => 'SUPT অনুমোদনের জন্য অপেক্ষমাণ',
-                    'msg_en' => '',
-                    'theme' => 'warning',
-                    'icon' => 'fa-clock'
-                ];
-                break;
-            case self::DENIED_SUPT_RENEWAL_APPROVAL:
-                return [
-                    'msg_bn' => 'SUPT অনুমোদন প্রত্যাখ্যান',
-                    'msg_en' => '',
-                    'theme' => 'danger',
-                    'icon' => 'fa-exclamation-triangle'
-                ];
-                break;
-            case self::PENDING_RO_RENEWAL_APPROVAL:
-                return [
-                    'msg_bn' => 'রাজস্ব কর্মকর্তার অনুমোদনের জন্য অপেক্ষমাণ',
-                    'msg_en' => '',
-                    'theme' => 'warning',
-                    'icon' => 'fa-clock'
-                ];
-                break;
-            case self::DENIED_RO_RENEWAL_APPROVAL:
-                return [
-                    'msg_bn' => 'রাজস্ব কর্মকর্তার অনুমোদন প্রত্যাখ্যান',
-                    'msg_en' => '',
-                    'theme' => 'danger',
-                    'icon' => 'fa-exclamation-triangle'
-                ];
-                break;
             case self::ISSUED:
                 return [
                     'msg_bn' => 'লাইসেন্স প্রদান করা হয়েছে',
@@ -922,6 +938,96 @@ class Helpers
             case self::EXPIRED:
                 return [
                     'msg_bn' => 'মেয়াদ উত্তীর্ণ হয়েছে',
+                    'msg_en' => '',
+                    'theme' => 'danger',
+                    'icon' => 'fa-clock'
+                ];
+                break;
+            
+            //! Renewals
+            case self::PENDING_ASSISTANT_RENEWAL_APPROVAL:
+                return [
+                    'msg_bn' => 'সহকারী কর্মকর্তার অনুমোদনের জন্য অপেক্ষমাণ',
+                    'msg_en' => '',
+                    'theme' => 'warning',
+                    'icon' => 'fa-clock'
+                ];
+                break;
+            case self::DENIED_ASSISTANT_RENEWAL_APPROVAL:
+                return [
+                    'msg_bn' => 'সহকারী কর্মকর্তা অনুমোদন প্রত্যাখ্যান করেছে<br>সংশোধন করে পুনরায় প্রেরণ করুন',
+                    'msg_en' => '',
+                    'theme' => 'danger',
+                    'icon' => 'fa-exclamation-triangle'
+                ];
+                break;
+            case self::PENDING_INSPECTOR_RENEWAL_APPROVAL:
+                return [
+                    'msg_bn' => 'পরিদর্শকের অনুমোদনের জন্য অপেক্ষমাণ',
+                    'msg_en' => '',
+                    'theme' => 'warning',
+                    'icon' => 'fa-clock'
+                ];
+                break;
+            case self::DENIED_INSPECTOR_RENEWAL_APPROVAL:
+                return [
+                    'msg_bn' => 'পরিদর্শক অনুমোদন প্রত্যাখ্যান করেছে<br>সংশোধন করে পুনরায় প্রেরণ করুন',
+                    'msg_en' => '',
+                    'theme' => 'danger',
+                    'icon' => 'fa-exclamation-triangle'
+                ];
+                break;
+            case self::PENDING_LICENSE_RENEWAL_FEE_PAYMENT:
+                return [
+                    'msg_bn' => 'লাইসেন্স নবায়ন ফি পরিশোধের জন্য অপেক্ষমাণ',
+                    'msg_en' => '',
+                    'theme' => 'warning',
+                    'icon' => 'fa-clock'
+                ];
+                break;
+            case self::PENDING_LICENSE_RENEWAL_FEE_VERIFICATION:
+                return [
+                    'msg_bn' => 'নবায়ন ফি যাচাইয়ের জন্য অপেক্ষমাণ',
+                    'msg_en' => '',
+                    'theme' => 'warning',
+                    'icon' => 'fa-clock'
+                ];
+                break;
+            case self::DENIED_LICENSE_RENEWAL_FEE_VERIFICATION:
+                return [
+                    'msg_bn' => 'নবায়ন ফি প্রত্যাখ্যান করা হয়েছে<br>পুনরায় প্রেরণ করুন',
+                    'msg_en' => '',
+                    'theme' => 'danger',
+                    'icon' => 'fa-exclamation-triangle'
+                ];
+                break;
+            case self::PENDING_SUPT_RENEWAL_APPROVAL:
+                return [
+                    'msg_bn' => 'SUPT অনুমোদনের জন্য অপেক্ষমাণ',
+                    'msg_en' => '',
+                    'theme' => 'warning',
+                    'icon' => 'fa-clock'
+                ];
+                break;
+            case self::DENIED_SUPT_RENEWAL_APPROVAL:
+                return [
+                    'msg_bn' => 'SUPT অনুমোদন প্রত্যাখ্যান করেছে<br>সংশোধন করে পুনরায় প্রেরণ করুন',
+                    'msg_en' => '',
+                    'theme' => 'danger',
+                    'icon' => 'fa-exclamation-triangle'
+                ];
+                break;
+            case self::PENDING_RO_RENEWAL_APPROVAL:
+                return [
+                    'msg_bn' => 'রাজস্ব কর্মকর্তার অনুমোদনের জন্য অপেক্ষমাণ',
+                    'msg_en' => '',
+                    'theme' => 'warning',
+                    'icon' => 'fa-clock'
+                ];
+                break;
+            case self::DENIED_RO_RENEWAL_APPROVAL:
+                return [
+                    'msg_bn' => 'রাজস্ব কর্মকর্তার অনুমোদন প্রত্যাখ্যান করেছে<br>সংশোধন করে পুনরায় প্রেরণ করুন',
                     'msg_en' => '',
                     'theme' => 'danger',
                     'icon' => 'fa-exclamation-triangle'
@@ -1113,7 +1219,7 @@ class Helpers
     const SURCHARGE = 100.00;
     const INCOME_TAX_PERCENTAGE = 3.00;
     const VAT_PERCENTAGE = 15.00;
-    const SURCHARGE_PERCENTAGE = 0.00;
+    const SURCHARGE_PERCENTAGE = 2.00;
     
 
     public static function numToBanglaWords($number): string {
@@ -1275,7 +1381,7 @@ class Helpers
     }
 
     public static function generateUuid($prefix = ''): string {
-        return $prefix.bin2hex(random_bytes(16));
+        return $prefix.bin2hex(random_bytes(8));
     }
 
     public static function getFiscalYear($date) {

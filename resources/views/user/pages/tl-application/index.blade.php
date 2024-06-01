@@ -193,9 +193,8 @@
                                         'signboardFee' => number_format(round($application->signboard_fee), 0, ','),
                                         'incomeTax' => number_format(round($application->incomeTaxAmount), 0, ','),
                                         'vat' => number_format(round($application->vatAmount), 0, ','),
-                                        'surcharge' => number_format(Helpers::SURCHARGE, 0, ','),
-                                        'total' => number_format($application->new_application_fee + $application->signboard_fee + $application->incomeTaxAmount + $application->vatAmount + Helpers::SURCHARGE, 0, ','),
-                                        'totalInBangla' => Helpers::numToBanglaWords($application->new_application_fee + $application->signboard_fee + $application->incomeTaxAmount + $application->vatAmount + Helpers::SURCHARGE),
+                                        'total' => number_format($application->new_application_fee + $application->signboard_fee + $application->incomeTaxAmount + $application->vatAmount, 0, ','),
+                                        'totalInBangla' => Helpers::numToBanglaWords($application->new_application_fee + $application->signboard_fee + $application->incomeTaxAmount + $application->vatAmount),
                                         'id' => $application->id
                                     ]
                                 @endphp
@@ -212,6 +211,28 @@
                                     <span class="pulse-ring"></span>
                                 </a>
                                 @endif
+
+                                @php
+                                    $renewalFees = [
+                                        'licenseFee' => number_format(round($application->new_application_fee), 0, ','),
+                                        'signboardFee' => number_format(round($application->signboard_fee), 0, ','),
+                                        'incomeTax' => number_format(round($application->incomeTaxAmount), 0, ','),
+                                        'vat' => number_format(round($application->vatAmount), 0, ','),
+                                        'surcharge' => number_format(round($application->surcharge_amount), 0, ','),
+                                        'arrear' => number_format(round($application->arrear_amount), 0, ','),
+                                        'total' => number_format($application->total_license_renewal_fee, 0, ','),
+                                        'totalInBangla' => Helpers::numToBanglaWords($application->total_license_renewal_fee),
+                                        'arrearStartYear' => Helpers::getFiscalYear($application->issued_at),
+                                        'arrearEndYear' => Helpers::getFiscalYear(Carbon\Carbon::now()->subYear()->format('Y-m-d')),
+                                        'id' => $application->id
+                                    ]
+                                @endphp
+                                @if($application->status === Helpers::EXPIRED || $application->status === Helpers::PENDING_LICENSE_RENEWAL_FEE_PAYMENT || $application->status === Helpers::DENIED_LICENSE_RENEWAL_FEE_VERIFICATION)
+                                <a href="#" class="btn btn-info btn-icon btn-sm me-1" data-bs-toggle="modal" data-bs-target="#license_renewal_fee_payment_modal" title="নবায়ন করুন" onclick="displayRenewalForm({{ json_encode($renewalFees) }})">
+                                    <i class="fal fa-rotate-exclamation fs-4"></i>
+                                </a>
+                                @endif
+
                                 
                                 @if ($application->latest_activity?->message)
                                 <button onclick="showMessage(`{{ ($application->latest_activity?->message) }}`)"  class="btn btn-warning btn-icon btn-sm me-1 pulse pulse-warning" data-bs-toggle="tooltip" title="{{ $application->latest_activity?->message }}">
@@ -569,7 +590,7 @@
 
                             <!--begin::Wrapper-->
                             <div>
-                                <button type="submit" class="btn btn-success" data-kt-stepper-action="submit">
+                                <button type="submit" class="btn btn-success" id="formPaymentSubmit" data-kt-stepper-action="submit">
                                     <span class="indicator-label">
                                         দাখিল করুন &nbsp; <i class="far fa-check" aria-hidden="true"></i>
                                     </span>
@@ -754,9 +775,6 @@
                                             <tr>
                                                 <td class="py-2 px-2">ভ্যাট</td>
                                                 <td class="py-2 px-2 text-end" id="displayVat"></td>
-                                            <tr>
-                                                <td class="py-2 px-2">সারচার্জ</td>
-                                                <td class="py-2 px-2 text-end" id="displaySurcharge"></td>
                                             </tr>
                                             <tr>
                                                 <td class="py-2 px-2 fs-4 fw-semibold">মোট</td>
@@ -932,7 +950,370 @@
 
                             <!--begin::Wrapper-->
                             <div>
-                                <button type="submit" class="btn btn-success" data-kt-stepper-action="submit">
+                                <button type="submit" class="btn btn-success" id="licensePaymentSubmit" data-kt-stepper-action="submit">
+                                    <span class="indicator-label">
+                                        দাখিল করুন &nbsp; <i class="far fa-check" aria-hidden="true"></i>
+                                    </span>
+                                    <span class="indicator-progress">
+                                        দাখিল করা হচ্ছে... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                    </span>
+                                </button>
+                
+                                <button type="button" class="btn btn-success" data-kt-stepper-action="next">
+                                    এগিয়ে যান &nbsp; <i class="far fa-chevron-right" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <!--end::Wrapper-->
+                        </div>
+                        <!--end::Actions-->
+                    </form>
+                    <!--end::Form-->
+                </div>
+                <!--end::Stepper-->
+            </div>
+            <!--begin::Modal body-->
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="license_renewal_fee_payment_modal" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered min-w-lg-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+            <!--begin::Modal header-->
+            <!--begin::Modal header-->
+            <div class="modal-header border-0 justify-content-between bg-light-dark">
+                <!--begin::Heading-->
+                <div class="text-center">
+                   <!--begin::Title-->
+                   <h3 class="text-gray-800 fw-semibold fs-2 font-bn fw-normal">
+                        নবায়ন ফি পরিশোধ করুন
+                   </h3>
+                   <!--end::Title-->
+               </div>
+               <!--end::Heading-->
+               <!--begin::Close-->
+               <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                   <i class="fa fa-times fs-1" aria-hidden="true"></i>
+               </div>
+               <!--end::Close-->
+           </div>
+           <!--end::Modal header-->
+
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y m-5 font-bn">
+                <!--begin::Stepper-->
+                <div class="stepper stepper-pills" id="license_renewal_fee_payment_stepper">
+                    <!--begin::Nav-->
+                    <div class="stepper-nav flex-center flex-wrap mb-10 d-none d-md-flex">
+                        <!--begin::Step 1-->
+                        <div class="stepper-item mx-8 my-4 current" data-kt-stepper-element="nav">
+                            <!--begin::Wrapper-->
+                            <div class="stepper-wrapper d-flex align-items-center">
+                                <!--begin::Icon-->
+                                <div class="stepper-icon w-40px h-40px">
+                                    <i class="stepper-check fas fa-check"></i>
+                                    <span class="stepper-number font-kohinoor">১</span>
+                                </div>
+                                <!--end::Icon-->
+                    
+                                <!--begin::Label-->
+                                <div class="stepper-label">
+                                    <h3 class="stepper-title">
+                                        পরিমান
+                                    </h3>
+                    
+                                    <div class="stepper-desc font-kohinoor" id="totalAmountModalSubRenewal">
+                                        
+                                    </div>
+                                </div>
+                                <!--end::Label-->
+                            </div>
+                            <!--end::Wrapper-->
+                    
+                            <!--begin::Line-->
+                            <div class="stepper-line h-40px"></div>
+                            <!--end::Line-->
+                        </div>
+                        <!--end::Step 1-->
+                    
+                        <!--begin::Step 2-->
+                        <div class="stepper-item mx-8 my-4" data-kt-stepper-element="nav">
+                            <!--begin::Wrapper-->
+                            <div class="stepper-wrapper d-flex align-items-center">
+                                <!--begin::Icon-->
+                                <div class="stepper-icon w-40px h-40px">
+                                    <i class="stepper-check fas fa-check"></i>
+                                    <span class="stepper-number font-kohinoor">২</span>
+                                </div>
+                                <!--begin::Icon-->
+                    
+                                <!--begin::Label-->
+                                <div class="stepper-label">
+                                    <h3 class="stepper-title">
+                                        মাধ্যম
+                                    </h3>
+
+                                    <div class="stepper-desc">
+                                        নগদ/অনলাইন
+                                    </div>
+                                </div>
+                                <!--end::Label-->
+                            </div>
+                            <!--end::Wrapper-->
+                    
+                            <!--begin::Line-->
+                            <div class="stepper-line h-40px"></div>
+                            <!--end::Line-->
+                        </div>
+                        <!--end::Step 2-->
+                    
+                        <!--begin::Step 3-->
+                        <div class="stepper-item mark-completed mx-8 my-4" data-kt-stepper-element="nav">
+                            <!--begin::Wrapper-->
+                            <div class="stepper-wrapper d-flex align-items-center">
+                                <!--begin::Icon-->
+                                <div class="stepper-icon w-40px h-40px">
+                                    <i class="stepper-check fas fa-check"></i>
+                                    <span class="stepper-number font-kohinoor">৩</span>
+                                </div>
+                                <!--begin::Icon-->
+                    
+                                <!--begin::Label-->
+                                <div class="stepper-label">
+                                    <h3 class="stepper-title">
+                                        নগদ পরিশোধ
+                                    </h3>
+                    
+                                    <div class="stepper-desc">
+                                        ব্যাংক ড্রাফট
+                                    </div>
+                                </div>
+                                <!--end::Label-->
+                            </div>
+                            <!--end::Wrapper-->
+                    
+                            <!--begin::Line-->
+                            <div class="stepper-line h-40px"></div>
+                            <!--end::Line-->
+                        </div>
+                        <!--end::Step 3-->
+                    </div>
+                    <!--end::Nav-->
+                    
+                    <!--begin::Form-->
+                    <form action="{{ route('user.trade_license_applications.payments.license_renewal_fee.store') }}" method="POST" enctype="multipart/form-data" class="form mx-auto font-kohinoor" novalidate="novalidate" id="license_renewal_fee_payment_stepper_form">
+                        @csrf
+                        @method('POST')
+
+                        <input type="hidden" name="id" id="applicationIdLicenseRenewalFee" required>
+                        <!--begin::Group-->
+                        <div class="mb-5">
+                            <!--begin::Step 1-->
+                            <div class="flex-column current" data-kt-stepper-element="content">
+                                <div class="row mb-md-8 mb-2 font-hind-siliguri">
+                                    <table class="table table-striped table-row-dashed table-row-gray-300 gy-7">
+                                        <thead>
+                                            <tr class="fw-semibold fs-6 text-gray-800">
+                                                <th class="py-2 px-2">ক্ষেত্র</th>
+                                                <th class="py-2 px-2 text-end">টাকার পরিমাণ (৳)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="fs-5">
+                                            <tr>
+                                                <td class="py-2 px-2">নবায়ন ফি</td>
+                                                <td class="py-2 px-2 text-end" id="displayLicenseRenewalFee"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2 px-2" id="licenseRenewalArrearField">বকেয়া</td>
+                                                <td class="py-2 px-2 text-end" id="displayLicenseRenewalArrear"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2 px-2">সাইনবোর্ড ফি</td>
+                                                <td class="py-2 px-2 text-end" id="displaySignboardFeeRenewal"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2 px-2">আয়কর</td>
+                                                <td class="py-2 px-2 text-end" id="displayIncomeTaxRenewal"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2 px-2">ভ্যাট</td>
+                                                <td class="py-2 px-2 text-end" id="displayVatRenewal"></td>
+                                            <tr>
+                                                <td class="py-2 px-2">সারচার্জ</td>
+                                                <td class="py-2 px-2 text-end" id="displaySurchargeRenewal"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2 px-2 fs-4 fw-semibold">মোট</td>
+                                                <td class="py-2 px-2 fs-4 text-end fw-semibold text-danger" id="displayTotalFeeRenewal"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2 px-2 fs-4 fw-semibold">মোট (কথায়)</td>
+                                                <td class="py-2 px-2 fs-4 text-end fw-semibold text-danger" id="displayTotalFeeInBanglaRenewal"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--begin::Step 1-->
+
+                            <!--begin::Step 1-->
+                            <div class="flex-column mb-15" data-kt-stepper-element="content">
+                                <button type="button" class="btn btn-flex btn-info px-6 justify-between" id="licenseRenewalFeeManualPaymentButton">
+                                    <div class="d-flex align-items-center justify-content-between w-100">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-hand-holding-circle-dollar fs-2x me-2"></i>
+                                            <span class="d-flex flex-column align-items-start ms-2">
+                                                <span class="fs-3 fw-semibold font-bn">
+                                                    নগদ পরিশোধ
+                                                </span>
+                                                <span class="fs-7 fw-normal opacity-75">
+                                                    নগদ পরিশোধের ব্যাংক ড্রাফট প্রদান করুন
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <i class="fal fa-chevron-right fs-1"></i>
+                                    </div>
+                                </button>
+                                <a href="javascript:void(0))" class="btn btn-flex btn-danger mt-4 px-6">
+                                    <div class="d-flex align-items-center justify-content-between w-100">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fab fa-cc-visa fs-2x me-2"></i>
+                                            <span class="d-flex flex-column align-items-start ms-2">
+                                                <span class="fs-3 fw-semibold font-bn">
+                                                    অনলাইন পেমেন্ট
+                                                </span>
+                                                <span class="fs-7 fw-normal opacity-75">
+                                                    শীঘ্রই আসছে...
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <i class="fal fa-external-link fs-1"></i>
+                                    </div>
+                                </a>
+                            </div>
+                            <!--begin::Step 1-->
+
+                            <!--begin::Step 1-->
+                            <div class="flex-column mb-15" data-kt-stepper-element="content">
+                                <div class="fv-row mb-4">
+                                    <!--begin::Label-->
+                                    <label class="fs-6 text-gray-700 fw-semibold mb-2 required">
+                                        ব্যাংকের নাম
+                                    </label>
+                                    <!--end::Label-->
+                                    <!--begin::Input-->
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <i class="fal fa-landmark fs-3"></i>
+                                        </div>
+                                        <input type="text" class="form-control text-gray-900" placeholder="" list="bankList" name="bank" value="{{ old('bank') }}" required/>
+                                    </div>
+                                    <!--end::Input-->
+                                    @error('bank')
+                                    <div class="fv-plugins message-container invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                
+                                <div class="fv-row mb-4">
+                                    <!--begin::Label-->
+                                    <label class="fs-6 text-gray-700 fw-semibold mb-2 required">
+                                        শাখা
+                                    </label>
+                                    <!--end::Label-->
+                                    <!--begin::Input-->
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <i class="fal fa-landmark fs-3"></i>
+                                        </div>
+                                        <input type="text" class="form-control text-gray-900" placeholder="" name="bank_branch" value="{{ old('bank_branch') }}" required/> 
+                                    </div>
+                                    <!--end::Input-->
+                                    @error('bank_branch')
+                                    <div class="fv-plugins message-container invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                
+                                <div class="fv-row mb-4">
+                                    <!--begin::Label-->
+                                    <label class="fs-6 text-gray-700 fw-semibold mb-2 required">
+                                        চালান নম্বর
+                                    </label>
+                                    <!--end::Label-->
+                                    <!--begin::Input-->
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <i class="fal fa-file-invoice fs-3"></i>
+                                        </div>
+                                        <input type="text" class="form-control text-gray-900" placeholder="" name="bank_invoice_no" value="{{ old('bank_invoice_no') }}" required/> 
+                                    </div>
+                                    <!--end::Input-->
+                                    @error('bank_invoice_no')
+                                    <div class="fv-plugins message-container invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                
+                                <!--begin::Image input wrapper-->
+                                <div class="fv-row">
+                                    <div class="mb-4">
+                                        <p class="fs-6 fw-semibold font-kohinoor">আপনার ব্যাংক ড্রাফট এখানে আপলোড করুন</p>
+                                    </div>
+                                    <!--begin::Image input placeholder-->
+                                    <!--begin::Image input-->
+                                    <div class="image-input image-input-outline image-input-placeholder"
+                                        data-kt-image-input="true">
+                                        <!--begin::Preview existing avatar-->
+                                        <div class="image-input-wrapper w-150px h-125px"
+                                        style="background-image: url({{ asset('assets/img/blank-image.svg') }}); background-position: center;"
+                                        ></div>
+                                        <!--end::Preview existing avatar-->
+                                        <!--begin::Edit-->
+                                        <label
+                                            class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                            data-kt-image-input-action="change" data-bs-toggle="tooltip"
+                                            title="পরবর্তন করুন">
+                                            <i class="fal fa-arrow-up-from-bracket fs-5"></i>
+                                            <!--begin::Inputs-->
+                                                <input 
+                                                type="file" 
+                                                class="file_input" 
+                                                name="image" 
+                                                accept=".png, .jpg, .jpeg, .pdf"
+                                                required/>
+                                            <!--end::Inputs-->
+                                        </label>
+                                        <!--end::Edit-->
+                                    </div>
+                                    <div class="form-text fs-6 text-gray-700">
+                                        <div class="d-flex flex-column">
+                                            <li class="d-flex align-items-center">
+                                                <span class="bullet bullet-dot bg-success"></span> &nbsp; সাইজ সর্বোচ্চ ২ মেগাবাইট
+                                            </li>
+                                            <li class="d-flex align-items-center">
+                                                <span class="bullet bullet-dot bg-danger"></span> &nbsp; ফরমেট: jpg, jpeg, png, pdf
+                                            </li>
+                                        </div>                       
+                                    </div>
+                                </div>
+                                <!--end::Image input wrapper-->
+                            </div>
+                            <!--begin::Step 1-->
+                        </div>
+                        <!--end::Group-->
+
+                        <!--begin::Actions-->
+                        <div class="d-flex flex-stack">
+                            <!--begin::Wrapper-->
+                            <div class="me-2">
+                                <button type="button" class="btn btn-light text-hover-danger btn-active-light-danger btn-flex" data-kt-stepper-action="previous">
+                                    <i class="far fa-chevron-left" aria-hidden="true"></i>&nbsp;  পূর্বে যান
+                                </button>
+                            </div>
+                            <!--end::Wrapper-->
+
+                            <!--begin::Wrapper-->
+                            <div>
+                                <button type="submit" class="btn btn-success" id="renewalPaymentSubmit" data-kt-stepper-action="submit">
                                     <span class="indicator-label">
                                         দাখিল করুন &nbsp; <i class="far fa-check" aria-hidden="true"></i>
                                     </span>
@@ -968,17 +1349,68 @@
         document.getElementById('displaySignboardFee').innerText = convertToBanglaDigits(data.signboardFee);
         document.getElementById('displayIncomeTax').innerText = convertToBanglaDigits(data.incomeTax);
         document.getElementById('displayVat').innerText = convertToBanglaDigits(data.vat);
-        document.getElementById('displaySurcharge').innerText = convertToBanglaDigits(data.surcharge);
         document.getElementById('displayTotalFee').innerText = convertToBanglaDigits(data.total);
         document.getElementById('displayTotalFeeInBangla').innerText = convertToBanglaDigits(data.totalInBangla)+' টাকা মাত্র';
         document.getElementById('applicationIdLicenseFee').value = data.id;
         document.getElementById('totalAmountModalSub').innerText = convertToBanglaDigits(data.total)+' টাকা';
     }
 
-    const form = document.getElementById('form_fee_payment_stepper_form');
+    const displayRenewalForm = (data) => {
+        document.getElementById('displayLicenseRenewalFee').innerText = convertToBanglaDigits(data.licenseFee);
+        document.getElementById('displayLicenseRenewalArrear').innerText = convertToBanglaDigits(data.arrear);
+        document.getElementById('displaySignboardFeeRenewal').innerText = convertToBanglaDigits(data.signboardFee);
+        document.getElementById('displayIncomeTaxRenewal').innerText = convertToBanglaDigits(data.incomeTax);
+        document.getElementById('displayVatRenewal').innerText = convertToBanglaDigits(data.vat);
+        document.getElementById('displaySurchargeRenewal').innerText = convertToBanglaDigits(data.surcharge);
+        document.getElementById('displayTotalFeeRenewal').innerText = convertToBanglaDigits(data.total);
+        document.getElementById('displayTotalFeeInBanglaRenewal').innerText = convertToBanglaDigits(data.totalInBangla)+' টাকা মাত্র';
+        document.getElementById('applicationIdLicenseRenewalFee').value = data.id;
+        document.getElementById('totalAmountModalSubRenewal').innerText = convertToBanglaDigits(data.total)+' টাকা';
+        document.getElementById('applicationIdLicenseRenewalFee').value = data.id;
 
-    var validator = FormValidation.formValidation(
-        form,
+        if(data.arrear[0] > 0) {
+            document.getElementById('licenseRenewalArrearField').innerText = convertToBanglaDigits(data.arrearStartYear)+' থেকে '+convertToBanglaDigits(data.arrearEndYear)+' অর্থবছরের বকেয়া';
+        }
+    }
+
+    const checkFormValidity = (form, validator, submitButton) => {
+        submitButton.addEventListener('click', function (e) {
+            // Prevent default button action
+            e.preventDefault();
+
+            // Validate form before submit
+            if (validator) {
+                validator.validate().then(function (status) {
+                    if (status == 'Valid') {
+                        // Show loading indication
+                        submitButton.setAttribute('data-kt-indicator', 'on');
+
+                        // Disable button to avoid multiple click
+                        submitButton.disabled = true;
+
+                        // submit form
+                        form.submit();
+                    }else{
+                        Swal.fire({
+                            title: `আবেদন সম্পাদন করা যাবে না!`,
+                            text: "সকল প্রয়োজনীয় তথ্য সঠিকভাবে প্রদান করুন।",
+                            icon: "error",
+                            confirmButtonText: "ঠিক আছে",
+                            customClass: {
+                                confirmButton: "btn btn-primary",
+                                title: "font-bn",
+                                container: "font-bn",
+                            }
+                        });
+                    }
+                })
+            }
+        });
+    }
+
+    const formFeeForm = document.getElementById('form_fee_payment_stepper_form');
+    var formFeeValidator = FormValidation.formValidation(
+        formFeeForm,
         {
             fields: {
                 'bank': {
@@ -1036,41 +1468,136 @@
             }
         }
     );
+    const formFeeSubmitButton = document.getElementById('formPaymentSubmit');
+    checkFormValidity(formFeeForm, formFeeValidator, formFeeSubmitButton);
 
-    const submitButton = document.querySelector('[data-kt-stepper-action="submit"]')
-    submitButton.addEventListener('click', function (e) {
-        // Prevent default button action
-        e.preventDefault();
-
-        // Validate form before submit
-        if (validator) {
-            validator.validate().then(function (status) {
-                if (status == 'Valid') {
-                    // Show loading indication
-                    submitButton.setAttribute('data-kt-indicator', 'on');
-
-                    // Disable button to avoid multiple click
-                    submitButton.disabled = true;
-
-                    // submit form
-                    form.submit();
-                }else{
-                    Swal.fire({
-                        title: `আবেদন সম্পাদন করা যাবে না!`,
-                        text: "সকল প্রয়োজনীয় তথ্য সঠিকভাবে প্রদান করুন।",
-                        icon: "error",
-                        confirmButtonText: "ঠিক আছে",
-                        customClass: {
-                            confirmButton: "btn btn-primary",
-                            title: "font-bn",
-                            container: "font-bn",
+    const licenseFeeForm = document.getElementById('license_fee_payment_stepper_form');
+    var licenseFeeValidator = FormValidation.formValidation(
+        licenseFeeForm, 
+        {
+            fields: {
+                'bank': {
+                    validators: {
+                        notEmpty: {
+                            message: 'অবশ্যই প্রদান করতে হবে'
+                        },
+                        regexp: {
+                            message: 'অক্ষর অনুমোদিত',
+                            regexp: /^[a-zA-Z\u0980-\u09FF\. ]+$/,
+                        },
+                    }
+                },
+                'bank_branch': {
+                    validators: {
+                        notEmpty: {
+                            message: 'অবশ্যই প্রদান করতে হবে'
                         }
-                    });
-                }
-            })
-        }
-    });
+                    }
+                },
+                'bank_invoice_no': {
+                    validators: {
+                        notEmpty: {
+                            message: 'অবশ্যই প্রদান করতে হবে'
+                        },
+                        regexp: {
+                            regexp: /^[0-9]+$/,
+                            message: 'শুধুমাত্র ইংরেজি সংখ্যা গ্রহণযোগ্য'
+                        }
+                    }
+                },
+                'image': {
+                    validators: {
+                        notEmpty: {
+                            message: 'অবশ্যই প্রদান করতে হবে'
+                        },
+                        file: {
+                            extension: 'jpeg,jpg,png,pdf',
+                                    type: 'image/jpeg,image/png,application/pdf',
+                                    maxSize: 1024*1024*1,  // 1MB
+                                    message: 'সঠিক ফাইল ফরম্যাট: jpeg, jpg, png, pdf | সর্বোচ্চ আকার ১ মেগাবাইট'
 
+                        }
+                    }
+                }
+            },
+
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                bootstrap: new FormValidation.plugins.Bootstrap5({
+                    rowSelector: '.fv-row',
+                    eleInvalidClass: '',
+                    eleValidClass: ''
+                })
+            }
+        }
+    );
+    const licensePaymentSubmitButton = document.getElementById('licensePaymentSubmit');
+    checkFormValidity(licenseFeeForm, licenseFeeValidator, licensePaymentSubmitButton);
+
+    const licenseRenewalFeeForm = document.getElementById('license_renewal_fee_payment_stepper_form');
+    var licenseRenewalFeeValidator = FormValidation.formValidation(
+        licenseRenewalFeeForm, 
+        {
+            fields: {
+                'bank': {
+                    validators: {
+                        notEmpty: {
+                            message: 'অবশ্যই প্রদান করতে হবে'
+                        },
+                        regexp: {
+                            message: 'অক্ষর অনুমোদিত',
+                            regexp: /^[a-zA-Z\u0980-\u09FF\. ]+$/,
+                        },
+                    }
+                },
+                'bank_branch': {
+                    validators: {
+                        notEmpty: {
+                            message: 'অবশ্যই প্রদান করতে হবে'
+                        }
+                    }
+                },
+                'bank_invoice_no': {
+                    validators: {
+                        notEmpty: {
+                            message: 'অবশ্যই প্রদান করতে হবে'
+                        },
+                        regexp: {
+                            regexp: /^[0-9]+$/,
+                            message: 'শুধুমাত্র ইংরেজি সংখ্যা গ্রহণযোগ্য'
+                        }
+                    }
+                },
+                'image': {
+                    validators: {
+                        notEmpty: {
+                            message: 'অবশ্যই প্রদান করতে হবে'
+                        },
+                        file: {
+                            extension: 'jpeg,jpg,png,pdf',
+                                    type: 'image/jpeg,image/png,application/pdf',
+                                    maxSize: 1024*1024*1,  // 1MB
+                                    message: 'সঠিক ফাইল ফরম্যাট: jpeg, jpg, png, pdf | সর্বোচ্চ আকার ১ মেগাবাইট'
+
+                        }
+                    }
+                }
+            },
+
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                bootstrap: new FormValidation.plugins.Bootstrap5({
+                    rowSelector: '.fv-row',
+                    eleInvalidClass: '',
+                    eleValidClass: ''
+                })
+            }
+        }
+    );
+    const renewalPaymentSubmitButton = document.getElementById('renewalPaymentSubmit');
+    checkFormValidity(licenseRenewalFeeForm, licenseRenewalFeeValidator, renewalPaymentSubmitButton);
+
+    // Display officer comments
     const showMessage = (msg) => {
         Swal.fire({
             title: 'কর্মকর্তার মন্তব্য',
@@ -1086,6 +1613,8 @@
             }
         });
     }
+
+    // Deletion Confimation
     const submitForm = (form, event, title) => {
         event.preventDefault();
         Swal.fire({
@@ -1109,49 +1638,52 @@
         });
     }
 
-    
-
-    // Stepper element
+    //! Stepper element form fee
     var element = document.querySelector("#form_fee_payment_stepper");
     var manualPaymentButton = document.querySelector("#manualPaymentButton");
-
-    // Initialize Stepper
     var stepper = new KTStepper(element);
 
-    // Handle next step
+
     stepper.on("kt.stepper.next", function (stepper) {
         stepper.goNext(); // go next step
     });
-
-    // Handle previous step
     stepper.on("kt.stepper.previous", function (stepper) {
         stepper.goPrevious(); // go previous step
     });
-
     manualPaymentButton.addEventListener('click', function(e){
         stepper.goNext();
     });
 
-    // Stepper element
+    // Stepper element license fee
     var licenseFeeStepperElement = document.querySelector("#license_fee_payment_stepper");
     var licenseFeeManualPaymentButton = document.querySelector("#licenseFeeManualPaymentButton");
-
-    // Initialize Stepper
     var licenseFeeStepper = new KTStepper(licenseFeeStepperElement);
 
-    // Handle next step
     licenseFeeStepper.on("kt.stepper.next", function (licenseFeeStepper) {
         licenseFeeStepper.goNext(); // go next step
     });
-
-    // Handle previous step
     licenseFeeStepper.on("kt.stepper.previous", function (licenseFeeStepper) {
         licenseFeeStepper.goPrevious(); // go previous step
     });
-
     licenseFeeManualPaymentButton.addEventListener('click', function(e){
         licenseFeeStepper.goNext();
     });
+
+    // Stepper element license renewal fee
+    var licenseRenewalFeeStepperElement = document.querySelector("#license_renewal_fee_payment_stepper");
+    var licenseRenewalFeeManualPaymentButton = document.querySelector("#licenseRenewalFeeManualPaymentButton");
+    var licenseRenewalFeeStepper = new KTStepper(licenseRenewalFeeStepperElement);
+
+    licenseRenewalFeeStepper.on("kt.stepper.next", function (licenseRenewalFeeStepper) {
+        licenseRenewalFeeStepper.goNext(); // go next step
+    });
+    licenseRenewalFeeStepper.on("kt.stepper.previous", function (licenseRenewalFeeStepper) {
+        licenseRenewalFeeStepper.goPrevious(); // go previous step
+    });
+    licenseRenewalFeeManualPaymentButton.addEventListener('click', function(e){
+        licenseRenewalFeeStepper.goNext();
+    });
+
 
     const convertToBanglaDigits = (text) => {
         text = String(text);
@@ -1172,9 +1704,6 @@
             return banglaDigits[w]
         });
     }
-
-    console.log(convertToBanglaDigits('1234a567fd890'));
-
 
     var KTFileManagerList = function () {
         // Define shared variables
