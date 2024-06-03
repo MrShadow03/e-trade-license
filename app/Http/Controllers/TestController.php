@@ -52,6 +52,11 @@ class TestController extends Controller
         //     }
         // }
 
+        $tla = TradeLicenseApplication::find(1);
+
+        dd(Helpers::getFiscalYear(date('Y-m-d')) - 1 .'-' . Helpers::getFiscalYear(date('Y-m-d')),);
+        
+
         return view('test');
     }
 

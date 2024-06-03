@@ -99,6 +99,10 @@ class TradeLicenseApplication extends Model implements HasMedia
         return $this->belongsTo(BusinessCategory::class, 'business_category_id');
     }
 
+    public function canBeRenewed(): bool{
+        return $this->trade_license_no && $this->issued_at && $this->status !== Helpers::ISSUED;
+    }
+
     //activity logs
     public function getActivitylogOptions(): LogOptions
     {

@@ -947,7 +947,7 @@ class Helpers
             //! Renewals
             case self::PENDING_ASSISTANT_RENEWAL_APPROVAL:
                 return [
-                    'msg_bn' => 'সহকারী কর্মকর্তার অনুমোদনের জন্য অপেক্ষমাণ',
+                    'msg_bn' => 'সহকারী কর্মকর্তার নবায়ন অনুমোদনের জন্য অপেক্ষমাণ',
                     'msg_en' => '',
                     'theme' => 'warning',
                     'icon' => 'fa-clock'
@@ -955,7 +955,7 @@ class Helpers
                 break;
             case self::DENIED_ASSISTANT_RENEWAL_APPROVAL:
                 return [
-                    'msg_bn' => 'সহকারী কর্মকর্তা অনুমোদন প্রত্যাখ্যান করেছে<br>সংশোধন করে পুনরায় প্রেরণ করুন',
+                    'msg_bn' => 'সহকারী কর্মকর্তা নবায়ন অনুমোদন প্রত্যাখ্যান করেছে<br>সংশোধন করে পুনরায় প্রেরণ করুন',
                     'msg_en' => '',
                     'theme' => 'danger',
                     'icon' => 'fa-exclamation-triangle'
@@ -963,7 +963,7 @@ class Helpers
                 break;
             case self::PENDING_INSPECTOR_RENEWAL_APPROVAL:
                 return [
-                    'msg_bn' => 'পরিদর্শকের অনুমোদনের জন্য অপেক্ষমাণ',
+                    'msg_bn' => 'পরিদর্শকের নবায়ন অনুমোদনের জন্য অপেক্ষমাণ',
                     'msg_en' => '',
                     'theme' => 'warning',
                     'icon' => 'fa-clock'
@@ -971,7 +971,7 @@ class Helpers
                 break;
             case self::DENIED_INSPECTOR_RENEWAL_APPROVAL:
                 return [
-                    'msg_bn' => 'পরিদর্শক অনুমোদন প্রত্যাখ্যান করেছে<br>সংশোধন করে পুনরায় প্রেরণ করুন',
+                    'msg_bn' => 'পরিদর্শক নবায়ন অনুমোদন প্রত্যাখ্যান করেছে<br>সংশোধন করে পুনরায় প্রেরণ করুন',
                     'msg_en' => '',
                     'theme' => 'danger',
                     'icon' => 'fa-exclamation-triangle'
@@ -1003,7 +1003,7 @@ class Helpers
                 break;
             case self::PENDING_SUPT_RENEWAL_APPROVAL:
                 return [
-                    'msg_bn' => 'SUPT অনুমোদনের জন্য অপেক্ষমাণ',
+                    'msg_bn' => 'SUPT নবায়ন অনুমোদনের জন্য অপেক্ষমাণ',
                     'msg_en' => '',
                     'theme' => 'warning',
                     'icon' => 'fa-clock'
@@ -1011,7 +1011,7 @@ class Helpers
                 break;
             case self::DENIED_SUPT_RENEWAL_APPROVAL:
                 return [
-                    'msg_bn' => 'SUPT অনুমোদন প্রত্যাখ্যান করেছে<br>সংশোধন করে পুনরায় প্রেরণ করুন',
+                    'msg_bn' => 'SUPT নবায়ন অনুমোদন প্রত্যাখ্যান করেছেন<br>সংশোধন করে পুনরায় প্রেরণ করুন',
                     'msg_en' => '',
                     'theme' => 'danger',
                     'icon' => 'fa-exclamation-triangle'
@@ -1019,7 +1019,7 @@ class Helpers
                 break;
             case self::PENDING_RO_RENEWAL_APPROVAL:
                 return [
-                    'msg_bn' => 'রাজস্ব কর্মকর্তার অনুমোদনের জন্য অপেক্ষমাণ',
+                    'msg_bn' => 'রাজস্ব কর্মকর্তার নবায়ন অনুমোদনের জন্য অপেক্ষমাণ',
                     'msg_en' => '',
                     'theme' => 'warning',
                     'icon' => 'fa-clock'
@@ -1027,7 +1027,7 @@ class Helpers
                 break;
             case self::DENIED_RO_RENEWAL_APPROVAL:
                 return [
-                    'msg_bn' => 'রাজস্ব কর্মকর্তার অনুমোদন প্রত্যাখ্যান করেছে<br>সংশোধন করে পুনরায় প্রেরণ করুন',
+                    'msg_bn' => 'রাজস্ব কর্মকর্তা নবায়ন অনুমোদন প্রত্যাখ্যান করেছে<br>সংশোধন করে পুনরায় প্রেরণ করুন',
                     'msg_en' => '',
                     'theme' => 'danger',
                     'icon' => 'fa-exclamation-triangle'
@@ -1380,8 +1380,9 @@ class Helpers
         return self::numToBanglaWords($t) . ' কোটি ' . self::numToBanglaWords($r);
     }
 
-    public static function generateUuid($prefix = ''): string {
-        return $prefix.bin2hex(random_bytes(8));
+    public static function generateUuid($prefix = '', $split = true): string {
+        $uuid = $prefix.bin2hex(random_bytes(8));
+        return $split ? substr($uuid, 0, 4) . '-' . substr($uuid, 4, 4) . '-' . substr($uuid, 8, 4) . '-' . substr($uuid, 12, 4) : $uuid;
     }
 
     public static function getFiscalYear($date) {

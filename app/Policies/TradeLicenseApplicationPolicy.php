@@ -81,7 +81,10 @@ class TradeLicenseApplicationPolicy
         $admin->can('approve-pending-trade-license-superintendent-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_SUPT_APPROVAL ||
         $admin->can('approve-pending-revenue-officer-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_RO_APPROVAL ||
         $admin->can('approve-pending-chief-revenue-officer-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_CRO_APPROVAL ||
-        $admin->can('approve-pending-chief-executive-officer-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_CEO_APPROVAL;
-        
+        $admin->can('approve-pending-chief-executive-officer-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_CEO_APPROVAL ||
+        $admin->can('approve-pending-trade-license-assistant-renewal-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_ASSISTANT_RENEWAL_APPROVAL ||
+        $admin->can('approve-pending-trade-license-inspector-renewal-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_INSPECTOR_RENEWAL_APPROVAL ||
+        $admin->can('approve-pending-trade-license-superintendent-renewal-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_SUPT_RENEWAL_APPROVAL ||
+        $admin->can('approve-pending-revenue-officer-renewal-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_RO_RENEWAL_APPROVAL;
     }
 }

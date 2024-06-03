@@ -100,7 +100,6 @@ return new class extends Migration
             $table->date('expiry_date')->nullable();
 
             $table->string('status')->default('pending_tl_assistant_approval');
-            $table->boolean('is_new')->default(true);
             $table->longText('corrections')->nullable();
             $table->timestamps();
         });

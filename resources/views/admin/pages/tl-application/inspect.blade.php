@@ -1174,7 +1174,7 @@
                                         <!--end::Input group-->
                                     </div>
                                 </div>
-                                <div class="text-end">
+                                <div class="text-end d-flex justify-content-between">
                                     <button type="button" class="btn btn-danger" id="rejectButton" onclick="submitForm(event, 0, this)">
                                         <span class="indicator-label">
                                             প্রত্যাখ্যান করুন
@@ -1185,7 +1185,17 @@
                                         </span>
                                     </button>
 
-                                    @can('issue-trade-license')
+                                    @if (auth()->user()->can('issue-renewed-trade-license') && $application->canBeRenewed())
+                                    <button type="button" class="btn btn-success ms-3" onclick="submitForm(event, 1, this)">
+                                        <span class="indicator-label">
+                                            লাইসেন্স নবায়ন করুন
+                                        </span>
+                                        <span class="indicator-progress">
+                                            অপেক্ষা করুন...
+                                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                        </span>
+                                    </button>
+                                    @elseif (auth()->user()->can('issue-trade-license'))
                                     <button type="button" class="btn btn-success ms-3" onclick="submitForm(event, 1, this)">
                                         <span class="indicator-label">
                                             লাইসেন্স প্রদান করুন
@@ -1205,7 +1215,7 @@
                                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                         </span>
                                     </button>
-                                    @endcan
+                                    @endif
                                 </div>
                             </div>
                             <!--end::Card header-->

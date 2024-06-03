@@ -46,7 +46,7 @@ class TradeLicenseApplicationController extends Controller
             'ca_district' => Helpers::translateDistrictToEnglish($request->ca_district_bn),
             'pa_division' => Helpers::translateDivisionToEnglish($request->pa_division_bn),
             'pa_district' => Helpers::translateDistrictToEnglish($request->pa_district_bn),
-            'fiscal_year' => date('Y').'-'.(date('Y')+1),
+            'fiscal_year' => Helpers::getFiscalYear(date('Y-m-d')) - 1 .'-' . Helpers::getFiscalYear(date('Y-m-d')),
             'status' => Helpers::PENDING_FORM_FEE_PAYMENT,
         ])->all());
 
@@ -105,7 +105,7 @@ class TradeLicenseApplicationController extends Controller
             'ca_district' => Helpers::translateDistrictToEnglish($request->ca_district_bn),
             'pa_division' => Helpers::translateDivisionToEnglish($request->pa_division_bn),
             'pa_district' => Helpers::translateDistrictToEnglish($request->pa_district_bn),
-            'fiscal_year' => date('Y').'-'.(date('Y')+1),
+            'fiscal_year' => Helpers::getFiscalYear(date('Y-m-d')) - 1 .'-' . Helpers::getFiscalYear(date('Y-m-d')),
         ])->all());
 
         $tlService->updateImage();

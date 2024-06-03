@@ -74,6 +74,13 @@
         .container-custom{
             padding-top: 40px;
         }
+        .watermark{
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.1;
+        }
     </style>
 </head>
 <body class="bg-dark">
@@ -87,7 +94,7 @@
             </div>
             <div class="col px-0 text-center">
                 <div class="title font-bn fw-semibold fs-24 pb-1">বরিশাল সিটি কর্পোরেশন</div>
-                <div class="subtitle font-kohinoor fs-12 ls-1 pb-1">www.barishalcity.gov.bd</div>
+                <div class="subtitle font-kohinoor fs-12 ls-1 pb-2">www.barishalcity.gov.bd</div>
             </div>
             <div class="col px-0"></div>
         </div>
@@ -107,7 +114,7 @@
             </div>
             <div class="col">
                 <div class="text-center">
-                    <img class="pb-3 logo" width="120px" src="{{ asset('assets/img/Barisal_City_Corporation_logo.png') }}" alt="BCC logo">
+                    <img class="pb-2 logo" width="120px" src="{{ asset('assets/img/Barisal_City_Corporation_logo.png') }}" alt="BCC logo">
                     <h4 class="font-ador font-semibold fs-18">ই-ট্রেড লাইসেন্স</h4>
                 </div>
             </div>
@@ -118,7 +125,7 @@
             </div>
         </div>
         <div class="row text-center pb-2">
-            <h5 class="font-bn fw-semibold fs-18" style="color: #008738;">TRAD/BCC/{{ $application->trade_license_no }}/{{ $application->issued_at->format('Y') }} </h5>
+            <h5 class="font-roboto fw-semibold fs-16" style="color: #008738;">TRAD/BCC/{{ $application->trade_license_no }}/{{ $application->issued_at->format('Y') }} </h5>
         </div>
         <div class="row text-start">
             <span class="notice font-noto px-4 fs-12">স্থানীয় সরকার (সিটি কর্পোরেশন) আইন, ২০০৯ (২০০৯ সনের ৬০ নং আইন) এর ধারা ৮৪- তে প্রদত্ত ক্ষমতাবলে সরকার প্রণীত আদর্শ কর তফসিল, ২০১৬ এর ১০ অনুচ্ছেদ অনুযায়ী ব্যবসা, বৃত্তি, পেশা বা শিল্প প্রতিষ্ঠানের উপর আরোপিত কর আদায়ের লক্ষ্যে নিন্মে বর্ণিত ব্যক্তি/ প্রতিষ্ঠানের আনুকূলে অত্র ট্রেড লাইসেন্সটি ইস্যু করা হলো।</span>
@@ -280,7 +287,13 @@
                 </tr>
                 @if($application->status === Helpers::ISSUED)
                 <tr>
-                    <td class="label">নতুন লাইসেন্স ফি</td>
+                    <td class="label">
+                        @if($application->application_type === 'renewed')
+                            নবায়ন ফি
+                        @else
+                            নতুন ফি
+                        @endif
+                    </td>
                     <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits(number_format($application->new_application_fee, 0)) }} টাকা</td>
                     <td class="label">সাইনবোর্ড ফি</td>
                     <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits(number_format($application->signboard_fee, 0)) }} টাকা</td>
@@ -292,21 +305,44 @@
                     <td class="label">ভ্যাট</td>
                     <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits(number_format($application->vat, 0)) }} টাকা</td>
                 </tr>
+
+                @if($application->application_type === 'renewed' && ($application->arrear || $application->surcharge))
+                <tr>
+                    @if ($application->arrear)
+                    <td class="label">বকেয়া</td>
+                    <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits(number_format($application->arrear, 0)) }} টাকা</td>
+                    @endif
+                    @if ($application->surcharge)
+                    <td class="label">সারচার্জ</td>
+                    <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits(number_format($application->surcharge, 0)) }} টাকা</td>
+                    @endif
+                </tr>
+                @elseif($application->application_type === 'new')
                 <tr>
                     <td class="label pb-2">আবেদন ফি</td>
                     <td class="value pb-2">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits(number_format($application->form_fee, 0)) }} টাকা</td>
                     <td class="label"></td>
                     <td class="value"></td>
                 </tr>
+                @endif
+
                 <tr>
                     <td class="font-noto fw-semibold fs-14">সর্বমোট (৳)</td>
-                    <td class="font-noto fw-semibold fs-14" style="color: #008738;">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits(number_format($application->total_new_license_fee + Helpers::TRADE_LICENSE_FORM_FEE, 0)) }} ({{ Helpers::numToBanglaWords($application->total_new_license_fee + Helpers::TRADE_LICENSE_FORM_FEE).' টাকা মাত্র'}})</td>
+                    @php
+                        $totalFee = 0;
+                        if($application->application_type === 'renewed'){
+                            $totalFee = $application->renewal_application_fee + $application->arrear + $application->surcharge + $application->signboard_fee + $application->income_tax + $application->vat;
+                        }elseif($application->application_type === 'new'){
+                            $totalFee = $application->total_new_license_fee + Helpers::TRADE_LICENSE_FORM_FEE;
+                        }
+                    @endphp
+                    <td class="font-noto fw-bold fs-14">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits(number_format($totalFee, 0)) }} ({{ Helpers::numToBanglaWords($totalFee).' টাকা মাত্র'}})</td>
                     <td class="label"></td>
                     <td class="value"></td>
                 </tr>
             </table>
         </div>
-        <div class="text-center font-noto pb-5 pt-4 fs-12">অত্র ট্রেড লাইসেন্স এর মেয়াদ <span class="fw-bold fs-14">{{ Helpers::convertToBanglaDigits(Carbon\Carbon::parse($application->expiry_date)->locale('bn-BD')->translatedFormat('d F, Y'))}}</span> পর্যন্ত।</div>
+        <div class="text-center font-noto pb-5 pt-4 fs-12" style="color: #008738;">অত্র ট্রেড লাইসেন্স এর মেয়াদ <span class="fw-bold fs-14">{{ Helpers::convertToBanglaDigits(Carbon\Carbon::parse($application->expiry_date)->locale('bn-BD')->translatedFormat('d F, Y'))}}</span> পর্যন্ত।</div>
         <div class="row text-center align-items-end">
             <div class="col">
                 <img height="40px" src="{{ asset('assets/img/signature.jpg') }}" alt="signature" class="signature">
@@ -324,6 +360,10 @@
                 <img height="40px" src="{{ asset('assets/img/signature (3).png') }}" alt="signature" class="signature">
                 <div class="font-noto fs-12 pt-2">প্রধান রাজস্ব কর্মকর্তা</div>
             </div>
+        </div>
+
+        <div class="watermark">
+            <img src="{{ asset('assets/img/Barisal_City_Corporation_logo.png') }}" width="350px" alt="logo" class="logo">
         </div>
     </div>
     <script>

@@ -40,10 +40,8 @@ class TradeLicenseApplicationController extends Controller {
     }
 
     public function approve(TradeLicenseApplication $trade_license_application, TradeLicenseApprovalRequest $request) {
-        // Determine if the user has the appropriate role/permission to approve the application
         Gate::authorize('hasApprovalPermission', $trade_license_application);
 
-        
         $tlService = new TradeLicenseApplicationService($trade_license_application);
 
         try {
@@ -67,9 +65,16 @@ class TradeLicenseApplicationController extends Controller {
                 return redirect()->route('admin.trade_license_applications')->with('warning', 'অনুমোদন প্রত্যাখ্যান করা হয়েছে।');
             }
 
+            //issue trade license
             if(auth()->user()->can('issue-trade-license')){
                 $this->issueTradeLicense($trade_license_application, $request);
                 return redirect()->route('admin.trade_license_applications')->with('info', 'ট্রেড লাইসেন্স ইস্যু সফল হয়েছে।');
+            }
+
+            //renew trade license
+            if(auth()->user()->can('issue-renewed-trade-license') && $trade_license_application->canBeRenewed()){
+                $this->renewTradeLicense($trade_license_application);
+                return redirect()->route('admin.trade_license_applications')->with('info', 'ট্রেড লাইসেন্স নবায়ন সফল হয়েছে।');
             }
             
             $trade_license_application->update([
@@ -86,24 +91,34 @@ class TradeLicenseApplicationController extends Controller {
     public function issueTradeLicense(TradeLicenseApplication $trade_license_application){
         // Generate 32 character long url-safe random string
         do {
-            $uuid = Helpers::generateUuid('tl');
+            $uuid = Helpers::generateUuid();
             $uuidExists = TradeLicenseApplication::where('uuid', $uuid)->exists();
         } while ($uuidExists);
         
         // Generate Trade License Number
         $tradeLicenseNo = TradeLicenseApplication::max('trade_license_no') ? TradeLicenseApplication::max('trade_license_no') + 1 : 20500;
 
-        // Determine Expiry Date - 30th June of the next year
-        $expiryDate = now()->month >= 7 ? date('Y-m-d', strtotime('30th June next year')) : date('Y-m-d', strtotime('30th June'));
-
         // Determine the status of the application - issued
         $trade_license_application->update([
             'status' => Helpers::ISSUED,
             'trade_license_no' => $tradeLicenseNo,
             'uuid' => $uuid,
-            'expiry_date' => $expiryDate,
+            'expiry_date' => $this->getExpiryDate(),
             'issued_at' => now(),
         ]);
+    }
+
+    public function renewTradeLicense(TradeLicenseApplication $trade_license_application){
+        $trade_license_application->update([
+            'status' => Helpers::ISSUED,
+            'expiry_date' => $this->getExpiryDate(),
+            'application_type' => 'renewed',
+            'issued_at' => now(),
+        ]);
+    }
+
+    protected function getExpiryDate(){
+        return now()->month >= 7 ? date('Y-m-d', strtotime('30th June next year')) : date('Y-m-d', strtotime('30th June'));
     }
 
     public function verifyFormFeePayment(TradeLicensePaymentVerificationRequest $request){
