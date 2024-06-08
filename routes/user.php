@@ -5,8 +5,10 @@ use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Auth\User\PasswordController;
 use App\Http\Controllers\TradeLicensePaymentController;
 use App\Http\Controllers\UserOneTimePasswordController;
+use App\Http\Controllers\TradeLicenseLocationController;
 use App\Http\Controllers\Auth\User\NewPasswordController;
 use App\Http\Controllers\Auth\User\VerifyEmailController;
+use App\Http\Controllers\TradeLicenseOwnershipController;
 use App\Http\Controllers\Auth\User\RegisteredUserController;
 use App\Http\Controllers\Auth\User\PasswordResetLinkController;
 use App\Http\Controllers\User\TradeLicenseApplicationController;
@@ -38,6 +40,14 @@ Route::group(['middleware' => ['auth:web', 'phone_verified'], 'as' => 'user.', '
 
             // Application Renewal Routes...
             Route::patch('/{trade_license_application}/renew', [TradeLicenseApplicationController::class, 'renew'])->name('.renew');
+
+            // Location change application routes...
+            Route::get('/{trade_license_application}/change-location', [TradeLicenseLocationController::class, 'index'])->name('.change_location');
+            Route::post('/{trade_license_application}/change-location', [TradeLicenseLocationController::class, 'store'])->name('.change_location.store');
+
+            // Ownership change application routes...
+            Route::get('/{trade_license_application}/change-ownership', [TradeLicenseOwnershipController::class, 'index'])->name('.change_ownership');
+            Route::post('/{trade_license_application}/change-ownership', [TradeLicenseOwnershipController::class, 'store'])->name('.change_ownership.store');
             
             // Payment Routes...
             Route::post('/payments/form-fee', [TradeLicensePaymentController::class, 'storeFromFee'])->name('.payments.form_fee.store');
@@ -46,8 +56,6 @@ Route::group(['middleware' => ['auth:web', 'phone_verified'], 'as' => 'user.', '
         });
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     });
-
-
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

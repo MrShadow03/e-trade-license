@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Imagick;
+use App\Models\User;
 use App\Jobs\TestJob;
 use App\Helpers\Helpers;
 use Milon\Barcode\DNS2D;
@@ -17,46 +18,7 @@ use Spatie\Permission\Models\Permission;
 class TestController extends Controller
 {
     public function index(){
-        // $rolePermissions = [
-        //     'trade-license-assistant' => [
-        //         'approve-pending-trade-license-assistant-renewal-approval-applications',
-        //         'deny-pending-trade-license-assistant-renewal-approval-applications'
-        //     ],
-        //     'trade-license-inspector' => [
-        //         'approve-pending-trade-license-inspector-renewal-approval-applications',
-        //         'deny-pending-trade-license-inspector-renewal-approval-applications'
-        //     ],
-        //     'trade-license-superintendent' => [
-        //         'verify-license-renewal-fee-payment',
-        //         'deny-license-renewal-fee-payment',
-        //         'approve-pending-trade-license-superintendent-renewal-approval-applications',
-        //         'deny-pending-trade-license-superintendent-renewal-approval-applications'
-        //     ],
-        //     'revenue-officer' => [
-        //         'approve-pending-revenue-officer-renewal-approval-applications',
-        //         'deny-pending-revenue-officer-renewal-approval-applications',
-        //         'issue-renewed-trade-license'
-        //     ],
-        // ];
-
-        // foreach ($rolePermissions as $role => $permissions) {
-        //     $role = Role::where('name', $role)->first();
-
-        //     foreach ($permissions as $permission) {
-        //         Permission::create([
-        //             'name' => $permission,
-        //             'guard_name' => 'admin'
-        //         ]);
-
-        //         $role->givePermissionTo($permission);
-        //     }
-        // }
-
-        $tla = TradeLicenseApplication::find(1);
-
-        dd(Helpers::getFiscalYear(date('Y-m-d')) - 1 .'-' . Helpers::getFiscalYear(date('Y-m-d')),);
-        
-
+        dd($user = User::Select('name', 'email', 'phone')->where('national_id_no', '19616974411111454')->first());
         return view('test');
     }
 

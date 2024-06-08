@@ -80,10 +80,10 @@
             <table id="kt_file_manager_list" data-kt-filemanager-table="files" class="table align-middle table-row-dashed fs-6 gy-5 font-bn">
                 <thead class="border-bottom">
                     <tr class="text-start text-gray-700 fw-semibold fs-6 text-uppercase gs-0">
-                        <th class="">স্বত্বাধিকারী</th>
+                        {{-- <th class="">স্বত্বাধিকারী</th> --}}
                         <th class="">প্রতিষ্ঠান</th>
                         <th class="">সর্বশেষ অবস্থা</th>
-                        <th class="text-end">করনীয়</th>
+                        <th class="text-start">করনীয়</th>
                     </tr>
                 </thead>
                 <tbody class="fw-semibold text-gray-600 font-kohinoor">
@@ -102,48 +102,8 @@
 
                                 <!--begin::Text-->
                                 <div class="d-flex flex-column">
-                                    <a href="{{ route('admin.trade_license_applications.show', $application->id) }}" class="text-dark text-hover-primary fs-5 fw-bold d-block font-bn">{{ $application->owner_name_bn }}</a>
+                                    <a href="{{ route('admin.trade_license_applications.show', $application->id) }}" class="text-dark text-hover-primary fs-5 fw-bold d-block font-bn">{{ $application->business_organization_name_bn }}</a>
                                     <span class="text-gray-600 fs-7 mt-1">{{ Helpers::convertToBanglaDigits(Carbon\Carbon::parse($application->created_at)->locale('bn-BD')->diffForHumans())}}</span>
-                                </div>
-                                <!--end::Text-->
-                            </div>
-                        </td>
-                        <td class="py-2">
-                            <div class="d-flex align-items-center">
-                                <!--begin::Symbol-->
-                                @php
-                                    $b_theme = 'primary';
-
-                                    if ($application->nature_of_business === 'Individual'){
-                                        $b_theme = 'primary';
-                                    } elseif ($application->nature_of_business === 'Joint') {
-                                        $b_theme = 'success';
-                                    } else {
-                                        $b_theme = 'info';
-                                    }
-                                @endphp
-                                <div class="symbol symbol-50px me-5">
-                                    <span class="symbol-label bg-light-{{ $b_theme }} border border-{{ $b_theme }} border-dashed">
-                                        <i class="fas fa-shop fs-2x text-{{ $b_theme }}"></i>
-                                    </span>
-                                </div>
-                                <!--end::Symbol-->
-
-                                <!--begin::Text-->
-                                <div class="">
-                                    <span class="text-dark fs-5 fw-bold font-bn">{{ $application->business_organization_name_bn }} 
-                                        {{-- <i class="far {{ $data['icon'] }} fs-6 text-{{ $data['theme'] }}"></i> --}}
-                                    </span>
-
-                                    @if ($application->nature_of_business === 'Individual')
-                                    <span class="badge d-inline-block font-bn badge-light-primary fs-7">{{ $application->nature_of_business_bn }}</span>
-                                    @elseif ($application->nature_of_business === 'Joint')
-                                    <span class="badge d-inline-block font-bn badge-light-success fs-7">{{ $application->nature_of_business_bn }}</span>
-                                    @else
-                                    <span class="badge d-inline-block font-bn badge-light-info fs-7">{{ $application->nature_of_business_bn }}</span>
-                                    @endif
-                                    <br>
-                                    <a href="tel:{{ $application->phone_no }}" class="text-gray-600 fs-6 ls-1 mt-1 text-hover-primary">{{ $application->phone_no }}</a>
                                 </div>
                                 <!--end::Text-->
                             </div>
@@ -172,12 +132,12 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="text-end py-1" data-kt-filemanager-table="action_dropdown">
-                            <div class="d-flex justify-content-end">
+                        <td class="text-start py-1" data-kt-filemanager-table="action_dropdown">
+                            <div class="d-flex justify-content-start">
 
                                 @if ($application->isValid())
                                 <a href="{{ route('trade-license', $application->uuid) }}" class="btn btn-success btn-icon btn-sm me-1" data-bs-toggle="tooltip" title="ট্রেড লাইসেন্স দেখুন" target="_blank">
-                                    <i class="fal fa-memo-circle-check fs-4"></i>
+                                    <i class="fal fa-print fs-4"></i>
                                 </a>
                                 @endif
 
@@ -257,6 +217,85 @@
                                     </button>
                                 </form>
                                 @endif
+
+                                <!--begin::Menu-->
+                                <button type="button" class="btn btn-sm btn-icon btn-light-primary ms-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                    <i class="fas fa-ellipsis-v fs-6"></i>
+                                </button>
+                                
+                                <!--begin::Menu 2-->
+                                <div class="menu menu-sub menu-sub-dropdown menu-column pb-3 menu-rounded menu-gray-800 menu-state-bg-light-primary font-bn fw-semibold w-250px" data-kt-menu="true" style="">
+                                    <!--begin::Menu item-->
+                                    <div class="menu-item px-3">
+                                        <div class="menu-content fs-6 text-dark fw-bold px-3 py-4">আরও করুন</div>
+                                    </div>
+                                    <!--end::Menu item-->
+                                
+                                    <!--begin::Menu separator-->
+                                    <div class="separator mb-3 opacity-75"></div>
+                                    <!--end::Menu separator-->
+
+                                    <!--begin::Menu item-->
+                                    <div class="menu-item px-3">
+                                        <a href="#" class="menu-link px-3">
+                                            <span class="menu-icon">
+                                                <i class="fal fa-history fs-2"></i>
+                                            </span>
+                                            <span class="menu-title">আবেদনটির ইতিহাস</span>
+                                        </a>
+                                    </div>
+                                    <!--end::Menu item-->
+                                
+                                    @if($application->status === Helpers::ISSUED)
+                                    @if(!$application->hasActiveAmendment())
+                                    <!--begin::Menu item-->
+                                    <div class="menu-item px-3">
+                                        <a href="{{ route('user.trade_license_applications.change_location', $application->id) }}" class="menu-link px-3">
+                                            <span class="menu-icon">
+                                                <i class="fal fa-location-dot fs-2"></i>
+                                            </span>
+                                            <span class="menu-title">স্থান পরিবর্তন আবেদন</span>
+                                        </a>
+                                    </div>
+                                    <!--end::Menu item-->
+                                    
+                                    <!--begin::Menu item-->
+                                    <div class="menu-item px-3">
+                                        <a href="{{ route('user.trade_license_applications.change_ownership', $application->id) }}" class="menu-link px-3">
+                                            <span class="menu-icon">
+                                                <i class="fal fa-user fs-2"></i>
+                                            </span>
+                                            <span class="menu-title">মালিকানা পরিবর্তন আবেদন</span>
+                                        </a>
+                                    </div>
+                                    <!--end::Menu item-->
+                                    @endif
+
+                                    <!--begin::Menu item-->
+                                    <div class="menu-item px-3">
+                                        <a href="#" class="menu-link px-3">
+                                            <span class="menu-icon">
+                                                <i class="fal fa-globe fs-2"></i>
+                                            </span>
+                                            <span class="menu-title">ইংরেজি ট্রেড লাইসেন্স</span>
+                                        </a>
+                                    </div>
+                                    <!--end::Menu item-->
+
+                                    <!--begin::Menu item-->
+                                    <div class="menu-item px-3">
+                                        <a href="#" class="menu-link bg-hover-light-danger px-3">
+                                            <span class="menu-icon">
+                                                <i class="fal fa-file-slash fs-2 text-danger"></i>
+                                            </span>
+                                            <span class="menu-title text-danger">লাইসেন্স বাতিল করুন</span>
+                                        </a>
+                                    </div>
+                                    <!--end::Menu item-->
+                                    @endif
+                                </div>
+                                <!--end::Menu 2-->
+                                <!--end::Menu-->
                             </div>
                         </td>
                     </tr>
@@ -1729,9 +1768,8 @@
                 'ordering': true,
                 'columns': [
                     { data: 'organization_name' },
-                    { data: 'owners_name' },
                     { data: 'status' },
-                    { data: 'actions', responsivePriority: -1 },
+                    { data: 'actions' },
                 ],
                 conditionalPaging: true
             };

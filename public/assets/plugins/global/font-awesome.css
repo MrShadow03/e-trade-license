@@ -71,6 +71,16 @@
 .fa-envelope:after {
     content: "\f0e0";
 }
+.fa-clock-rotate-left:before,
+.fa-history:before {
+    content: "\f1da";
+}
+.fa-print:before {
+  content: "\f02f";
+}
+.fa-language:before {
+  content: "\f1ab";
+}
 .fa-chevron-up:before {
     content: "\f077";
 }
@@ -82,6 +92,9 @@
 }
 .fa-chevron-left:before {
     content: "\f053";
+}
+.fa-file-slash:before {
+  content: "\e3a7";
 }
 .fa-globe:before {
     content: "\f0ac";
@@ -340,6 +353,10 @@
 }
 .fa-rotate-exclamation:before {
   content: "\e23c";
+}
+.fa-ellipsis-v:before,
+.fa-ellipsis-vertical:before {
+    content: "\f142";
 }
 
 .fa-duotone.fa-trash-alt:after,

@@ -367,6 +367,7 @@
         </div>
     </div>
     <script>
+        window.print();
         const getMaxNumberOfColumns = () => {
             const table = document.getElementById('table');
             let maxNumberOfColumns = 0;

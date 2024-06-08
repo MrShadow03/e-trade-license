@@ -99,6 +99,10 @@ class TradeLicenseApplication extends Model implements HasMedia
         return $this->belongsTo(BusinessCategory::class, 'business_category_id');
     }
 
+    public function amendmentApplications(){
+        return $this->hasMany(AmendmentApplication::class);
+    } 
+
     public function canBeRenewed(): bool{
         return $this->trade_license_no && $this->issued_at && $this->status !== Helpers::ISSUED;
     }
@@ -133,6 +137,11 @@ class TradeLicenseApplication extends Model implements HasMedia
     }
     public function isDeletable(): bool{
         return auth()->user()->id == $this->user_id && $this->status === Helpers::PENDING_FORM_FEE_PAYMENT;
+    }
+
+    //amendment application
+    public function hasActiveAmendment(): bool {
+        return $this->amendmentApplications()->where('status', 'pending')->exists();
     }
     //Media Conversion
     public function registerMediaConversions(?Media $media = null): void

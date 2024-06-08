@@ -57,6 +57,11 @@ class User extends Authenticatable implements HasMedia
         $this->save();
     }
 
+    public function tradeLicenseApplications()
+    {
+        return $this->hasMany(TradeLicenseApplication::class);
+    }
+    
     public function otp()
     {
         return $this->hasOne(UserOneTimePassword::class);

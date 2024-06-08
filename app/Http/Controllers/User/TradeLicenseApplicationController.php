@@ -114,6 +114,8 @@ class TradeLicenseApplicationController extends Controller
             $tlService->updateDocuments($request->documents);
         }
 
+        
+
         return redirect()->route('user.trade_license_applications')->with('info', 'আবেদনটি সফলভাবে আপডেট করা হয়েছে।');
     }
 

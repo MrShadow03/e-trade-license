@@ -75,6 +75,11 @@ class TradeLicenseApplicationPolicy
                 ($tradeLicenseApplication->status === Helpers::EXPIRED || $tradeLicenseApplication->status === Helpers::PENDING_LICENSE_RENEWAL_FEE_PAYMENT || $tradeLicenseApplication->status === Helpers::DENIED_LICENSE_RENEWAL_FEE_VERIFICATION);
     }
 
+    public function requestUpdate(User $user, TradeLicenseApplication $tradeLicenseApplication): bool {
+        $hasAnyPendingAmendments = $tradeLicenseApplication->amendmentApplications()->where('status', 'pending')->exists();
+        return $user->id == $tradeLicenseApplication->user_id && $tradeLicenseApplication->status === Helpers::ISSUED && !$hasAnyPendingAmendments;
+    }
+
     public function hasApprovalPermission(Admin $admin, TradeLicenseApplication $tradeLicenseApplication): bool {
         return $admin->can('approve-pending-trade-license-assistant-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_ASSISTANT_APPROVAL ||
         $admin->can('approve-pending-trade-license-inspector-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_INSPECTOR_APPROVAL ||

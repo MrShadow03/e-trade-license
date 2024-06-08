@@ -590,7 +590,6 @@ var KTSigninGeneral = function() {
                             }
                         }
                     },
-
                     'email': {
                         validators: {
                             emailAddress: {
