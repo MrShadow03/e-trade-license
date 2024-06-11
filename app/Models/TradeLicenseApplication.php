@@ -141,7 +141,12 @@ class TradeLicenseApplication extends Model implements HasMedia
 
     //amendment application
     public function hasActiveAmendment(): bool {
-        return $this->amendmentApplications()->where('status', 'pending')->exists();
+        return $this->amendmentApplications()->whereIn('status', [
+            Helpers::PENDING_AMENDMENT_FEE_PAYMENT,
+            Helpers::PENDING_AMENDMENT_FEE_VERIFICATION,
+            Helpers::DENIED_AMENDMENT_FEE_VERIFICATION,
+            Helpers::PENDING_AMENDMENT_APPROVAL,
+        ])->exists();
     }
     //Media Conversion
     public function registerMediaConversions(?Media $media = null): void
@@ -169,6 +174,15 @@ class TradeLicenseApplication extends Model implements HasMedia
 
     public function isFormFeePayable(): bool{
         return $this->user_id === auth()->id() && ($this->status === Helpers::PENDING_FORM_FEE_PAYMENT || $this->status === Helpers::DENIED_FORM_FEE_VERIFICATION);
+    }
+
+    public function getActiveAmendment(){
+        return $this->amendmentApplications()->whereIn('status', [
+            Helpers::PENDING_AMENDMENT_FEE_PAYMENT,
+            Helpers::PENDING_AMENDMENT_FEE_VERIFICATION,
+            Helpers::DENIED_AMENDMENT_FEE_VERIFICATION,
+            Helpers::PENDING_AMENDMENT_APPROVAL,
+        ])->first();
     }
 
     public function getTypeOfBusinessBnAttribute(){

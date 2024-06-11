@@ -430,153 +430,171 @@
                                 <!--end::Avatar-->
                                 <div class="row g-5 g-xl-8 mb-7">
                                     <div class="col-6 col-md-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="form-check form-check-custom form-check-danger">
-                                                <input class="form-check-input cursor-pointer" onchange="toggleMessage(this)" data-field-name="owner_name_bn" name="corrections[owner_name_bn][message]" type="checkbox" value="" />
-                                                <input type="checkbox" name="corrections[owner_name_bn][isCorrected]" value="0" hidden>
-                                            </div>
-                                            <div class="ms-3 info_wrapper">
-                                                <div class="{{ INFO_LABEL_CLASSES }} label-owner_name_bn">স্বত্বাধিকারীর নাম</div>
-                                                <div class="{{ INFO_CLASSES }}">{{ $application->owner_name_bn }}</div>
-                                            </div>
-                                        </div>
-                                        <input type="text" placeholder="মন্তব্য" oninput="setMessage(this)" class="{{ MSG_INPUT_CLASSES }}" id="owner_name_bn_correction_message">
+                                        <div class="{{ INFO_LABEL_CLASSES }}">স্বত্বাধিকারীর নাম</div>
+                                        <div class="{{ INFO_CLASSES }}">{{ $application->user?->name_bn }}</div>
                                     </div>
                                     <div class="col-6 col-md-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="form-check form-check-custom form-check-danger">
-                                                <input class="form-check-input cursor-pointer" onchange="toggleMessage(this)" data-field-name="owner_name" name="corrections[owner_name][message]" type="checkbox" value="" />
-                                                <input type="checkbox" name="corrections[owner_name][isCorrected]" value="0" hidden>
-                                            </div>
-                                            <div class="ms-3 info_wrapper">
-                                                <div class="{{ INFO_LABEL_CLASSES_EN }} label-owner_name">Owner's Name</div>
-                                                <div class="{{ INFO_CLASSES_EN }}">{{ $application->owner_name }}</div>
-                                            </div>
-                                        </div>
-                                        <input type="text" placeholder="মন্তব্য" oninput="setMessage(this)" class="{{ MSG_INPUT_CLASSES }}" id="owner_name_correction_message">
+                                        <div class="{{ INFO_LABEL_CLASSES_EN }}">Owner's Name</div>
+                                        <div class="{{ INFO_CLASSES_EN }}">{{ $application->user?->name }}</div>
                                     </div>
                                     <div class="col-6 col-md-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="form-check form-check-custom form-check-danger">
-                                                <input class="form-check-input cursor-pointer" onchange="toggleMessage(this)" data-field-name="father_name_bn" name="corrections[father_name_bn][message]" type="checkbox" value="" />
-                                                <input type="checkbox" name="corrections[father_name_bn][isCorrected]" value="0" hidden>
-                                            </div>
-                                            <div class="ms-3 info_wrapper">
-                                                <div class="{{ INFO_LABEL_CLASSES }} label-father_name_bn">পিতার নাম</div>
-                                                <div class="{{ INFO_CLASSES }}">{{ $application->father_name_bn }}</div>
-                                            </div>
-                                        </div>
-                                        <input type="text" placeholder="মন্তব্য" oninput="setMessage(this)" class="{{ MSG_INPUT_CLASSES }}" id="father_name_bn_correction_message">
+                                        <div class="{{ INFO_LABEL_CLASSES }}">পিতার নাম</div>
+                                        <div class="{{ INFO_CLASSES }}">{{ $application->user?->father_name_bn }}</div>
                                     </div>
                                     <div class="col-6 col-md-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="form-check form-check-custom form-check-danger">
-                                                <input class="form-check-input cursor-pointer" onchange="toggleMessage(this)" data-field-name="father_name" name="corrections[father_name][message]" type="checkbox" value="" />
-                                                <input type="checkbox" name="corrections[father_name][isCorrected]" value="0" hidden>
-                                            </div>
-                                            <div class="ms-3 info_wrapper">
-                                                <div class="{{ INFO_LABEL_CLASSES_EN }} label-father_name">Father's Name</div>
-                                                <div class="{{ INFO_CLASSES_EN }}">{{ $application->father_name }}</div>
-                                            </div>
-                                        </div>
-                                         <input type="text" placeholder="মন্তব্য" oninput="setMessage(this)" class="{{ MSG_INPUT_CLASSES }}" id="father_name_correction_message">
+                                        <div class="{{ INFO_LABEL_CLASSES_EN }}">Father's Name</div>
+                                        <div class="{{ INFO_CLASSES_EN }}">{{ $application->user?->father_name }}</div>
                                     </div>
                                 </div> 
                                 <div class="row g-5 g-xl-8 mb-7">
                                     <div class="col-6 col-md-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="form-check form-check-custom form-check-danger">
-                                                <input class="form-check-input cursor-pointer" onchange="toggleMessage(this)" data-field-name="mother_name_bn" name="corrections[mother_name_bn][message]" type="checkbox" value="" />
-                                                <input type="checkbox" name="corrections[mother_name_bn][isCorrected]" value="0" hidden>
-                                            </div>
-                                            <div class="ms-3 info_wrapper">
-                                                <div class="{{ INFO_LABEL_CLASSES }} label-mother_name_bn">মাতার নাম</div>
-                                                <div class="{{ INFO_CLASSES }}">{{ $application->mother_name_bn }}</div>
-                                            </div>
-                                        </div>
-                                         <input type="text" placeholder="মন্তব্য" oninput="setMessage(this)" class="{{ MSG_INPUT_CLASSES }}" id="mother_name_bn_correction_message">
+                                        <div class="{{ INFO_LABEL_CLASSES }}">মাতার নাম</div>
+                                        <div class="{{ INFO_CLASSES }}">{{ $application->user?->mother_name_bn }}</div>
                                     </div>
                                     <div class="col-6 col-md-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="form-check form-check-custom form-check-danger">
-                                                <input class="form-check-input cursor-pointer" onchange="toggleMessage(this)" data-field-name="mother_name" name="corrections[mother_name][message]" type="checkbox" value="" />
-                                                <input type="checkbox" name="corrections[mother_name][isCorrected]" value="0" hidden>
-                                            </div>
-                                            <div class="ms-3 info_wrapper">
-                                                <div class="{{ INFO_LABEL_CLASSES_EN }} label-mother_name">Mother's Name</div>
-                                                <div class="{{ INFO_CLASSES_EN }}">{{ $application->mother_name }}</div>
-                                            </div>
-                                        </div>
-                                         <input type="text" placeholder="মন্তব্য" oninput="setMessage(this)" class="{{ MSG_INPUT_CLASSES }}" id="mother_name_correction_message">
+                                        <div class="{{ INFO_LABEL_CLASSES_EN }}">Mother's Name</div>
+                                        <div class="{{ INFO_CLASSES_EN }}">{{ $application->user?->mother_name }}</div>
                                     </div>
                                     <div class="col-6 col-md-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="form-check form-check-custom form-check-danger">
-                                                <input class="form-check-input cursor-pointer" onchange="toggleMessage(this)" data-field-name="spouse_name_bn" name="corrections[spouse_name_bn][message]" type="checkbox" value="" />
-                                                <input type="checkbox" name="corrections[spouse_name_bn][isCorrected]" value="0" hidden>
-                                            </div>
-                                            <div class="ms-3 info_wrapper">
-                                                <div class="{{ INFO_LABEL_CLASSES }} label-spouse_name_bn">স্বামী/স্ত্রীর নাম</div>
-                                                <div class="{{ INFO_CLASSES }}">{{ $application->spouse_name_bn }}</div>
-                                            </div>
-                                        </div>
-                                         <input type="text" placeholder="মন্তব্য" oninput="setMessage(this)" class="{{ MSG_INPUT_CLASSES }}" id="spouse_name_bn_correction_message">
+                                        <div class="{{ INFO_LABEL_CLASSES }}">স্বামী/স্ত্রীর নাম</div>
+                                        <div class="{{ INFO_CLASSES }}">{{ $application->user?->spouse_name_bn }}</div>
                                     </div>
                                     <div class="col-6 col-md-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="form-check form-check-custom form-check-danger">
-                                                <input class="form-check-input cursor-pointer" onchange="toggleMessage(this)" data-field-name="spouse_name" name="corrections[spouse_name][message]" type="checkbox" value="" />
-                                                <input type="checkbox" name="corrections[spouse_name][isCorrected]" value="0" hidden>
-                                            </div>
-                                            <div class="ms-3 info_wrapper">
-                                                <div class="{{ INFO_LABEL_CLASSES_EN }} label-spouse_name">Spouse's Name</div>
-                                                <div class="{{ INFO_CLASSES_EN }}">{{ $application->spouse_name }}</div>
-                                            </div>
-                                        </div>
-                                         <input type="text" placeholder="মন্তব্য" oninput="setMessage(this)" class="{{ MSG_INPUT_CLASSES }}" id="spouse_name_correction_message">
+                                        <div class="{{ INFO_LABEL_CLASSES_EN }}">Spouse's Name</div>
+                                        <div class="{{ INFO_CLASSES_EN }}">{{ $application->user?->spouse_name }}</div>
                                     </div>
                                 </div> 
                                 <div class="row g-5 g-xl-8">
                                     <div class="col-6 col-md-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="form-check form-check-custom form-check-danger">
-                                                <input class="form-check-input cursor-pointer" onchange="toggleMessage(this)" data-field-name="national_id_no" name="corrections[national_id_no][message]" type="checkbox" value="" />
-                                                <input type="checkbox" name="corrections[national_id_no][isCorrected]" value="0" hidden>
-                                            </div>
-                                            <div class="ms-3 info_wrapper">
-                                                <div class="{{ INFO_LABEL_CLASSES }} label-national_id_no">জাতীয় পরিচয়পত্র নং</div>
-                                                <div class="{{ INFO_CLASSES }}">{{ $application->national_id_no ?? '---' }}</div>
-                                            </div>
-                                        </div>
-                                         <input type="text" placeholder="মন্তব্য" oninput="setMessage(this)" class="{{ MSG_INPUT_CLASSES }}" id="national_id_no_correction_message">
+                                        <div class="{{ INFO_LABEL_CLASSES }}">জাতীয় পরিচয়পত্র নং</div>
+                                        <div class="{{ INFO_CLASSES }}">{{ $application->user?->national_id_no ?? '---' }}</div>
                                     </div>
                                     <div class="col-6 col-md-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="form-check form-check-custom form-check-danger">
-                                                <input class="form-check-input cursor-pointer" onchange="toggleMessage(this)" data-field-name="birth_registration_no" name="corrections[birth_registration_no][message]" type="checkbox" value="" />
-                                                <input type="checkbox" name="corrections[birth_registration_no][isCorrected]" value="0" hidden>
-                                            </div>
-                                            <div class="ms-3 info_wrapper">
-                                                <div class="{{ INFO_LABEL_CLASSES }} label-birth_registration_no">জন্ম নিবন্ধন নং</div>
-                                                <div class="{{ INFO_CLASSES }}">{{ $application->birth_registration_no ?? '---' }}</div>
-                                            </div>
-                                        </div>
-                                         <input type="text" placeholder="মন্তব্য" oninput="setMessage(this)" class="{{ MSG_INPUT_CLASSES }}" id="birth_registration_no_correction_message">
+                                        <div class="{{ INFO_LABEL_CLASSES }}">জন্ম নিবন্ধন নং</div>
+                                        <div class="{{ INFO_CLASSES }}">{{ $application->user?->birth_certificate_no ?? '---' }}</div>
                                     </div>
                                     <div class="col-6 col-md-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="form-check form-check-custom form-check-danger">
-                                                <input class="form-check-input cursor-pointer" onchange="toggleMessage(this)" data-field-name="passport_no" name="corrections[passport_no][message]" type="checkbox" value="" />
-                                                <input type="checkbox" name="corrections[passport_no][isCorrected]" value="0" hidden>
-                                            </div>
-                                            <div class="ms-3 info_wrapper">
-                                                <div class="{{ INFO_LABEL_CLASSES }} label-passport_no">পাসপোর্ট নং</div>
-                                                <div class="{{ INFO_CLASSES }}">{{ $application->passport_no ?? '---' }}</div>
-                                            </div>
-                                        </div>
-                                         <input type="text" placeholder="মন্তব্য" oninput="setMessage(this)" class="{{ MSG_INPUT_CLASSES }}" id="passport_no_correction_message">
+                                        <div class="{{ INFO_LABEL_CLASSES }}">পাসপোর্ট নং</div>
+                                        <div class="{{ INFO_CLASSES }}">{{ $application->user?->passport_no ?? '---' }}</div>
                                     </div>
                                 </div> 
+                            </div>
+                            <!--end::Card header-->
+                        </div>
+                        <!--end::Card-->
+                        <!--begin::Card-->
+                        <div class="card pt-4 mb-6 mb-xl-9">
+                            <!--begin::Card header-->
+                            <div class="card-header border-0">
+                                <!--begin::Card title-->
+                                <div class="card-title">
+                                    <h2>স্বত্বাধিকারীর ঠিকানা</h2>
+                                </div>
+                                <!--end::Card title-->
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="fw-bold fs-6">ক্ষেত্র</th>
+                                            <th class="fw-bold fs-6">বর্তমান ঠিকানা</th>
+                                            <th class="fw-bold fs-6">স্থায়ী ঠিকানা</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="py-1">
+                                                <span class="{{ INFO_LABEL_CLASSES }}">হোল্ডিং নং</span>
+                                            </td>
+                                            <td class="py-1 {{ INFO_CLASSES }}">{{ Helpers::convertToBanglaDigits($application->user?->ca_holding_no ?? '---') }}</td>
+                                            <td class="py-1 {{ INFO_CLASSES }}">{{ Helpers::convertToBanglaDigits($application->user?->pa_holding_no ?? '---') }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-1">
+                                                <span class="{{ INFO_LABEL_CLASSES }}">রোড নং</span>
+                                            </td>
+                                            <td class="py-1 {{ INFO_CLASSES }}">{{ Helpers::convertToBanglaDigits($application->user?->ca_road_no ?? '---') }}</td>
+                                            <td class="py-1 {{ INFO_CLASSES }}">{{ Helpers::convertToBanglaDigits($application->user?->pa_road_no ?? '---') }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-1">
+                                                <span class="{{ INFO_LABEL_CLASSES }}">পোস্ট কোড</span>
+                                            </td>
+                                            <td class="py-1 {{ INFO_CLASSES }}">{{ Helpers::convertToBanglaDigits($application->user?->ca_post_code ?? '---') }}</td>
+                                            <td class="py-1 {{ INFO_CLASSES }}">{{ Helpers::convertToBanglaDigits($application->user?->pa_post_code ?? '---') }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-1">
+                                                <span class="{{ INFO_LABEL_CLASSES }}">এলাকা/গ্রাম</span>
+                                            </td>
+                                            <td class="py-1 {{ INFO_CLASSES }}">{{ $application->user?->ca_village_bn ?? '---' }}</td>
+                                            <td class="py-1 {{ INFO_CLASSES }}">{{ $application->user?->pa_village_bn ?? '---' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-1">
+                                                <span class="{{ INFO_LABEL_CLASSES_EN }}">Village</span>
+                                            </td>
+                                            <td class="py-1 {{ INFO_CLASSES_EN }}">{{ $application->user?->ca_village ?? '---' }}</td>
+                                            <td class="py-1 {{ INFO_CLASSES_EN }}">{{ $application->user?->pa_village ?? '---' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-1">
+                                                <span class="{{ INFO_LABEL_CLASSES }}">ডাকঘর</span>
+                                            </td>
+                                            <td class="py-1 {{ INFO_CLASSES }}">{{ $application->user?->ca_post_office_bn ?? '---' }}</td>
+                                            <td class="py-1 {{ INFO_CLASSES }}">{{ $application->user?->pa_post_office_bn ?? '---' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-1">
+                                                <span class="{{ INFO_LABEL_CLASSES_EN }}">Post Office</span>
+                                            </td>
+                                            <td class="py-1 {{ INFO_CLASSES_EN }}">{{ $application->user?->ca_post_office ?? '---' }}</td>
+                                            <td class="py-1 {{ INFO_CLASSES_EN }}">{{ $application->user?->pa_post_office ?? '---' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-1">
+                                                <span class="{{ INFO_LABEL_CLASSES }}">বিভাগ</span>
+                                            </td>
+                                            <td class="py-1 {{ INFO_CLASSES }}">{{ $application->user?->ca_division_bn ?? '---' }}</td>
+                                            <td class="py-1 {{ INFO_CLASSES }}">{{ $application->user?->pa_division_bn ?? '---' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-1">
+                                                <span class="{{ INFO_LABEL_CLASSES_EN }}">Division</span>
+                                            </td>
+                                            <td class="py-1 {{ INFO_CLASSES_EN }}">{{ $application->user?->ca_division ?? '---' }}</td>
+                                            <td class="py-1 {{ INFO_CLASSES_EN }}">{{ $application->user?->pa_division ?? '---' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-1">
+                                                <span class="{{ INFO_LABEL_CLASSES }}">জেলা</span>
+                                            </td>
+                                            <td class="py-1 {{ INFO_CLASSES }}">{{ $application->user?->ca_district_bn ?? '---' }}</td>
+                                            <td class="py-1 {{ INFO_CLASSES }}">{{ $application->user?->pa_district_bn ?? '---' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-1">
+                                                <span class="{{ INFO_LABEL_CLASSES_EN }}">District</span>
+                                            </td>
+                                            <td class="py-1 {{ INFO_CLASSES_EN }}">{{ $application->user?->ca_district ?? '---' }}</td>
+                                            <td class="py-1 {{ INFO_CLASSES_EN }}">{{ $application->user?->pa_district ?? '---' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-1">
+                                                <span class="{{ INFO_LABEL_CLASSES }}">উপজেলা/থানা</span>
+                                            </td>
+                                            <td class="py-1 {{ INFO_CLASSES }}">{{ $application->user?->ca_upazilla_bn ?? '---' }}</td>
+                                            <td class="py-1 {{ INFO_CLASSES }}">{{ $application->user?->pa_upazilla_bn ?? '---' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-1">
+                                                <span class="{{ INFO_LABEL_CLASSES_EN }}">Upazilla/Police Station</span>
+                                            </td>
+                                            <td class="py-1 {{ INFO_CLASSES_EN }}">{{ $application->user?->ca_upazilla ?? '---' }}</td>
+                                            <td class="py-1 {{ INFO_CLASSES_EN }}">{{ $application->user?->pa_upazilla ?? '---' }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                             <!--end::Card header-->
                         </div>
@@ -773,7 +791,7 @@
                             <!--end::Card header-->
                         </div>
                         <!--end::Card-->
-                        <!--begin::Card-->
+                        {{-- <!--begin::Card-->
                         <div class="card pt-4 mb-6 mb-xl-9">
                             <!--begin::Card header-->
                             <div class="card-header border-0">
@@ -1029,7 +1047,7 @@
                             </div>
                             <!--end::Card header-->
                         </div>
-                        <!--end::Card-->
+                        <!--end::Card--> --}}
                         <!--begin::Card-->
                         <div class="card pt-4 mb-6 mb-xl-9">
                             <!--begin::Card header-->

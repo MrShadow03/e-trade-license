@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('trade_license_application_id')->constrained()->onDelete('cascade');
             $table->string('type');
             $table->json('data');
-            $table->string('status')->default('pending');
+            $table->string('status')->default('pending_amendment_fee_payment');
             $table->timestamps();
         });
     }

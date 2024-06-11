@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 <!--begin::Page Title-->
 @section('title')
-    <title>আবেদন সমূহ</title>
+    <title>সংশোধন আবেদন সমূহ</title>
 @endsection
 <!--end::Page Title-->
 
@@ -29,7 +29,7 @@
                     <!--begin::Title-->
                     <div class="d-flex flex-column">
                         <h2 class="font-ador fw-normal">
-                            আবেদন সমূহ
+                            সংশোধন আবেদন সমূহ
                         </h2>
                         <div class="text-gray-800 fs-5 fw-semibold font-kohinoor">
                             মোট আবেদন সংখ্যা: {{ Helpers::convertToBanglaDigits($applications->count()) }} টি

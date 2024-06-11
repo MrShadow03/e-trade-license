@@ -96,6 +96,12 @@
 .fa-file-slash:before {
   content: "\e3a7";
 }
+.fa-sparkles:before {
+  content: "\f890";
+}
+.fa-eraser:before {
+  content: "\f12d";
+}
 .fa-globe:before {
     content: "\f0ac";
 }

@@ -80,22 +80,6 @@
                             @enderror
                             <!--begin::Heading-->
 
-                            
-                            <!--begin::Input group--->
-                            <div class="fv-row mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="fal fa-user fs-3"></i>
-                                    </span>
-                                    <input type="text" placeholder="আবেদনকারীর নাম" name="name" value="{{ old('name') }}" class="form-control font-bn" required>
-                                </div>
-                                <!--end::Name-->
-                                @error('name')
-                                <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <!--end::Input group--->
-
                             <!--begin::Input group--->
                             <div class="fv-row mb-3">
                                 <div class="input-group">
@@ -106,6 +90,21 @@
                                 </div>
                                 <!--end::Name-->
                                 @error('national_id_no')
+                                <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <!--end::Input group--->
+                            
+                            <!--begin::Input group--->
+                            <div class="fv-row mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fal fa-user fs-3"></i>
+                                    </span>
+                                    <input type="text" placeholder="আবেদনকারীর নাম" name="name_bn" value="{{ old('name_bn') }}" class="form-control font-bn" required>
+                                </div>
+                                <!--end::Name-->
+                                @error('name')
                                 <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -136,21 +135,6 @@
                                 </div>
                                 <!--end::Email-->
                                 @error('email')
-                                <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <!--end::Input group--->
-
-                            <!--begin::Input group--->
-                            <div class="fv-row mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="fal fa-location-dot fs-3"></i>
-                                    </span>
-                                    <input type="text" placeholder="ঠিকানা" name="address" value="{{ old('address') }}" class="form-control font-bn">
-                                </div>
-                                <!--end::Address-->
-                                @error('address')
                                 <div class="fv-plugins-message-container invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -250,7 +234,7 @@
                     form,
                     {
                         fields: {
-                            'name': {
+                            'name_bn': {
                                 validators: {
                                     notEmpty: {
                                         message: 'নাম প্রদান করুন'
@@ -327,16 +311,6 @@
                                 validators: {
                                     emailAddress: {
                                         message: 'একটি বৈধ ই-মেইল প্রদান করুন'
-                                    }
-                                }
-                            },
-                            'address': {
-                                validators: {
-                                    callback: {
-                                        message: 'ঠিকানা প্রদান করুন',
-                                        callback: function(value, validator, $field) {
-                                            return true;
-                                        }
                                     }
                                 }
                             },

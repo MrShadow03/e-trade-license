@@ -18,8 +18,27 @@ use Spatie\Permission\Models\Permission;
 class TestController extends Controller
 {
     public function index(){
-        dd($user = User::Select('name', 'email', 'phone')->where('national_id_no', '19616974411111454')->first());
-        return view('test');
+        $rolePermissions = [
+            'trade-license-superintendent' => [
+                'verify-amendment-fee-payment',
+                'deny-amendment-fee-payment',
+                'approve-pending-amendment-approval-applications'
+            ]
+        ];
+
+        foreach($rolePermissions as $roleName => $permissions){
+            $role = Role::where('name', $roleName)->first();
+
+            foreach($permissions as $permissionName){
+                $permission = Permission::create(['name' => $permissionName, 'guard_name' => 'admin']);
+
+                if($permission){
+                    $role->givePermissionTo($permission);
+                }
+            }
+        }
+
+        return 'Permissions created successfully';
     }
 
     public function store(){

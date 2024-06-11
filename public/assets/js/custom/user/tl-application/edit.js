@@ -253,16 +253,6 @@ const sameAsCa = (element, revalidationField = null) => {
     } 
 };
 
-['national_id_no', 'birth_registration_no', 'passport_no'].forEach((name) => {
-    const element = document.querySelector(`[name="${name}"]`);
-    element.addEventListener('input', () => {
-        const validator = KTSigninGeneral.getValidator();
-        validator.revalidateField('national_id_no');
-        validator.revalidateField('birth_registration_no');
-        validator.revalidateField('passport_no');
-    });
-});
-
 
 var validator;
 var KTSigninGeneral = function() {
@@ -363,165 +353,11 @@ var KTSigninGeneral = function() {
                             }
                         }
                     },
-                    'owner_name_bn': {
-                        validators: requiredAndBengali(),
-                    },
-                    'owner_name': {
-                        validators: requiredAndEnglish(),
-                    },
-                    'father_name_bn': {
-                        validators: requiredAndBengali(),
-                    },
-                    'father_name': {
-                        validators: requiredAndEnglish(),
-                    },
-                    'mother_name_bn': {
-                        validators: requiredAndBengali(),
-                    },
-                    'mother_name': {
-                        validators: requiredAndEnglish(),
-                    },
-                    'spouse_name_bn': {
-                        validators: {
-                            callback: {
-                                message: 'শুধুমাত্র বাংলা অক্ষর গ্রহণযোগ্য',
-                                callback: function(value, validator, field) {
-                                    // Check if value is either a valid email or a valid phone number
-                                    var input = value.element;
-                                    value = value.value;
-
-                                    if (value.trim() === '') {
-                                        return true; // Skip validation if field is empty
-                                    }
-                                    
-                                    var bengaliPattern = /^[\u0980-\u09FF ]+$/;
-
-                                    if (bengaliPattern.test(value)) {
-                                        return true;
-                                    }
-
-                                    //delete the last character from the input
-                                    input.value = input.value.slice(0, -1);
-
-                                    return false;
-                                }
-                            }
-                        }
-                    },
-                    'spouse_name': {
-                        validators: {
-                            callback: {
-                                message: 'শুধুমাত্র ইংরেজি অক্ষর গ্রহণযোগ্য',
-                                callback: function(value, validator, field) {
-                                    // Check if value is either a valid email or a valid phone number
-                                    var input = value.element;
-                                    value = value.value;
-
-                                    if (value.trim() === '') {
-                                        return true; // Skip validation if field is empty
-                                    }
-                                    
-                                    var englishPattern = /^[A-Za-z ]+$/;
-
-                                    if (englishPattern.test(value)) {
-                                        return true;
-                                    }
-
-                                    //delete the last character from the input
-                                    input.value = input.value.slice(0, -1);
-                                    
-                                    return false;
-                                }
-                            }
-                        }
-                    },
-                    'national_id_no': {
-                        validators: {
-                            stringLength: {
-                                min: 13,
-                                max: 17,
-                                message: 'জাতীয় পরিচয়পত্র নং ১৩ থেকে ১৭ অক্ষরের মধ্যে হতে হবে'
-                            },
-                            regexp: {
-                                regexp: /^[0-9]+$/,
-                                message: 'শুধুমাত্র ইংরেজি সংখ্যা গ্রহণযোগ্য'
-                            },
-                            callback: {
-                                message: 'যেকোনো একটি অবশ্যই প্রদান করতে হবে',
-                                callback: function(value, validator, field) {
-                                    var nationalId = $('[name="national_id_no"]').val();
-                                    var birthCertificate = $('[name="birth_registration_no"]').val();
-                                    var passport = $('[name="passport_no"]').val();
-
-                                    if (nationalId.trim() === '' && birthCertificate.trim() === '' && passport.trim() === '') {
-                                        return false;
-                                    }
-
-                                    $regex = /^[0-9]+$/;
-
-                                    return true;
-                                }
-                            }
-                        }
-                    },
-                    'birth_registration_no': {
-                        validators: {
-                            stringLength: {
-                                min: 17,
-                                max: 17,
-                                message: 'জন্ম নিবন্ধন নং ১৭ অক্ষরের হতে হবে'
-                            },
-                            regexp: {
-                                regexp: /^[0-9]+$/,
-                                message: 'শুধুমাত্র ইংরেজি সংখ্যা গ্রহণযোগ্য'
-                            },
-                            callback: {
-                                message: 'যেকোনো একটি অবশ্যই প্রদান করতে হবে',
-                                callback: function(value, validator, field) {
-                                    var nationalId = $('[name="national_id_no"]').val();
-                                    var birthCertificate = $('[name="birth_registration_no"]').val();
-                                    var passport = $('[name="passport_no"]').val();
-
-                                    if (nationalId.trim() === '' && birthCertificate.trim() === '' && passport.trim() === '') {
-                                        return false;
-                                    }
-
-                                    return true;
-                                }
-                            }
-                        }
-                    },
-                    'passport_no': {
-                        validators: {
-                            stringLength: {
-                                min: 9,
-                                max: 9,
-                                message: 'পাসপোর্ট নং ৯ অক্ষরের হতে হবে'
-                            },
-                            callback: {
-                                message: 'যেকোনো একটি অবশ্যই প্রদান করতে হবে',
-                                callback: function(value, validator, field) {
-                                    var nationalId = $('[name="national_id_no"]').val();
-                                    var birthCertificate = $('[name="birth_registration_no"]').val();
-                                    var passport = $('[name="passport_no"]').val();
-
-                                    if (nationalId.trim() === '' && birthCertificate.trim() === '' && passport.trim() === '') {
-                                        return false;
-                                    }
-
-                                    //make the passport number uppercase
-                                    value.element.value = value.element.value.toUpperCase();
-
-                                    return true;
-                                }
-                            }
-                        }
-                    },
                     'business_organization_name_bn': {
                         validators: requiredAndBengali()
                     },
                     'business_organization_name': {
-                        validators: requiredAndEnglish()
+                        validators: requiredAndEnglish(/^[A-Za-z0-9\.\- ]+$/)
                     },
                     'address_of_business_organization_bn': {
                         validators: requiredAndBengali(/^[\u0980-\u09FF\,\.\- ]+$/)
@@ -597,105 +433,13 @@ var KTSigninGeneral = function() {
                             }
                         }
                     },
-                    'ca_holding_no': {
-                        validators: {
-                            notEmpty: {
-                                message: 'অবশ্যই প্রদান করতে হবে'
-                            },
-                            regexp: {
-                                regexp: /^[0-9]+$/,
-                                message: 'শুধুমাত্র ইংরেজি সংখ্যা গ্রহণযোগ্য'
-                            }
-                        }
-                    },
-                    'ca_road_no': {
-                        validators: 
-                        {
-                            regexp: {
-                                regexp: /^[0-9]+$/,
-                                message: 'শুধুমাত্র ইংরেজি সংখ্যা গ্রহণযোগ্য'
-                            }
-                        }
-                    },
-                    'ca_post_code': {
-                        validators: {
-                            regexp: {
-                                regexp: /^[0-9]+$/,
-                                message: 'শুধুমাত্র ইংরেজি সংখ্যা গ্রহণযোগ্য'
-                            }
-                        }
-                    },
-                    'ca_village_bn': {
-                        validators: requiredAndBengali(/^[\u0980-\u09FF\,\.\- ]+$/)
-                    },
-                    'ca_village': {
-                        validators: requiredAndEnglish(/^[A-Za-z0-9\,\.\- ]+$/)
-                    },
-                    'ca_post_office_bn': {
-                        validators: requiredAndBengali(/^[\u0980-\u09FF\,\.\- ]+$/)
-                    },
-                    'ca_post_office': {
-                        validators: requiredAndEnglish(/^[A-Za-z0-9\,\.\- ]+$/)
-                    },
-                    'ca_upazilla_bn': {
-                        validators: requiredAndBengali(/^[\u0980-\u09FF\,\.\- ]+$/)
-                    },
-                    'ca_upazilla': {
-                        validators: requiredAndEnglish(/^[A-Za-z0-9\,\.\- ]+$/)
-                    },
-                    'pa_holding_no': {
-                        validators: {
-                            notEmpty: {
-                                message: 'অবশ্যই প্রদান করতে হবে'
-                            },
-                            regexp: {
-                                regexp: /^[0-9]+$/,
-                                message: 'শুধুমাত্র ইংরেজি সংখ্যা গ্রহণযোগ্য'
-                            }
-                        }
-                    },
-                    'pa_road_no': {
-                        validators: 
-                        {
-                            regexp: {
-                                regexp: /^[0-9]+$/,
-                                message: 'শুধুমাত্র ইংরেজি সংখ্যা গ্রহণযোগ্য'
-                            }
-                        }
-                    },
-                    'pa_post_code': {
-                        validators: {
-                            regexp: {
-                                regexp: /^[0-9]+$/,
-                                message: 'শুধুমাত্র ইংরেজি সংখ্যা গ্রহণযোগ্য'
-                            }
-                        }
-                    },
-                    'pa_village_bn': {
-                        validators: requiredAndBengali(/^[\u0980-\u09FF\,\.\- ]+$/)
-                    },
-                    'pa_village': {
-                        validators: requiredAndEnglish(/^[A-Za-z0-9\,\.\- ]+$/)
-                    },
-                    'pa_post_office_bn': {
-                        validators: requiredAndBengali(/^[\u0980-\u09FF\,\.\- ]+$/)
-                    },
-                    'pa_post_office': {
-                        validators: requiredAndEnglish(/^[A-Za-z0-9\,\.\- ]+$/)
-                    },
-                    'pa_upazilla_bn': {
-                        validators: requiredAndBengali(/^[\u0980-\u09FF\,\.\- ]+$/)
-                    },
-                    'pa_upazilla': {
-                        validators: requiredAndEnglish(/^[A-Za-z0-9\,\.\- ]+$/)
-                    },
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
                     bootstrap: new FormValidation.plugins.Bootstrap5({
                         rowSelector: '.fv-row',
                         // eleInvalidClass: '',  // comment to enable invalid state icons
-                        // eleValidClass: '' // comment to enable valid state icons
+                    // eleValidClass: '' // comment to enable valid state icons
                     })
                 }
             }

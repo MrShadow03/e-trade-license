@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth:web', 'phone_verified'], 'as' => 'user.', '
             
             // Payment Routes...
             Route::post('/payments/form-fee', [TradeLicensePaymentController::class, 'storeFromFee'])->name('.payments.form_fee.store');
+            Route::post('/payments/amendment-fee', [TradeLicensePaymentController::class, 'storeAmendmentFee'])->name('.payments.amendment_fee.store');
             Route::post('/payments/license-fee', [TradeLicensePaymentController::class, 'storeLicenseFee'])->name('.payments.license_fee.store');
             Route::post('/payments/license-renewal-fee', [TradeLicensePaymentController::class, 'storeLicenseRenewalFee'])->name('.payments.license_renewal_fee.store');
         });

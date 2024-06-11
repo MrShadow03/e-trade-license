@@ -26,7 +26,7 @@ class UserRegisterRequest extends FormRequest
     {
         return [
             'national_id_no' => ['required', 'string', 'min:13', 'max:17', 'unique:'.User::class],
-            'name' => ['required', 'string', 'max:255'],
+            'name_bn' => ['required', 'string', 'max:255', 'regex:/^[\x{0980}-\x{09FF} ]+$/u'],
             'phone' => ['required', 'string', 'max:11', 'min:11', 'unique:'.User::class],
             'email' => ['nullable', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'address' => ['nullable', 'string', 'max:255'],
@@ -41,7 +41,8 @@ class UserRegisterRequest extends FormRequest
             'national_id_no.min' => 'জাতীয় পরিচয়পত্র নম্বর অবশ্যই ১৩ সংখ্যার হতে হবে',
             'national_id_no.max' => 'জাতীয় পরিচয়পত্র নম্বর অবশ্যই ১৭ সংখ্যার হতে হবে',
             'national_id_no.unique' => 'এই জাতীয় পরিচয়পত্র নম্বর দিয়ে ইতিমধ্যে একটি অ্যাকাউন্ট খোলা আছে',
-            'name.required' => 'নাম অবশ্যই প্রয়োজন',
+            'name_bn.required' => 'নাম অবশ্যই প্রয়োজন',
+            'name_bn.regex' => 'নাম অবশ্যই বাংলা হতে হবে',
             'phone.required' => 'ফোন নম্বর অবশ্যই প্রয়োজন',
             'phone.min' => 'ফোন নম্বর অবশ্যই ১১ সংখ্যার হতে হবে',
             'phone.max' => 'ফোন নম্বর অবশ্যই ১১ সংখ্যার হতে হবে',
@@ -58,7 +59,7 @@ class UserRegisterRequest extends FormRequest
     {
         return [
             'national_id_no' => 'জাতীয় পরিচয়পত্র নম্বর',
-            'name' => 'নাম',
+            'name_bn' => 'নাম',
             'phone' => 'ফোন নম্বর',
             'email' => 'ই-মেইল',
             'address' => 'ঠিকানা',
@@ -72,6 +73,7 @@ class UserRegisterRequest extends FormRequest
             ->withInput()
             ->withErrors($validator->errors()->all(), 'register');
 
+            dd($response); 
         throw new ValidationException($validator, $response);
     }
 }

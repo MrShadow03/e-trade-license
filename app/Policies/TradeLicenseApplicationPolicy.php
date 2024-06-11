@@ -65,6 +65,10 @@ class TradeLicenseApplicationPolicy
                 ($tradeLicenseApplication->status === Helpers::PENDING_FORM_FEE_PAYMENT || $tradeLicenseApplication->status === Helpers::DENIED_FORM_FEE_VERIFICATION);
     }
     
+    public function payAmendmentFee(User $user, TradeLicenseApplication $tradeLicenseApplication): bool {
+        return  $user->id == $tradeLicenseApplication->user_id && $tradeLicenseApplication->status === Helpers::ISSUED && $tradeLicenseApplication->hasActiveAmendment();
+    }
+    
     public function payLicenseFee(User $user, TradeLicenseApplication $tradeLicenseApplication): bool {
         return  $user->id == $tradeLicenseApplication->user_id &&
                 ($tradeLicenseApplication->status === Helpers::PENDING_LICENSE_FEE_PAYMENT || $tradeLicenseApplication->status === Helpers::DENIED_LICENSE_FEE_VERIFICATION);

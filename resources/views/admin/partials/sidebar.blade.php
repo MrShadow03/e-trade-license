@@ -56,20 +56,59 @@
                 </div>
                 <!--end:Menu item-->
                 
+                
                 <!--begin:Menu item-->
-                <div class="menu-item">
+                <div data-kt-menu-trigger="click"
+                @class([
+                    'menu-item',
+                    'menu-accordion',
+                    'here show' => request()->url() == route('admin.trade_license_applications') || (request()->url() == route('admin.trade_license_applications.amendments') && auth()->user()->can('approve-pending-amendment-approval-applications'))
+                ])
+                >
                     <!--begin:Menu link-->
-                    <a class="menu-link {{ request()->url() == route('admin.trade_license_applications') ? 'active' : '' }}" href="{{ route('admin.trade_license_applications') }}">
+                    <span class="menu-link">
                         <span class="menu-icon">
                             <i class="ki-outline ki-note-2 fs-2"></i>
                         </span>
-                        <span class="menu-title font-bn">
-                            আবেদনসমূহ
-                        </span>
-                    </a>
+                        <span class="menu-title font-bn">আবেদনসমূহ</span>
+                        <span class="menu-arrow"></span>
+                    </span>
                     <!--end:Menu link-->
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link {{ request()->url() == route('admin.trade_license_applications') ? 'active' : '' }}" href="{{ route('admin.trade_license_applications') }}">
+                                <span class="menu-icon">
+                                    <i class="far fa-sparkles fs-4"></i>
+                                </span>
+                                <span class="menu-title font-bn">
+                                    নতুন এবং নবায়ন
+                                </span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+
+                        @canany(['verify-amendment-fee-payment', 'deny-amendment-fee-payment', 'approve-pending-amendment-approval-applications'])
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link {{ request()->url() == route('admin.trade_license_applications.amendments') ? 'active' : '' }}" href="{{ route('admin.trade_license_applications.amendments') }}">
+                                <span class="menu-icon">
+                                    <i class="far fa-eraser fs-4"></i>
+                                </span>
+                                <span class="menu-title font-bn">সংশোধন</span>
+                            </a>
+                        </div>
+                        <!--end:Menu item-->
+                        @endcanany
+                    </div>
+                    <!--end:Menu sub-->
                 </div>
                 <!--end:Menu item-->
+
                 <!--begin:Menu item-->
                 <div class="menu-item pt-5">
                     <!--begin:Menu content-->
@@ -82,7 +121,7 @@
                 </div>
                 <!--end:Menu item-->
                 
-                                <!--begin:Menu item-->
+                <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
                     <a class="menu-link {{ request()->url() == route('admin.admins') ? 'active' : '' }}" href="{{ route('admin.admins') }}">

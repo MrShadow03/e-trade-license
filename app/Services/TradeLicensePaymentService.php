@@ -25,6 +25,8 @@ class TradeLicensePaymentService {
 
         if($type === Helpers::FORM_FEE) {
             $mediaCollection = 'form-fee-payment-slip';
+        }elseif($type === Helpers::AMENDMENT_FEE) {
+            $mediaCollection = 'amendment-fee-payment-slip';
         }elseif($type === Helpers::LICENSE_FEE) {
             $mediaCollection = 'license-fee-payment-slip';
         }elseif($type === Helpers::LICENSE_RENEWAL_FEE) {

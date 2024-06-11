@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ $application->owner_name }}'s Trade License</title>
+    <title>{{ $application->user?->name_bn }} এর ট্রেড লাইসেন্স</title>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
     <link rel="shortcut icon" href="{{ asset('assets/img/Barisal_City_Corporation_logo.png') }}" type="image/x-icon">
@@ -69,7 +69,7 @@
             aspect-ratio: 1;
             object-fit: contain;
             border-radius: 3px;
-            border: 1px solid #000000;
+            border: 1px solid #0000003b;
         }
         .container-custom{
             padding-top: 40px;
@@ -142,20 +142,20 @@
                 </tr>
                 <tr>
                     <td class="label">স্বত্বাধিকারীর নাম</td>
-                    <td class="value">:&nbsp;&nbsp; {{ $application->owner_name_bn }}</td>
+                    <td class="value">:&nbsp;&nbsp; {{ $application->user?->name_bn }}</td>
                 </tr>
                 <tr>
                     <td class="label">মাতার নাম</td>
-                    <td class="value">:&nbsp;&nbsp; {{ $application->mother_name_bn }}</td>
+                    <td class="value">:&nbsp;&nbsp; {{ $application->user?->mother_name_bn }}</td>
                 </tr>
                 <tr>
                     <td class="label">পিতার নাম</td>
-                    <td class="value">:&nbsp;&nbsp; {{ $application->father_name_bn }}</td>
+                    <td class="value">:&nbsp;&nbsp; {{ $application->user?->father_name_bn }}</td>
                 </tr>
-                @if($application->spouse_name_bn)
+                @if($application->user?->spouse_name_bn)
                     <tr>
                         <td class="label">স্বামী/স্ত্রীর নাম</td>
-                        <td class="value">:&nbsp;&nbsp; {{ $application->spouse_name_bn }}</td>
+                        <td class="value">:&nbsp;&nbsp; {{ $application->user?->spouse_name_bn }}</td>
                     </tr>
                 @endif
                 <tr>
@@ -176,21 +176,21 @@
                     <td class="label">অঞ্চল</td>
                     <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits($application->zone_bn) }}</td>
                 </tr>
-                @if($application->national_id_no)
+                @if($application->user?->national_id_no)
                     <tr>
                         <td class="label">জাতীয় পরিচয় পত্র নম্বর</td>
-                        <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits(implode(' ', str_split($application->national_id_no, 5))) }}</td>
+                        <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits(implode(' ', str_split($application->user?->national_id_no, 5))) }}</td>
                     </tr>
                 @endif
-                @if($application->birth_registration_no || $application->passport_no)
+                @if($application->user?->birth_registration_no || $application->user?->passport_no)
                     <tr>
-                        @if($application->birth_registration_no)
+                        @if($application->user?->user?->birth_registration_no)
                         <td class="label">জন্ম নিবন্ধন নম্বর</td>
-                        <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits(implode(' ', str_split($application->birth_registration_no, 5))) }}</td>
+                        <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits(implode(' ', str_split($application->user?->birth_registration_no, 5))) }}</td>
                         @endif
-                        @if($application->passport_no)
+                        @if($application->user?->passport_no)
                         <td class="label">পাসপোর্ট নম্বর</td>
-                        <td class="value">:&nbsp;&nbsp; {{ $application->passport_no }}</td>
+                        <td class="value">:&nbsp;&nbsp; {{ $application->user?->passport_no }}</td>
                         @endif
                     </tr>
                 @endif
@@ -212,70 +212,63 @@
                     <td colspan="2" class="text-start text-underlined fs-14 fw-semibold font-bn pt-2 pb-1"><u class="separator">স্বত্বাধিকারীর বর্তমান ঠিকানা</u></td>
                     <td colspan="2" class="text-start fs-14 fw-semibold font-bn pt-2 pb-1"><u class="separator">স্বত্বাধিকারীর স্থায়ী ঠিকানা</u></td>
                 </tr>
-                @if($application->ca_holding_no)
+                @if($application->user?->ca_holding_no)
                 <tr>
                     <td class="label">হোল্ডিং নং</td>
-                    <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits($application->ca_holding_no) }}</td>
+                    <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits($application->user?->ca_holding_no) }}</td>
                     <td class="label">হোল্ডিং নং</td>
-                    <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits($application->pa_holding_no) }}</td>
+                    <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits($application->user?->pa_holding_no) }}</td>
                 </tr>
                 @endif
-                @if($application->ca_road_no)
+                @if($application->user?->ca_road_no)
                 <tr>
                     <td class="label">রোড নং</td>
-                    <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits($application->ca_road_no) }}</td>
+                    <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits($application->user?->ca_road_no) }}</td>
                     <td class="label">রোড নং</td>
-                    <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits($application->pa_road_no) }}</td>
+                    <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits($application->user?->pa_road_no) }}</td>
                 </tr>
                 @endif
-                @if($application->ca_village_bn)
+                @if($application->user?->ca_village_bn)
                 <tr>
                     <td class="label">গ্রাম/মহল্লা</td>
-                    <td class="value">:&nbsp;&nbsp; {{ $application->ca_village_bn }}</td>
+                    <td class="value">:&nbsp;&nbsp; {{ $application->user?->ca_village_bn }}</td>
                     <td class="label">গ্রাম/মহল্লা</td>
-                    <td class="value">:&nbsp;&nbsp; {{ $application->pa_village_bn }}</td>
+                    <td class="value">:&nbsp;&nbsp; {{ $application->user?->pa_village_bn }}</td>
                 </tr>
                 @endif
-                @if($application->ca_post_office_bn)
+                @if($application->user?->ca_post_office_bn)
                 <tr>
                     <td class="label">ডাকঘর</td>
-                    <td class="value">:&nbsp;&nbsp; {{ $application->ca_post_office_bn }}</td>
+                    <td class="value">:&nbsp;&nbsp; {{ $application->user?->ca_post_office_bn }}</td>
                     <td class="label">ডাকঘর</td>
-                    <td class="value">:&nbsp;&nbsp; {{ $application->pa_post_office_bn }}</td>
+                    <td class="value">:&nbsp;&nbsp; {{ $application->user?->pa_post_office_bn }}</td>
                 </tr>
                 @endif
-                @if($application->ca_post_code)
+                @if($application->user?->ca_post_code)
                 <tr>
                     <td class="label">পোস্ট কোড</td>
-                    <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits($application->ca_post_code) }}</td>
+                    <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits($application->user?->ca_post_code) }}</td>
                     <td class="label">পোস্ট কোড</td>
-                    <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits($application->pa_post_code) }}</td>
+                    <td class="value">:&nbsp;&nbsp; {{ Helpers::convertToBanglaDigits($application->user?->pa_post_code) }}</td>
                 </tr>
                 @endif
-                @if($application->ca_upazilla_bn)
+                @if($application->user?->ca_upazilla_bn)
                 <tr>
                     <td class="label">উপজেলা</td>
-                    <td class="value">:&nbsp;&nbsp; {{ $application->ca_upazilla_bn }}</td>
+                    <td class="value">:&nbsp;&nbsp; {{ $application->user?->ca_upazilla_bn }}</td>
                     <td class="label">উপজেলা</td>
-                    <td class="value">:&nbsp;&nbsp; {{ $application->pa_upazilla_bn }}</td>
+                    <td class="value">:&nbsp;&nbsp; {{ $application->user?->pa_upazilla_bn }}</td>
                 </tr>
                 @endif
-                @if($application->ca_division_bn)
+                @if($application->user?->ca_division_bn)
                 <tr>
                     <td class="label">বিভাগ</td>
-                    <td class="value">:&nbsp;&nbsp; {{ $application->ca_division_bn }}</td>
+                    <td class="value">:&nbsp;&nbsp; {{ $application->user?->ca_division_bn }}</td>
                     <td class="label">বিভাগ</td>
-                    <td class="value">:&nbsp;&nbsp; {{ $application->pa_division_bn }}</td>
+                    <td class="value">:&nbsp;&nbsp; {{ $application->user?->pa_division_bn }}</td>
                 </tr>
                 @endif
-                @if($application->ca_country_bn)
-                <tr>
-                    <td class="label">দেশ</td>
-                    <td class="value">:&nbsp;&nbsp; {{ $application->ca_country_bn }}</td>
-                    <td class="label">দেশ</td>
-                    <td class="value">:&nbsp;&nbsp; {{ $application->pa_country_bn }}</td>
-                </tr>
-                @endif
+                
                 @if($application->ccmts_2016_serial_no)
                 <tr>
                     <td class="label">আদর্শ কর তফসিল, ২০১৬ এর ক্রমিক নং</td>

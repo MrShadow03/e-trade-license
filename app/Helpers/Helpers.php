@@ -613,6 +613,14 @@ class Helpers
     const RENEWED = 'renewed';
     const CANCELLED = 'cancelled';
 
+
+    // Amendment status
+    const PENDING_AMENDMENT_FEE_PAYMENT = 'pending_amendment_fee_payment';
+    const PENDING_AMENDMENT_FEE_VERIFICATION = 'pending_amendment_fee_verification';
+    const DENIED_AMENDMENT_FEE_VERIFICATION = 'denied_amendment_fee_verification';
+    const PENDING_AMENDMENT_APPROVAL = 'pending_amendment_approval';
+    const AMENDMENT_APPROVED = 'amendment_approved';
+
     //Activity
     const DENIED_STATES = [
         self::PENDING_FORM_FEE_VERIFICATION => self::DENIED_FORM_FEE_VERIFICATION,
@@ -715,8 +723,14 @@ class Helpers
     //Payment Types
     const FORM_FEE = 'form fee';
     const LICENSE_FEE = 'license fee';
+    const AMENDMENT_FEE = 'amendment fee';
     const LICENSE_RENEWAL_FEE = 'license renewal fee';
     const LICENSE_AMENDMENT_FEE = 'license amendment fee';
+
+
+    // Amendment Types
+    const AMENDMENT_TYPE_RELOCATION = 'relocation';
+    const AMENDMENT_TYPE_TRANSFER_OWNERSHIP = 'transfer ownership';
 
     //payment Methods
     const BANK_PAYMENT = 'bank payment';
@@ -1214,6 +1228,7 @@ class Helpers
 
     //form fee
     const TRADE_LICENSE_FORM_FEE = 200.00;
+    const TRADE_LICENSE_AMENDMENT_FEE = 500.00;
 
     //license fee
     const SURCHARGE = 100.00;

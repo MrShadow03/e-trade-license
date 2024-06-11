@@ -417,7 +417,7 @@
                     <!--begin:::Tab pane-->
                     <div class="tab-pane fade show active" id="customer_general" role="tabpanel">
                         <!--begin::Card-->
-                        <div class="card pt-4 mb-6 mb-xl-9">
+                        {{-- <div class="card pt-4 mb-6 mb-xl-9">
                             <!--begin::Card header-->
                             <div class="card-header border-0">
                                 <!--begin::Card title-->
@@ -479,7 +479,7 @@
                                 </div> 
                             </div>
                             <!--end::Card header-->
-                        </div>
+                        </div> --}}
                         <!--end::Card-->
                         <!--begin::Card-->
                         <div class="card pt-4 mb-6 mb-xl-9">
@@ -569,7 +569,7 @@
                         </div>
                         <!--end::Card-->
                         <!--begin::Card-->
-                        <div class="card pt-4 mb-6 mb-xl-9">
+                        {{-- <div class="card pt-4 mb-6 mb-xl-9">
                             <!--begin::Card header-->
                             <div class="card-header border-0">
                                 <!--begin::Card title-->
@@ -683,7 +683,7 @@
                                 </table>
                             </div>
                             <!--end::Card header-->
-                        </div>
+                        </div> --}}
                         <!--end::Card-->
                         <!--begin::Card-->
                         <div class="card pt-4 mb-6 mb-xl-9">
