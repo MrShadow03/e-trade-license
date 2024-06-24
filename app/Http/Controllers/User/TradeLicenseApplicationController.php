@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Helpers\Helpers;
 use App\Models\Signboard;
 use Illuminate\Http\Request;
+use App\Services\UserService;
 use App\Traits\ImageHandling;
 use App\Models\BusinessCategory;
 use App\Http\Controllers\Controller;
@@ -31,7 +32,7 @@ class TradeLicenseApplicationController extends Controller
     public function create(){
         return view('user.pages.tl-application.create', [
             'businessCategories' => BusinessCategory::all(),
-            'requiredDocuments' => TradeLicenseRequiredDocument::all(),
+            'requiredDocuments' => TradeLicenseRequiredDocument::where('is_required', true)->get(),
             'districts' => Helpers::DISTRICTS,
             'signboards' => Signboard::all(),
             'latestApplication' => TradeLicenseApplication::where('user_id', auth()->id())->latest()->first() ?? null
@@ -39,16 +40,16 @@ class TradeLicenseApplicationController extends Controller
     }
 
     public function store(TradeLicenseStoreRequest $request){
+        $userService = new UserService();
+        $userService->updateMissingInfo(auth()->user());
+
         $tl = TradeLicenseApplication::create(collect($request->validated())->merge([
             'user_id' => auth()->id(),
             'nature_of_business' => Helpers::translateBusinessNature($request->nature_of_business_bn),
-            'ca_division' => Helpers::translateDivisionToEnglish($request->ca_division_bn),
-            'ca_district' => Helpers::translateDistrictToEnglish($request->ca_district_bn),
-            'pa_division' => Helpers::translateDivisionToEnglish($request->pa_division_bn),
-            'pa_district' => Helpers::translateDistrictToEnglish($request->pa_district_bn),
             'fiscal_year' => Helpers::getFiscalYear(date('Y-m-d')) - 1 .'-' . Helpers::getFiscalYear(date('Y-m-d')),
             'status' => Helpers::PENDING_FORM_FEE_PAYMENT,
         ])->all());
+
 
         
         $imagePath = Helpers::resizeImage();
@@ -88,7 +89,7 @@ class TradeLicenseApplicationController extends Controller
         return view('user.pages.tl-application.edit', [
             'application' => $tradeLicenseApplication->load('documents'),
             'businessCategories' => BusinessCategory::all(),
-            'requiredDocuments' => TradeLicenseRequiredDocument::all(),
+            'requiredDocuments' => TradeLicenseRequiredDocument::where('is_required', true)->get(),
             'districts' => Helpers::DISTRICTS,
             'signboards' => Signboard::all()
         ]);
@@ -101,10 +102,6 @@ class TradeLicenseApplicationController extends Controller
 
         $tradeLicenseApplication->update(collect($request->validated())->merge([
             'nature_of_business' => Helpers::translateBusinessNature($request->nature_of_business_bn),
-            'ca_division' => Helpers::translateDivisionToEnglish($request->ca_division_bn),
-            'ca_district' => Helpers::translateDistrictToEnglish($request->ca_district_bn),
-            'pa_division' => Helpers::translateDivisionToEnglish($request->pa_division_bn),
-            'pa_district' => Helpers::translateDistrictToEnglish($request->pa_district_bn),
             'fiscal_year' => Helpers::getFiscalYear(date('Y-m-d')) - 1 .'-' . Helpers::getFiscalYear(date('Y-m-d')),
         ])->all());
 
@@ -125,7 +122,7 @@ class TradeLicenseApplicationController extends Controller
         return view('user.pages.tl-application.review', [
             'application' => $tradeLicenseApplication->load('documents'),
             'businessCategories' => BusinessCategory::all(),
-            'requiredDocuments' => TradeLicenseRequiredDocument::all(),
+            'requiredDocuments' => TradeLicenseRequiredDocument::where('is_required', true)->get(),
             'districts' => Helpers::DISTRICTS,
             'signboards' => Signboard::all()
         ]);

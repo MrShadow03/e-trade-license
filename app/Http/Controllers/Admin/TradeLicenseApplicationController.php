@@ -39,6 +39,22 @@ class TradeLicenseApplicationController extends Controller {
         ]);
     }
 
+    public function inspectAmendment(TradeLicenseApplication $trade_license_application) {
+        Gate::authorize('hasApprovalPermission', $trade_license_application);
+
+        $data = [
+            'application' => $trade_license_application,
+            'amendment' => $trade_license_application->getActiveAmendment(),
+        ];
+
+        if($trade_license_application->getActiveAmendment()?->type === Helpers::AMENDMENT_TYPE_RELOCATION) {
+            return view('admin.pages.tl-application.inspect-relocation-amendment', $data);
+        }else{
+            return view('admin.pages.tl-application.inspect-ownership-transfer-amendment', $data);
+        }
+
+    }
+
     public function approve(TradeLicenseApplication $trade_license_application, TradeLicenseApprovalRequest $request) {
         Gate::authorize('hasApprovalPermission', $trade_license_application);
 
@@ -126,6 +142,11 @@ class TradeLicenseApplicationController extends Controller {
         return $paymentStatus === 'verified' ? redirect()->route('admin.trade_license_applications')->with('info', 'ফর্ম ফি পেমেন্ট নিশ্চিত করা হয়েছে।') : redirect()->route('admin.trade_license_applications')->with('warning', 'ফর্ম ফি পেমেন্ট প্রত্যাখ্যাত করা হয়েছে।');
     }
     
+    public function verifyAmendmentFeePayment(TradeLicensePaymentVerificationRequest $request){
+        $paymentStatus = TradeLicensePaymentService::verifyPayment($request->validated(), Helpers::AMENDMENT_FEE);
+        return $paymentStatus === 'verified' ? redirect()->route('admin.trade_license_applications.amendments')->with('info', 'পেমেন্ট নিশ্চিত করা হয়েছে।') : redirect()->route('admin.trade_license_applications.amendments')->with('warning', 'ফর্ম ফি পেমেন্ট প্রত্যাখ্যাত করা হয়েছে।');
+    }
+    
     public function verifyLicenseFeePayment(TradeLicensePaymentVerificationRequest $request){
         $paymentStatus = TradeLicensePaymentService::verifyPayment($request->validated(), Helpers::LICENSE_FEE);
         return $paymentStatus === 'verified' ? redirect()->route('admin.trade_license_applications')->with('info', 'লাইসেন্স ফি পেমেন্ট নিশ্চিত করা হয়েছে।') : redirect()->route('admin.trade_license_applications')->with('warning', 'লাইসেন্স ফি পেমেন্ট প্রত্যাখ্যাত করা হয়েছে।');
@@ -135,5 +156,4 @@ class TradeLicenseApplicationController extends Controller {
         $paymentStatus = TradeLicensePaymentService::verifyPayment($request->validated(), Helpers::LICENSE_RENEWAL_FEE);
         return $paymentStatus === 'verified' ? redirect()->route('admin.trade_license_applications')->with('info', 'লাইসেন্স নবায়ন ফি নিশ্চিত করা হয়েছে।') : redirect()->route('admin.trade_license_applications')->with('warning', 'লাইসেন্স নবায়ন ফি পেমেন্ট প্রত্যাখ্যাত করা হয়েছে।');
     }
-
 }

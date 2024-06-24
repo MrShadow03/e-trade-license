@@ -34,5 +34,6 @@ class TradeLicensePayment extends Model implements HasMedia
         $this->addMediaCollection('form-fee-payment-slip')->singleFile();
         $this->addMediaCollection('license-fee-payment-slip')->singleFile();
         $this->addMediaCollection('license-renewal-fee-payment-slip');
+        $this->addMediaCollection('amendment-fee-payment-slip')->singleFile();
     }
 }

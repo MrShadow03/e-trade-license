@@ -37,6 +37,16 @@ class TradeLicenseApplicationPolicy
         return  $user->id == $tradeLicenseApplication->user_id && Helpers::needsApplicationCorrection($tradeLicenseApplication->status);
     }
 
+    public function editRelocationApplication(User $user, TradeLicenseApplication $tradeLicenseApplication): bool
+    {
+        return  $user->id == $tradeLicenseApplication->user_id && $tradeLicenseApplication->getActiveAmendment()?->type === Helpers::AMENDMENT_TYPE_RELOCATION && ($tradeLicenseApplication->getActiveAmendment()?->status === Helpers::DENIED_AMENDMENT_APPROVAL || $tradeLicenseApplication->getActiveAmendment()?->status === Helpers::PENDING_AMENDMENT_FEE_PAYMENT);
+    }
+    
+    public function editOwnershipTransferApplication(User $user, TradeLicenseApplication $tradeLicenseApplication): bool
+    {
+        return  $user->id == $tradeLicenseApplication->user_id && $tradeLicenseApplication->getActiveAmendment()?->type === Helpers::AMENDMENT_TYPE_TRANSFER_OWNERSHIP && ($tradeLicenseApplication->getActiveAmendment()?->status === Helpers::DENIED_AMENDMENT_APPROVAL || $tradeLicenseApplication->getActiveAmendment()?->status === Helpers::PENDING_AMENDMENT_FEE_PAYMENT);
+    }
+
     public function update(User $user, TradeLicenseApplication $tradeLicenseApplication): bool
     {
         return  $user->id == $tradeLicenseApplication->user_id &&
@@ -65,6 +75,10 @@ class TradeLicenseApplicationPolicy
                 ($tradeLicenseApplication->status === Helpers::PENDING_FORM_FEE_PAYMENT || $tradeLicenseApplication->status === Helpers::DENIED_FORM_FEE_VERIFICATION);
     }
     
+    public function payAmendmentFee(User $user, TradeLicenseApplication $tradeLicenseApplication): bool {
+        return  $user->id == $tradeLicenseApplication->user_id && $tradeLicenseApplication->status === Helpers::ISSUED && $tradeLicenseApplication->hasActiveAmendment();
+    }
+    
     public function payLicenseFee(User $user, TradeLicenseApplication $tradeLicenseApplication): bool {
         return  $user->id == $tradeLicenseApplication->user_id &&
                 ($tradeLicenseApplication->status === Helpers::PENDING_LICENSE_FEE_PAYMENT || $tradeLicenseApplication->status === Helpers::DENIED_LICENSE_FEE_VERIFICATION);
@@ -90,6 +104,8 @@ class TradeLicenseApplicationPolicy
         $admin->can('approve-pending-trade-license-assistant-renewal-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_ASSISTANT_RENEWAL_APPROVAL ||
         $admin->can('approve-pending-trade-license-inspector-renewal-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_INSPECTOR_RENEWAL_APPROVAL ||
         $admin->can('approve-pending-trade-license-superintendent-renewal-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_SUPT_RENEWAL_APPROVAL ||
-        $admin->can('approve-pending-revenue-officer-renewal-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_RO_RENEWAL_APPROVAL;
+        $admin->can('approve-pending-revenue-officer-renewal-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_RO_RENEWAL_APPROVAL ||
+        $admin->can('approve-pending-amendment-approval-applications') && $tradeLicenseApplication->getActiveAmendment()?->status === Helpers::PENDING_AMENDMENT_APPROVAL;
+        
     }
 }

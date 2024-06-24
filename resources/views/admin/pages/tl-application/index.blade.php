@@ -29,7 +29,7 @@
                     <!--begin::Title-->
                     <div class="d-flex flex-column">
                         <h2 class="font-ador fw-normal">
-                            আমার আবেদন সমূহ
+                            আবেদন সমূহ
                         </h2>
                         <div class="text-gray-800 fs-5 fw-semibold font-kohinoor">
                             মোট আবেদন সংখ্যা: {{ Helpers::convertToBanglaDigits($applications->count()) }} টি
@@ -96,7 +96,7 @@
 
                                 <!--begin::Text-->
                                 <div class="d-flex flex-column">
-                                    <a href="{{ route('admin.trade_license_applications.show', $application->id) }}" class="text-dark text-hover-primary fs-5 fw-bold d-block font-bn">{{ $application->owner_name_bn }}</a>
+                                    <a href="{{ route('admin.trade_license_applications.show', $application->id) }}" class="text-dark text-hover-primary fs-5 fw-bold d-block font-bn">{{ $application->user?->name_bn }}</a>
                                     <span class="text-gray-600 fs-7 mt-1">{{ Helpers::convertToBanglaDigits(Carbon\Carbon::parse($application->created_at)->locale('bn-BD')->diffForHumans())}}</span>
                                 </div>
                                 <!--end::Text-->

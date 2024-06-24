@@ -25,6 +25,8 @@ class TradeLicensePaymentService {
 
         if($type === Helpers::FORM_FEE) {
             $mediaCollection = 'form-fee-payment-slip';
+        }elseif($type === Helpers::AMENDMENT_FEE) {
+            $mediaCollection = 'amendment-fee-payment-slip';
         }elseif($type === Helpers::LICENSE_FEE) {
             $mediaCollection = 'license-fee-payment-slip';
         }elseif($type === Helpers::LICENSE_RENEWAL_FEE) {
@@ -41,6 +43,8 @@ class TradeLicensePaymentService {
 
         if($type === Helpers::FORM_FEE) {
             $payment = $tlApplication->getFormFeePayment();
+        }elseif($type === Helpers::AMENDMENT_FEE) {
+            $payment = $tlApplication->getAmendmentFeePayment();
         }elseif($type === Helpers::LICENSE_FEE) {
             $payment = $tlApplication->getLicenseFeePayment();
         }elseif($type === Helpers::LICENSE_RENEWAL_FEE) {
@@ -57,6 +61,10 @@ class TradeLicensePaymentService {
         if ($type === Helpers::FORM_FEE) {
             $paymentData = [
                 'form_fee' => $payment->amount,
+            ];
+        }elseif ($type === Helpers::AMENDMENT_FEE) {
+            $paymentData = [
+                'amendment_fee' => $payment->amount,
             ];
         }elseif ($type === Helpers::LICENSE_FEE) {
             $paymentData = [
@@ -76,10 +84,17 @@ class TradeLicensePaymentService {
             ];
         }
 
-        $tlApplication->update([
-            'status' => Helpers::APPROVED_STATES[$tlApplication->status] ?? $tlApplication->status,
-            ...$paymentData
-        ]);
+        if($type === Helpers::AMENDMENT_FEE) {
+            $tlApplication->getActiveAmendment()?->update([
+                'status' => Helpers::PENDING_AMENDMENT_APPROVAL,
+            ]);
+        }else{
+            $tlApplication->update([
+                'status' => Helpers::APPROVED_STATES[$tlApplication->status] ?? $tlApplication->status,
+                ...$paymentData
+            ]);
+        }
+
 
         $payment->update([
             'status' => 'verified',
@@ -90,9 +105,15 @@ class TradeLicensePaymentService {
     }
 
     protected static function denyPayment($tlApplication, $payment) {
-        $tlApplication->update([
-            'status' => Helpers::DENIED_STATES[$tlApplication->status] ?? $tlApplication->status
-        ]);
+        if($payment->type == Helpers::AMENDMENT_FEE) {
+            $tlApplication->getActiveAmendment()?->update([
+                'status' => Helpers::DENIED_AMENDMENT_FEE_VERIFICATION
+            ]);
+        }else{
+            $tlApplication->update([
+                'status' => Helpers::DENIED_STATES[$tlApplication->status] ?? $tlApplication->status
+            ]);
+        }
 
         $payment->delete();
     }

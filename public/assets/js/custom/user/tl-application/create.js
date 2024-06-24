@@ -272,7 +272,7 @@ var KTSigninGeneral = function() {
     var documentNames = JSON.parse(document.getElementById('documentsInput').value);
 
     var handleValidation = function(e) {
-        const requiredAndEnglish = (regex = /^[A-Za-z ]+$/, notEmptyMessage="অবশ্যই প্রদান করতে হবে") => ({
+        const requiredAndEnglish = (regex = /^[A-Za-z\. ]+$/, notEmptyMessage="অবশ্যই প্রদান করতে হবে") => ({
             notEmpty: {
                 message: notEmptyMessage
             },
@@ -365,10 +365,10 @@ var KTSigninGeneral = function() {
                             }
                         }
                     },
-                    'owner_name_bn': {
+                    'name_bn': {
                         validators: requiredAndBengali(),
                     },
-                    'owner_name': {
+                    'name': {
                         validators: requiredAndEnglish(),
                     },
                     'father_name_bn': {

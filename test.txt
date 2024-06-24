@@ -1,0 +1,7 @@
+Ownership transfer feature testing results:
+=============================================
+
+1. Create a new unverified account for the non-existing user.
+2. Populate missing info about the existing user.
+3. Store the old data in the amendment table.
+4. Associate old documents and owners image to that amendment.

@@ -53,10 +53,9 @@
 <div id="kt_app_content_container" class="app-container container-lg">
     <div class="card card-flush font-bn">
         <!--begin::Form-->
-        <form class="card-body form" action="{{ route('user.trade_license_applications.change_ownership.store', $application->id) }}" method="POST" enctype="multipart/form-data" id="form">
+        <form class="card-body form" action="{{ route('user.trade_license_applications.change_ownership.update', $application->id) }}" method="POST" enctype="multipart/form-data" id="form">
             @csrf
-            @method('POST')
-            
+            @method('PATCH')
             <!--begin::Input group-->
             <div class="fv-row mb-4">
                 <!--begin::Label-->
@@ -73,7 +72,7 @@
                     <!--begin::Image input-->
                     <div class="image-input image-input-outline image-input-placeholder" data-kt-image-input="true">
                         <!--begin::Preview existing avatar-->
-                        <div id="ownerImage" class="blockable image-input-wrapper w-125px h-125px border border-gray-300 shadow-none" style=""></div>
+                        <div id="ownerImage" class="blockable image-input-wrapper w-125px h-125px border border-gray-300 shadow-none" style="background-image:url({{ Helpers::getImageUrl($amendment, 'owner-image') }})"></div>
                         <!--end::Preview existing avatar-->
 
                         <!--begin::Edit-->
@@ -131,7 +130,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-address-card fs-3"></i>
                             </div>
-                            <input type="text" oninput="getUserDetails(this.value)" maxlength="17" pattern="/^[0-9]+$/" class="ls-2 font-roboto fw-bold form-control text-gray-700" name="national_id_no" value=""/>
+                            <input type="text" oninput="getUserDetails(this.value)" maxlength="17" pattern="/^[0-9]+$/" class="ls-2 font-roboto fw-bold form-control text-gray-700" name="national_id_no" value="{{ $amendment->data['national_id_no'] ?? '' }}"/>
                         </div>
                         <!--end::Input-->
                         @error('national_id_no')
@@ -153,7 +152,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-phone-alt fs-3"></i>
                             </div>
-                            <input type="text" maxlength="11" class="ls-2 font-roboto fw-bold form-control text-gray-700" name="phone" value=""/> 
+                            <input type="text" maxlength="11" class="ls-2 font-roboto fw-bold form-control text-gray-700" name="phone" value="{{ $amendment->data['phone'] ?? '' }}"/> 
                         </div>
                         <!--end::Input-->
                         @error('phone')
@@ -163,14 +162,13 @@
                     <!--end::Input group-->
                 </div>
             </div>
-            
             <div class="row row-cols-md-2 row-cols-1">
                 <div class="col">
                     <!--begin::Input group-->
                     <div class="fv-row mb-4">
                         <!--begin::Label-->
                         <label class="fs-6 text-gray-{{ LABEL_INTENSITY }} fw-semibold mb-2">
-                            জন্ম নিবন্ধন নং
+                            অথবা, জন্ম নিবন্ধন নং
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->
@@ -178,7 +176,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-address-card fs-3"></i>
                             </div>
-                            <input type="text" maxlength="17" class="ls-2 font-roboto fw-bold form-control text-gray-700" name="birth_registration_no" value=""/> 
+                            <input type="text" maxlength="17" class="ls-2 font-roboto fw-bold form-control text-gray-700" name="birth_registration_no" value="{{ $amendment->data['birth_registration_no'] ?? '' }}"/> 
                         </div>
                         <!--end::Input-->
                         @error('birth_registration_no')
@@ -192,7 +190,7 @@
                     <div class="fv-row mb-4">
                         <!--begin::Label-->
                         <label class="fs-6 text-gray-{{ LABEL_INTENSITY }} fw-semibold mb-2">
-                            পাসপোর্ট নং
+                            অথবা, পাসপোর্ট নং
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->
@@ -200,7 +198,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-address-card fs-3"></i>
                             </div>
-                            <input type="text"  maxlength="9" class="ls-2 font-roboto fw-bold form-control text-gray-700" name="passport_no" value=""/>
+                            <input type="text"  maxlength="9" class="ls-2 font-roboto fw-bold form-control text-gray-700" name="passport_no" value="{{ $amendment->data['passport_no'] ?? '' }}"/>
                         </div>
                         <!--end::Input-->
                         @error('passport_no')
@@ -225,7 +223,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-user fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder="" name="name_bn" value="" required/> 
+                            <input type="text" class="form-control text-gray-900" placeholder="" name="name_bn" value="{{ $amendment->data['name_bn'] ?? '' }}" required/> 
                         </div>
                         <!--end::Input-->
                         @error('name_bn')
@@ -247,7 +245,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-user fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder="" name="name" value="" required/> 
+                            <input type="text" class="form-control text-gray-900" placeholder="" name="name" value="{{ $amendment->data['name'] ?? '' }}" required/> 
                         </div>
                         <!--end::Input-->
                         @error('name')
@@ -272,7 +270,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-{{ COMMON_ICON }} fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="father_name_bn" value="" required/>
+                            <input type="text" class="form-control text-gray-900" placeholder name="father_name_bn" value="{{ $amendment->data['father_name_bn'] ?? '' }}" required/>
                         </div> 
                         <!--end::Input-->
                         @error('father_name_bn')
@@ -294,7 +292,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-{{ COMMON_ICON }} fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder="" name="father_name" value="" required/> 
+                            <input type="text" class="form-control text-gray-900" placeholder="" name="father_name" value="{{ $amendment->data['father_name'] ?? '' }}" required/> 
                         </div>
                         <!--end::Input-->
                         @error('father_name')
@@ -319,7 +317,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-{{ COMMON_ICON }} fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="mother_name_bn" value="" required/>
+                            <input type="text" class="form-control text-gray-900" placeholder name="mother_name_bn" value="{{ $amendment->data['mother_name_bn'] ?? '' }}" required/>
                         </div>
                         <!--end::Input-->
                         @error('mother_name_bn')
@@ -341,7 +339,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-{{ COMMON_ICON }} fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder="" name="mother_name" value="" required/>
+                            <input type="text" class="form-control text-gray-900" placeholder="" name="mother_name" value="{{ $amendment->data['mother_name'] ?? '' }}" required/>
                         </div>
                         <!--end::Input-->
                         @error('mother_name')
@@ -366,7 +364,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-{{ COMMON_ICON }} fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="spouse_name_bn" value=""/> 
+                            <input type="text" class="form-control text-gray-900" placeholder name="spouse_name_bn" value="{{ $amendment->data['spouse_name_bn'] ?? '' }}"/> 
                         </div>
                         <!--end::Input-->
                         @error('spouse_name_bn')
@@ -388,7 +386,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-{{ COMMON_ICON }} fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder="" name="spouse_name" value=""/>
+                            <input type="text" class="form-control text-gray-900" placeholder="" name="spouse_name" value="{{ $amendment->data['spouse_name'] ?? '' }}"/>
                         </div>
                         <!--end::Input-->
                         @error('spouse_name')
@@ -421,7 +419,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-home fs-3"></i>
                             </div>
-                            <input type="text" class="font-roboto fw-normal form-control text-gray-900" placeholder name="ca_holding_no" value="" required/> 
+                            <input type="text" class="font-roboto fw-normal form-control text-gray-900" placeholder name="ca_holding_no" value="{{ $amendment->data['ca_holding_no'] ?? '' }}" required/> 
                         </div>
                         <!--end::Input-->
                         @error('ca_holding_no')
@@ -443,7 +441,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-road fs-3"></i>
                             </div>
-                            <input type="text" class="font-roboto fw-normal form-control text-gray-900" placeholder name="ca_road_no" value=""/> 
+                            <input type="text" class="font-roboto fw-normal form-control text-gray-900" placeholder name="ca_road_no" value="{{ $amendment->data['ca_road_no'] ?? '' }}"/> 
                         </div>
                         <!--end::Input-->
                         @error('ca_road_no')
@@ -465,7 +463,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-mailbox fs-3"></i>
                             </div>
-                            <input type="text" class="font-roboto fw-normal form-control text-gray-900" placeholder name="ca_post_code" value=""/> 
+                            <input type="text" class="font-roboto fw-normal form-control text-gray-900" placeholder name="ca_post_code" value="{{ $amendment->data['ca_post_code'] ?? '' }}"/> 
                         </div>
                         <!--end::Input-->
                         @error('ca_post_code')
@@ -491,7 +489,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-map-marked-alt fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="ca_village_bn" value="" required/> 
+                            <input type="text" class="form-control text-gray-900" placeholder name="ca_village_bn" value="{{ $amendment->data['ca_village_bn'] ?? '' }}" required/> 
                         </div>
                         <!--end::Input-->
                         @error('ca_village_bn')
@@ -513,7 +511,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-map-marked-alt fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="ca_village" value="" required/> 
+                            <input type="text" class="form-control text-gray-900" placeholder name="ca_village" value="{{ $amendment->data['ca_village'] ?? '' }}" required/> 
                         </div>
                         <!--end::Input-->
                         @error('ca_village')
@@ -539,7 +537,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-mailbox fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="ca_post_office_bn" value="" required/> 
+                            <input type="text" class="form-control text-gray-900" placeholder name="ca_post_office_bn" value="{{ $amendment->data['ca_post_office_bn'] ?? '' }}" required/> 
                         </div>
                         <!--end::Input-->
                         @error('ca_post_office_bn')
@@ -561,7 +559,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-mailbox fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="ca_post_office" value="" required/> 
+                            <input type="text" class="form-control text-gray-900" placeholder name="ca_post_office" value="{{ $amendment->data['ca_post_office'] ?? '' }}" required/> 
                         </div>
                         <!--end::Input-->
                         @error('ca_post_office')
@@ -588,14 +586,14 @@
                                 <i class="fal fa-map-marked-alt fs-3"></i>
                             </div>
                             <select onchange="assignDistricts('caDivisionBn', 'caDistrictBn')" type="text" id="caDivisionBn" class="form-control form-select text-gray-900" placeholder name="ca_division_bn" value="" required>
-                                <option value="বরিশাল" @selected($application->signboard_id === 'বরিশাল') >বরিশাল</option>
-                                <option value="ঢাকা" @selected($application->signboard_id === 'ঢাকা') >ঢাকা</option>
-                                <option value="খুলনা" @selected($application->signboard_id === 'খুলনা') >খুলনা</option>
-                                <option value="রাজশাহী" @selected($application->signboard_id === 'রাজশাহী') >রাজশাহী</option>
-                                <option value="সিলেট" @selected($application->signboard_id === 'সিলেট') >সিলেট</option>
-                                <option value="ময়মনসিংহ" @selected($application->signboard_id === 'ময়মনসিংহ') >ময়মনসিংহ</option>
-                                <option value="রংপুর" @selected($application->signboard_id === 'রংপুর') >রংপুর</option>
-                                <option value="চট্টগ্রাম" @selected($application->signboard_id === 'চট্টগ্রাম') >চট্টগ্রাম</option>
+                                <option value="বরিশাল" @selected($amendment->data['ca_division_bn'] === 'বরিশাল') >বরিশাল</option>
+                                <option value="ঢাকা" @selected($amendment->data['ca_division_bn'] === 'ঢাকা') >ঢাকা</option>
+                                <option value="খুলনা" @selected($amendment->data['ca_division_bn'] === 'খুলনা') >খুলনা</option>
+                                <option value="রাজশাহী" @selected($amendment->data['ca_division_bn'] === 'রাজশাহী') >রাজশাহী</option>
+                                <option value="সিলেট" @selected($amendment->data['ca_division_bn'] === 'সিলেট') >সিলেট</option>
+                                <option value="ময়মনসিংহ" @selected($amendment->data['ca_division_bn'] === 'ময়মনসিংহ') >ময়মনসিংহ</option>
+                                <option value="রংপুর" @selected($amendment->data['ca_division_bn'] === 'রংপুর') >রংপুর</option>
+                                <option value="চট্টগ্রাম" @selected($amendment->data['ca_division_bn'] === 'চট্টগ্রাম') >চট্টগ্রাম</option>
                             </select>
                         </div>
                         <!--end::Input-->
@@ -620,7 +618,7 @@
                             </div>
                             <select type="text" id="caDistrictBn" class="form-control text-gray-900" placeholder name="ca_district_bn" value="" required>
                                 @foreach ($districts as $district)
-                                    <option value="{{ $district }}" @selected($application->ca_district_bn === $district) >{{ $district }}</option>
+                                    <option value="{{ $district }}" @selected($amendment->data['ca_district_bn'] === $district) >{{ $district }}</option>
                                 @endforeach
                             </select> 
                         </div>
@@ -648,7 +646,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-map-marked-alt fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="ca_upazilla_bn" value="" required/> 
+                            <input type="text" class="form-control text-gray-900" placeholder name="ca_upazilla_bn" value="{{ $amendment->data['ca_upazilla_bn'] ?? '' }}" required/> 
                         </div>
                         <!--end::Input-->
                         @error('ca_upazilla_bn')
@@ -670,7 +668,7 @@
                             <div class="input-group-text required">
                                 <i class="fal fa-mailbox fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="ca_upazilla" value="" required/> 
+                            <input type="text" class="form-control text-gray-900" placeholder name="ca_upazilla" value="{{ $amendment->data['ca_upazilla'] ?? '' }}" required/> 
                         </div>
                         <!--end::Input-->
                         @error('ca_upazilla')
@@ -690,7 +688,7 @@
             </div>
 
             <div class="form-check form-switch form-check-custom my-3">
-                <input class="form-check-input h-20px w-30px" onchange="sameAsCa(this)" type="checkbox" id="sameAsCurrentAddress" name="same_as_current_address" value="1">
+                <input class="form-check-input h-20px w-30px" onchange="sameAsCa(this)" type="checkbox" id="sameAsCurrentAddress" name="same_as_current_address" value="{{ $amendment->data['same_as_current_address'] ?? '' }}1">
                 <label class="form-check form-check-custom" for="sameAsCurrentAddress">
                     <span class="fs-6 fw-semibold text-primary ms-3 user-select-none">
                         বর্তমান ঠিকানার সাথে মিল আছে?
@@ -713,7 +711,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-home fs-3"></i>
                             </div>
-                            <input type="text" class="font-roboto fw-normal form-control text-gray-900" placeholder name="pa_holding_no" value="" required/> 
+                            <input type="text" class="font-roboto fw-normal form-control text-gray-900" placeholder name="pa_holding_no" value="{{ $amendment->data['pa_holding_no'] ?? '' }}" required/> 
                         </div>
                         <!--end::Input-->
                         @error('pa_holding_no')
@@ -735,7 +733,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-road fs-3"></i>
                             </div>
-                            <input type="text" class="font-roboto fw-normal form-control text-gray-900" placeholder name="pa_road_no" value=""/> 
+                            <input type="text" class="font-roboto fw-normal form-control text-gray-900" placeholder name="pa_road_no" value="{{ $amendment->data['pa_road_no'] ?? '' }}"/> 
                         </div>
                         <!--end::Input-->
                         @error('pa_road_no')
@@ -757,7 +755,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-mailbox fs-3"></i>
                             </div>
-                            <input type="text" class="font-roboto fw-normal form-control text-gray-900" placeholder name="pa_post_code" value=""/> 
+                            <input type="text" class="font-roboto fw-normal form-control text-gray-900" placeholder name="pa_post_code" value="{{ $amendment->data['pa_post_code'] ?? '' }}"/> 
                         </div>
                         <!--end::Input-->
                         @error('pa_post_code')
@@ -783,7 +781,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-map-marked-alt fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="pa_village_bn" value="" required/> 
+                            <input type="text" class="form-control text-gray-900" placeholder name="pa_village_bn" value="{{ $amendment->data['pa_village_bn'] ?? '' }}" required/> 
                         </div>
                         <!--end::Input-->
                         @error('pa_village_bn')
@@ -805,7 +803,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-map-marked-alt fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="pa_village" value="" required/> 
+                            <input type="text" class="form-control text-gray-900" placeholder name="pa_village" value="{{ $amendment->data['pa_village'] ?? '' }}" required/> 
                         </div>
                         <!--end::Input-->
                         @error('pa_village')
@@ -831,7 +829,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-mailbox fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="pa_post_office_bn" value="" required/> 
+                            <input type="text" class="form-control text-gray-900" placeholder name="pa_post_office_bn" value="{{ $amendment->data['pa_post_office_bn'] ?? '' }}" required/> 
                         </div>
                         <!--end::Input-->
                         @error('pa_post_office_bn')
@@ -853,7 +851,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-mailbox fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="pa_post_office" value="" required/> 
+                            <input type="text" class="form-control text-gray-900" placeholder name="pa_post_office" value="{{ $amendment->data['pa_post_office'] ?? '' }}" required/> 
                         </div>
                         <!--end::Input-->
                         @error('pa_post_office')
@@ -880,14 +878,14 @@
                                 <i class="fal fa-map-marked-alt fs-3"></i>
                             </div>
                             <select onchange="assignDistricts('paDivisionBn', 'paDistrictBn')" type="text" id="paDivisionBn" class="form-control form-select text-gray-900" placeholder name="pa_division_bn" required>
-                                <option value="বরিশাল" @selected($application->pa_division_bn === 'বরিশাল') >বরিশাল</option>
-                                <option value="ঢাকা" @selected($application->pa_division_bn === 'ঢাকা') >ঢাকা</option>
-                                <option value="খুলনা" @selected($application->pa_division_bn === 'খুলনা') >খুলনা</option>
-                                <option value="রাজশাহী" @selected($application->pa_division_bn === 'রাজশাহী') >রাজশাহী</option>
-                                <option value="সিলেট" @selected($application->pa_division_bn === 'সিলেট') >সিলেট</option>
-                                <option value="ময়মনসিংহ" @selected($application->pa_division_bn === 'ময়মনসিংহ') >ময়মনসিংহ</option>
-                                <option value="রংপুর" @selected($application->pa_division_bn === 'রংপুর') >রংপুর</option>
-                                <option value="চট্টগ্রাম" @selected($application->pa_division_bn === 'চট্টগ্রাম') >চট্টগ্রাম</option>
+                                <option value="বরিশাল" @selected($amendment->data['pa_division_bn'] === 'বরিশাল') >বরিশাল</option>
+                                <option value="ঢাকা" @selected($amendment->data['pa_division_bn'] === 'ঢাকা') >ঢাকা</option>
+                                <option value="খুলনা" @selected($amendment->data['pa_division_bn'] === 'খুলনা') >খুলনা</option>
+                                <option value="রাজশাহী" @selected($amendment->data['pa_division_bn'] === 'রাজশাহী') >রাজশাহী</option>
+                                <option value="সিলেট" @selected($amendment->data['pa_division_bn'] === 'সিলেট') >সিলেট</option>
+                                <option value="ময়মনসিংহ" @selected($amendment->data['pa_division_bn'] === 'ময়মনসিংহ') >ময়মনসিংহ</option>
+                                <option value="রংপুর" @selected($amendment->data['pa_division_bn'] === 'রংপুর') >রংপুর</option>
+                                <option value="চট্টগ্রাম" @selected($amendment->data['pa_division_bn'] === 'চট্টগ্রাম') >চট্টগ্রাম</option>
                             </select>
                         </div>
                         <!--end::Input-->
@@ -912,7 +910,7 @@
                             </div>
                             <select type="text" id="paDistrictBn" class="form-control text-gray-900" placeholder name="pa_district_bn" required>
                                 @foreach ($districts as $district)
-                                    <option value="{{ $district }}" @selected($application->pa_district_bn === $district) >{{ $district }}</option>
+                                    <option value="{{ $district }}" @selected($amendment->data['pa_district_bn'] === $district) >{{ $district }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -940,7 +938,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-map-marked-alt fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="pa_upazilla_bn" value="" required/> 
+                            <input type="text" class="form-control text-gray-900" placeholder name="pa_upazilla_bn" value="{{ $amendment->data['pa_upazilla_bn'] ?? '' }}" required/> 
                         </div>
                         <!--end::Input-->
                         @error('pa_upazilla_bn')
@@ -962,7 +960,7 @@
                             <div class="input-group-text">
                                 <i class="fal fa-mailbox fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder name="pa_upazilla" value="" required/> 
+                            <input type="text" class="form-control text-gray-900" placeholder name="pa_upazilla" value="{{ $amendment->data['pa_upazilla'] ?? '' }}" required/> 
                         </div>
                         <!--end::Input-->
                         @error('pa_upazilla')
@@ -996,8 +994,7 @@
                             <!--begin::Image input-->
                             <div class="image-input image-input-outline" data-kt-image-input="true">
                                 <!--begin::Image preview wrapper-->
-                                <div class="d-block image-input-wrapper w-200px h-250px position-relative" id="imageWrapper1">
-                                    <i class="fal fa-file-invoice image_wrapper_icon text-danger"></i>
+                                <div class="d-block image-input-wrapper w-200px h-250px position-relative" id="imageWrapper1" style="background-image:url({{ Helpers::getImageUrl($amendment, 'owner-national-id', 'document-preview') }})">
                                 </div>
                                 <!--end::Image preview wrapper-->
 
@@ -1046,8 +1043,7 @@
                             <!--begin::Image input-->
                             <div class="image-input image-input-outline" data-kt-image-input="true">
                                 <!--begin::Image preview wrapper-->
-                                <div class="d-block image-input-wrapper w-200px h-250px position-relative" id="imageWrapper2">
-                                    <i class="fal fa-file-invoice image_wrapper_icon text-danger"></i>
+                                <div class="d-block image-input-wrapper w-200px h-250px position-relative" id="imageWrapper2" style="background-image:url({{ Helpers::getImageUrl($amendment, 'ownership-transfer-deed', 'document-preview') }})">
                                 </div>
                                 <!--end::Image preview wrapper-->
 
@@ -1120,14 +1116,14 @@
             limitReachedClass: "badge badge-success",
             limitExceededClass: "badge badge-danger"
         });
-        $('[name="phone"]').maxlength({
-            threshold: 11,
-            warningClass: "badge badge-primary",
+        $('[name="birth_registration_no"]').maxlength({
+            threshold: 17,
+            warningClass: "badge badge-danger",
             limitReachedClass: "badge badge-success",
             limitExceededClass: "badge badge-danger"
         });
-        $('[name="birth_registration_no"]').maxlength({
-            threshold: 17,
+        $('[name="phone"]').maxlength({
+            threshold: 11,
             warningClass: "badge badge-danger",
             limitReachedClass: "badge badge-success",
             limitExceededClass: "badge badge-danger"
@@ -1329,6 +1325,106 @@
     });
 
     const autofillInputs = [ownerNameBn, ownerName, fatherNameBn, fatherName, motherNameBn, motherName, spouseNameBn, spouseName, phone, birthRegistrationNo, passportNo, caHoldingNo, caRoadNo, caPostCode, caVillageBn, caVillage, caPostOfficeBn, caPostOffice, caDivisionBn, caDistrictBn, caUpazillaBn, caUpazilla, paHoldingNo, paRoadNo, paPostCode, paVillageBn, paVillage, paPostOfficeBn, paPostOffice, paDivisionBn, paDistrictBn, paUpazillaBn, paUpazilla]
+    
+    const getUserDetails = (nid) => {
+        if (nid.length >= 13) {
+            let host = window.location.origin;
+            let url = `${host}/api/v1/users/${nid}`;
+            console.log(nid, host, url);
+            // blockUI.block();
+            axios.get(url)
+            .then((response) => {
+                console.log(response);
+                blockUI.release();
+                let data = response.data.data;
+                let imageUrl = data.imageUrl?.replace('localhost', 'localhost:8000') || '#';
+
+                ownerImage.style.backgroundImage = `url(${imageUrl})`;
+                ownerNameBn.value = data.ownerNameBn;
+                ownerName.value = data.ownerName;
+                fatherNameBn.value = data.fatherNameBn;
+                fatherName.value = data.fatherName;
+                motherNameBn.value = data.motherNameBn;
+                motherName.value = data.motherName;
+                spouseNameBn.value = data.spouseNameBn;
+                spouseName.value = data.spouseName;
+
+                phone.value = data.phone;
+                birthRegistrationNo.value = data.birthRegistrationNo;
+                passportNo.value = data.passportNo;
+                caHoldingNo.value = data.caHoldingNo;
+                caRoadNo.value = data.caRoadNo;
+                caPostCode.value = data.caPostCode;
+                caVillageBn.value = data.caVillageBn;
+                caVillage.value = data.caVillage;
+                caPostOfficeBn.value = data.caPostOfficeBn;
+                caPostOffice.value = data.caPostOffice;
+                caDivisionBn.value = data.caDivisionBn;
+                caDistrictBn.value = data.caDistrictBn;
+                caUpazillaBn.value = data.caUpazillaBn;
+                caUpazilla.value = data.caUpazilla;
+                paHoldingNo.value = data.paHoldingNo;
+                paRoadNo.value = data.paRoadNo;
+                paPostCode.value = data.paPostCode;
+                paVillageBn.value = data.paVillageBn;
+                paVillage.value = data.paVillage;
+                paPostOfficeBn.value = data.paPostOfficeBn;
+                paPostOffice.value = data.paPostOffice;
+                paDivisionBn.value = data.paDivisionBn;
+                paDistrictBn.value = data.paDistrictBn;
+                paUpazillaBn.value = data.paUpazillaBn;
+                paUpazilla.value = data.paUpazilla;
+
+                autofillInputs.forEach((element) => {
+                    if(element.value){
+                        element.readOnly = true;
+                    }
+                });
+                
+            })
+            .catch((error) => {
+                blockUI.release();
+                ownerImage.style = '';
+                ownerNameBn.value = '';
+                ownerName.value = '';
+                fatherNameBn.value = '';
+                fatherName.value = '';
+                motherNameBn.value = '';
+                motherName.value = '';
+                spouseNameBn.value = '';
+                spouseName.value = '';
+                phone.value = '';
+                birthRegistrationNo.value = '';
+                passportNo.value = '';
+                caHoldingNo.value = '';
+                caRoadNo.value = '';
+                caPostCode.value = '';
+                caVillageBn.value = '';
+                caVillage.value = '';
+                caPostOfficeBn.value = '';
+                caPostOffice.value = '';
+                caDivisionBn.value = '';
+                caDistrictBn.value = '';
+                caUpazillaBn.value = '';
+                caUpazilla.value = '';
+                paHoldingNo.value = '';
+                paRoadNo.value = '';
+                paPostCode.value = '';
+                paVillageBn.value = '';
+                paVillage.value = '';
+                paPostOfficeBn.value = '';
+                paPostOffice.value = '';
+                paDivisionBn.value = '';
+                paDistrictBn.value = '';
+                paUpazillaBn.value = '';
+                paUpazilla.value = '';
+
+                autofillInputs.forEach((element) => {
+                    element.readOnly = false;
+                });
+            });
+        }
+    } 
 
     const sameAsCa = (element, revalidationField = null) => {
 
@@ -1456,7 +1552,7 @@
         }
     });
 
-    const requiredAndEnglish = (regex = /^[A-Za-z\. ]+$/, notEmptyMessage="অবশ্যই প্রদান করতে হবে") => ({
+    const requiredAndEnglish = (regex = /^[A-Za-z ]+$/, notEmptyMessage="অবশ্যই প্রদান করতে হবে") => ({
         notEmpty: {
             message: notEmptyMessage
         },
@@ -1490,9 +1586,6 @@
             fields: {
                 'image': {
                     validators: {
-                        notEmpty: {
-                            message: 'অবশ্যই প্রদান করতে হবে'
-                        },
                         file: {
                             extension: 'jpeg,jpg,png',
                             type: 'image/jpeg,image/png',
@@ -1501,10 +1594,10 @@
                         }
                     }
                 },
-                'name_bn': {
+                'owner_name_bn': {
                     validators: requiredAndBengali(),
                 },
-                'name': {
+                'owner_name': {
                     validators: requiredAndEnglish(),
                 },
                 'father_name_bn': {
@@ -1721,9 +1814,6 @@
                 },
                 'owners-nid': {
                     validators: {
-                        notEmpty: {
-                            message: 'অবশ্যই প্রদান করতে হবে'
-                        },
                         file: {
                             extension: 'jpeg,jpg,png,pdf',
                                     type: 'image/jpeg,image/png,application/pdf',
@@ -1735,9 +1825,6 @@
                 },
                 'ownership-transfer-deed': {
                     validators: {
-                        notEmpty: {
-                            message: 'অবশ্যই প্রদান করতে হবে'
-                        },
                         file: {
                             extension: 'jpeg,jpg,png,pdf',
                                     type: 'image/jpeg,image/png,application/pdf',
@@ -1762,105 +1849,6 @@
 
     const formSubmitButton = document.getElementById('button');
     checkFormValidity(form, formValidator, formSubmitButton);
-
-    const getUserDetails = (nid) => {
-        if (nid.length >= 13) {
-            let host = window.location.origin;
-            let url = `${host}/api/v1/users/${nid}`;
-            axios.get(url)
-            .then((response) => {
-                blockUI.release();
-                let data = response.data.data;
-                let imageUrl = data.imageUrl?.replace('localhost', 'localhost:8000') || '#';
-
-                ownerImage.style.backgroundImage = `url(${imageUrl})`;
-                ownerNameBn.value = data.ownerNameBn;
-                ownerName.value = data.ownerName;
-                fatherNameBn.value = data.fatherNameBn;
-                fatherName.value = data.fatherName;
-                motherNameBn.value = data.motherNameBn;
-                motherName.value = data.motherName;
-                spouseNameBn.value = data.spouseNameBn;
-                spouseName.value = data.spouseName;
-
-                phone.value = data.phone;
-                birthRegistrationNo.value = data.birthRegistrationNo;
-                passportNo.value = data.passportNo;
-                caHoldingNo.value = data.caHoldingNo;
-                caRoadNo.value = data.caRoadNo;
-                caPostCode.value = data.caPostCode;
-                caVillageBn.value = data.caVillageBn;
-                caVillage.value = data.caVillage;
-                caPostOfficeBn.value = data.caPostOfficeBn;
-                caPostOffice.value = data.caPostOffice;
-                caDivisionBn.value = data.caDivisionBn;
-                caDistrictBn.value = data.caDistrictBn;
-                caUpazillaBn.value = data.caUpazillaBn;
-                caUpazilla.value = data.caUpazilla;
-                paHoldingNo.value = data.paHoldingNo;
-                paRoadNo.value = data.paRoadNo;
-                paPostCode.value = data.paPostCode;
-                paVillageBn.value = data.paVillageBn;
-                paVillage.value = data.paVillage;
-                paPostOfficeBn.value = data.paPostOfficeBn;
-                paPostOffice.value = data.paPostOffice;
-                paDivisionBn.value = data.paDivisionBn;
-                paDistrictBn.value = data.paDistrictBn;
-                paUpazillaBn.value = data.paUpazillaBn;
-                paUpazilla.value = data.paUpazilla;
-
-                formValidator.validate();
-
-                autofillInputs.forEach((element) => {
-                    if(element.value){
-                        element.readOnly = true;
-                    }
-                });
-                
-            })
-            .catch((error) => {
-                blockUI.release();
-                ownerImage.style = '';
-                ownerNameBn.value = '';
-                ownerName.value = '';
-                fatherNameBn.value = '';
-                fatherName.value = '';
-                motherNameBn.value = '';
-                motherName.value = '';
-                spouseNameBn.value = '';
-                spouseName.value = '';
-                phone.value = '';
-                birthRegistrationNo.value = '';
-                passportNo.value = '';
-                caHoldingNo.value = '';
-                caRoadNo.value = '';
-                caPostCode.value = '';
-                caVillageBn.value = '';
-                caVillage.value = '';
-                caPostOfficeBn.value = '';
-                caPostOffice.value = '';
-                caDivisionBn.value = '';
-                caDistrictBn.value = '';
-                caUpazillaBn.value = '';
-                caUpazilla.value = '';
-                paHoldingNo.value = '';
-                paRoadNo.value = '';
-                paPostCode.value = '';
-                paVillageBn.value = '';
-                paVillage.value = '';
-                paPostOfficeBn.value = '';
-                paPostOffice.value = '';
-                paDivisionBn.value = '';
-                paDistrictBn.value = '';
-                paUpazillaBn.value = '';
-                paUpazilla.value = '';
-
-                autofillInputs.forEach((element) => {
-                    element.readOnly = false;
-                });
-            });
-        }
-    } 
 
     ['national_id_no', 'birth_registration_no', 'passport_no'].forEach((name) => {
         const element = document.querySelector(`[name="${name}"]`);

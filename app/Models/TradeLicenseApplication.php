@@ -43,6 +43,7 @@ class TradeLicenseApplication extends Model implements HasMedia
         parent::boot();
         self::observe(TradeLicenseApplicationObserver::class);
     }
+    
     protected function businessOrganizationName(): Attribute {
         return Attribute::make(
             set: fn (string $value) => ucwords($value),
@@ -141,15 +142,29 @@ class TradeLicenseApplication extends Model implements HasMedia
 
     //amendment application
     public function hasActiveAmendment(): bool {
-        return $this->amendmentApplications()->where('status', 'pending')->exists();
+        return $this->amendmentApplications()->whereIn('status', [
+            Helpers::PENDING_AMENDMENT_FEE_PAYMENT,
+            Helpers::PENDING_AMENDMENT_FEE_VERIFICATION,
+            Helpers::DENIED_AMENDMENT_FEE_VERIFICATION,
+            Helpers::PENDING_AMENDMENT_APPROVAL,
+            Helpers::DENIED_AMENDMENT_APPROVAL,
+        ])->exists();
     }
-    //Media Conversion
+
+    //Media Collections and Conversions
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('owner_image')
+            ->singleFile();
+    }
+
     public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumb')
             ->width(60)
             ->height(60)
-            ->nonQueued();
+            ->nonQueued()
+            ->performOnCollections('owner_image');
     }
 
     public function payFormFeeWithBank($amount){
@@ -171,12 +186,26 @@ class TradeLicenseApplication extends Model implements HasMedia
         return $this->user_id === auth()->id() && ($this->status === Helpers::PENDING_FORM_FEE_PAYMENT || $this->status === Helpers::DENIED_FORM_FEE_VERIFICATION);
     }
 
+    public function getActiveAmendment(){
+        return $this->amendmentApplications()->whereIn('status', [
+            Helpers::PENDING_AMENDMENT_FEE_PAYMENT,
+            Helpers::PENDING_AMENDMENT_FEE_VERIFICATION,
+            Helpers::DENIED_AMENDMENT_FEE_VERIFICATION,
+            Helpers::PENDING_AMENDMENT_APPROVAL,
+            Helpers::DENIED_AMENDMENT_APPROVAL,
+        ])->first();
+    }
+
     public function getTypeOfBusinessBnAttribute(){
         return $this->businessCategory?->name_bn ?? '';
     }
 
     public function getFormFeePayment(){
         return $this->payments()->where('type', Helpers::FORM_FEE)->first();
+    }
+
+    public function getAmendmentFeePayment(){
+        return $this->payments()->where('type', Helpers::AMENDMENT_FEE)->latest()->first();
     }
 
     public function getLicenseFeePayment(){

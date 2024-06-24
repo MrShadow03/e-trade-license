@@ -16,6 +16,42 @@ class TradeLicenseApplicationService {
         $this->tlApplication = $tlApplication;
     }
 
+    public function replaceWithAmendmentDocument($requiredDocumentId){
+        $amendment = $this->tlApplication->getActiveAmendment();
+        $mediaCollectionName = $this->getMediaCollectionName($requiredDocumentId);
+        $newDocument = $amendment->getMedia($mediaCollectionName)->first();
+
+        if($newDocument){
+            $targetDocument = $this->tlApplication->documents()->where('trade_license_required_document_id', $requiredDocumentId)->first();
+
+            if($targetDocument){
+                $amendment->addMedia(
+                    $targetDocument->getMedia('document')->first()->getPath()
+                )->toMediaCollection('old-'.$mediaCollectionName);
+
+                $targetDocument->clearMediaCollection('document');
+                $targetDocument->addMedia($newDocument->getPath())->toMediaCollection('document');
+                $amendment->clearMediaCollection($mediaCollectionName);
+            }else{
+                $this->tlApplication->documents()->create([
+                    'trade_license_required_document_id' => $requiredDocumentId,
+                    'document_name' => TradeLicenseRequiredDocument::find($requiredDocumentId)->document_name,
+                    'document_path' => $newDocument->getPath()
+                ])->addMedia($newDocument->getPath())->toMediaCollection('document');
+            }
+        }
+    }
+
+    protected function getMediaCollectionName($requiredDocumentId): string {
+        $names = [
+            1 => 'house-ownership-document',
+            2 => 'owner-national-id',
+            3 => 'ownership-transfer-deed'
+        ];
+
+        return $names[$requiredDocumentId] ?? '';
+    }
+
     public function uploadDocuments(array $documents): bool {
         foreach($documents as $id => $doc){
             try {
@@ -94,7 +130,7 @@ class TradeLicenseApplicationService {
     }
 
     public function getMissingDocuments(): array {
-        $requiredDocs = TradeLicenseRequiredDocument::all();
+        $requiredDocs = TradeLicenseRequiredDocument::where('is_required', true)->get();
         $uploadedDocs = TradeLicenseDocument::where('trade_license_application_id', $this->tlApplication->id)->get();
         $missingDocs = [];
         foreach($requiredDocs as $doc){

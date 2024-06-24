@@ -119,7 +119,7 @@
             </div>
             <!--end::Input group-->
 
-            <div class="row row-cols-md-2 row-cols-1">
+            {{-- <div class="row row-cols-md-2 row-cols-1">
                 <div class="col">
                     <!--begin::Input group-->
                     <div class="fv-row mb-4">
@@ -133,10 +133,10 @@
                             <div class="input-group-text">
                                 <i class="fal fa-user fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder="" name="owner_name_bn" value="{{ $application->owner_name_bn }}" required/> 
+                            <input type="text" class="form-control text-gray-900" placeholder="" name="name_bn" value="{{ $application->name_bn }}" required/> 
                         </div>
                         <!--end::Input-->
-                        @error('owner_name_bn')
+                        @error('name_bn')
                         <div class="fv-plugins message-container invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -155,10 +155,10 @@
                             <div class="input-group-text">
                                 <i class="fal fa-user fs-3"></i>
                             </div>
-                            <input type="text" class="form-control text-gray-900" placeholder="" name="owner_name" value="{{ $application->owner_name }}" required/> 
+                            <input type="text" class="form-control text-gray-900" placeholder="" name="name" value="{{ $application->name }}" required/> 
                         </div>
                         <!--end::Input-->
-                        @error('owner_name')
+                        @error('name')
                         <div class="fv-plugins message-container invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -374,8 +374,9 @@
                     </div>
                     <!--end::Input group-->
                 </div>
-            </div>
+            </div> --}}
 
+            
             <div class="separator separator-content my-15">
                 <span class="w-200px text-gray-600
                  fs-5 fw-semibold">
@@ -738,8 +739,8 @@
                     <!--end::Input group-->
                 </div>
             </div>
-
-            <div class="separator separator-content my-15">
+            {{--
+             <div class="separator separator-content my-15">
                 <span class="w-300px text-gray-600
                  fs-5 fw-semibold">
                     মালিক/স্বত্বাধিকারীর বর্তমান ঠিকানা
@@ -1311,7 +1312,7 @@
                     </div>
                     <!--end::Input group-->
                 </div>
-            </div>
+            </div> --}}
             
             <div class="separator separator-content my-15">
                 <span class="w-300px text-gray-600

@@ -16,15 +16,10 @@ class User extends Authenticatable implements HasMedia
 {
     use HasFactory, Notifiable, HasRoles, LogsActivity, InteractsWithMedia;
 
-    protected $fillable = [
-        'name',
-        'national_id_no',
-        'phone',
-        'email',
-        'address',
-        'password',
-        'needs_password_reset',
-        'phone_verified_at',
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at'
     ];
 
     protected $hidden = [
