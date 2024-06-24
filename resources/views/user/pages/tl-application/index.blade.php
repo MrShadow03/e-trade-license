@@ -127,13 +127,12 @@
                                     <div class="d-flex flex-column">
                                         <span class="text-{{ $data['theme'] }} fs-5 font-bn">{!! $data['msg_bn'] !!}</span>
                                         
-                                        @if($application->getActiveAmendment()?->type === Helpers::AMENDMENT_TYPE_RELOCATION)
-                                        <span class="text-warning fs-5 font-bn">স্থান পরিবর্তন প্রক্রিয়া চলমান</span>
+                                        @if($application->getActiveAmendment())
+                                        @php
+                                            $amendmentData = Helpers::convertAmendmentStatusToBangla($application->getActiveAmendment()?->status);
+                                        @endphp
+                                        <span class="text-{{ $amendmentData['theme'] }} fs-5 font-bn">{{ $amendmentData['msg_bn_applicant'] }}</span>
                                         @endif
-
-                                        @if($application->getActiveAmendment()?->type === Helpers::AMENDMENT_TYPE_TRANSFER_OWNERSHIP)
-                                        <span class="text-warning fs-5 font-bn">মালিকানা পরিবর্তন প্রক্রিয়া চলমান</span
-i                                        @endif
 
                                         <span class="text-gray-600 fs-7 mt-1">{{ Helpers::convertToBanglaDigits(Carbon\Carbon::parse($application->updated_at)->locale('bn-BD')->diffForHumans())}}</span>
                                     </div>
@@ -147,6 +146,13 @@ i                                        @endif
                                 @if ($application->getActiveAmendment()?->status === Helpers::PENDING_AMENDMENT_FEE_PAYMENT || $application->getActiveAmendment()?->status === Helpers::DENIED_AMENDMENT_FEE_VERIFICATION)
                                 <a href="#" class="btn btn-danger btn-icon btn-sm me-1 pulse pulse-warning" data-bs-toggle="modal" data-bs-target="#amendment_fee_payment_modal" data-bs-toggle="tooltip" title="সংশোধন ফি পরিশোধ করুন" onclick="document.getElementById('amendmentFeeApplicationId').value = '{{ $application->id }}'">
                                     <i class="far fa-bangladeshi-taka-sign fs-4"></i>
+                                    <span class="pulse-ring"></span>
+                                </a>
+                                @endif
+                                
+                                @if ($application->getActiveAmendment()?->status === Helpers::DENIED_AMENDMENT_APPROVAL || $application->getActiveAmendment()?->status === Helpers::PENDING_AMENDMENT_FEE_PAYMENT)
+                                <a href="{{ $application->getActiveAmendment()?->type == 'relocation' ? route('user.trade_license_applications.change_location.edit', $application->id) : route('user.trade_license_applications.change_ownership.edit', $application->id) }}" class="btn btn-danger btn-icon btn-sm me-1 pulse pulse-warning" data-bs-toggle="tooltip" title="পরিবর্তন সংশোধন করুন">
+                                    <i class="far fa-edit fs-4"></i>
                                     <span class="pulse-ring"></span>
                                 </a>
                                 @endif

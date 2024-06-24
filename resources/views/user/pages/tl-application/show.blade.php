@@ -697,10 +697,10 @@
                             </div>
                             <div class="card-body">
                                 @foreach ($application->documents?->chunk(2) as $chunk)
-                                <div class="row row-cols-1 row-cols-md-2 g-5 g-xl-8">
+                                <div class="row row-cols-1 row-cols-md-2 mb-md-10 g-5 g-xl-8">
                                     @foreach ($chunk as $document)
-                                    <div class="col">
-                                        <div class="min-h-100px min-h-md-50px fs-6 font-kohinoor fw-bold mb-4">{{ $document->document_name }}</div>
+                                    <div class="col d-flex flex-column justify-content-between">
+                                        <div class="fs-6 font-kohinoor fw-bold mb-4">{{ $document->document_name }}</div>
                                         <a href="{{ str_replace('localhost', 'localhost:'.env('LOCAL_PORT'), $document->getFirstMediaUrl('document')) }}" target="_blank" class="shadow p-2 d-block image-input-wrapper rounded w-200px h-250px position-relative" id="imageWrapper{{ $document->trade_license_required_document_id }}" style="background-image: url({{ str_replace('localhost', 'localhost:'.env('LOCAL_PORT'), $document->getFirstMediaUrl('document', 'document-preview')) }}); background-position: 50% 0%;">
                                             @if($document->media?->first()?->mime_type == 'application/pdf')
                                             <i class="fs-3x border border-danger bg-white p-2 rounded position-absolute fas fa-file-pdf text-danger" aria-hidden="true" style="left: 15px; bottom: 15px;"></i>

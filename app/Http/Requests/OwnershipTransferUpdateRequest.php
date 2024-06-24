@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 
-class OwnershipTransferRequest extends FormRequest
+class OwnershipTransferUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,20 +24,18 @@ class OwnershipTransferRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {
-        $userExists = User::where('national_id_no', $this->national_id_no)->exists();
-        $phoneUniqueRule = $userExists ? '' : 'unique:users,phone';
+    {       
         return [
             'name_bn' => ['required', 'string', 'max:255', 'regex:/^[\x{0980}-\x{09FF} ]+$/u'],
             'name' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z ]+$/'],
             'father_name_bn' => ['required', 'string', 'max:255', 'regex:/^[\x{0980}-\x{09FF} ]+$/u'],
-            'father_name' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z\. ]+$/'],
+            'father_name' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z ]+$/'],
             'mother_name_bn' => ['required', 'string', 'max:255', 'regex:/^[\x{0980}-\x{09FF} ]+$/u'],
             'mother_name' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z ]+$/'],
             'spouse_name_bn' => ['nullable', 'string', 'max:255', 'regex:/^[\x{0980}-\x{09FF} ]+$/u'],
             'spouse_name' => ['nullable', 'string', 'max:255', 'regex:/^[A-Za-z ]+$/'],
             'national_id_no' => ['required_without_all:birth_registration_no,passport_no', 'not_in:' . $this->user()->national_id_no],
-            'phone' => ['required', 'string', 'max:11', 'min:11', 'regex:/^01[3-9]\d{8}$/', 'not_in:' . $this->user()->phone, $phoneUniqueRule],
+            'phone' => ['required', 'string', 'max:11', 'min:11', 'regex:/^01[3-9]\d{8}$/', 'not_in:' . $this->user()->phone],
             'birth_registration_no' => ['required_without_all:national_id_no,passport_no'],
             'passport_no' => ['required_without_all:national_id_no,birth_registration_no'],
             'ca_holding_no' => ['required'],
@@ -62,9 +60,9 @@ class OwnershipTransferRequest extends FormRequest
             'pa_district_bn' => ['required', 'string', 'max:255'],
             'pa_upazilla_bn' => ['required', 'string', 'max:255', 'regex:/^[\x{0980}-\x{09FF}\,\.\- ]+$/u'],
             'pa_upazilla' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9\,\.\- ]+$/'],
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
-            'owners-nid' => ['required', 'mimes:jpeg,png,jpg,pdf', 'max:1024'],
-            'ownership-transfer-deed' => ['required', 'mimes:jpeg,png,jpg,pdf', 'max:1024'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+            'owners-nid' => ['nullable', 'mimes:jpeg,png,jpg,pdf', 'max:1024'],
+            'ownership-transfer-deed' => ['nullable', 'mimes:jpeg,png,jpg,pdf', 'max:1024'],
         ];
     }
 
@@ -169,14 +167,11 @@ class OwnershipTransferRequest extends FormRequest
             'pa_upazilla.string' => 'অক্ষর হতে হবে',
             'pa_upazilla.max' => 'উপজেলা (ইংরেজি) অধিকতম ২৫৫ অক্ষর হতে পারে',
             'pa_upazilla.regex' => 'ইংরেজি অক্ষর, স্পেস, কমা, ডট এবং ড্যাশ হতে পারে',
-            'image.required' => 'ছবি অবশ্যই প্রদান করতে হবে',
             'image.image' => 'ছবি হতে হবে',
             'image.mimes' => 'ছবি অবশ্যই jpeg, jpg, png ফরম্যাটে হতে হবে',
             'image.max' => 'ছবি অধিকতম ২ মেগাবাইট হতে পারে',
-            'owners-nid.required' => 'মালিকের জাতীয় পরিচয়পত্র অবশ্যই প্রদান করতে হবে',
             'owners-nid.mimes' => 'মালিকের জাতীয় পরিচয়পত্র অবশ্যই jpeg, jpg, png, pdf ফরম্যাটে হতে হবে',
             'owners-nid.max' => 'মালিকের জাতীয় পরিচয়পত্র অধিকতম ১ মেগাবাইট হতে পারে',
-            'ownership-transfer-deed.required' => 'মালিকানা স্থানান্তর দলিল অবশ্যই প্রদান করতে হবে',
             'ownership-transfer-deed.mimes' => 'মালিকানা স্থানান্তর দলিল অবশ্যই jpeg, jpg, png, pdf ফরম্যাটে হতে হবে',
             'ownership-transfer-deed.max' => 'মালিকানা স্থানান্তর দলিল অধিকতম ১ মেগাবাইট হতে পারে',
         ];
@@ -186,7 +181,7 @@ class OwnershipTransferRequest extends FormRequest
         $response = redirect()->back()
             ->withInput($this->input())
             ->withErrors($validator->errors());
-            
+            dd($response);
         throw new ValidationException($validator, $response);
     }
 }

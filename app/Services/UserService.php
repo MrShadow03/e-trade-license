@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Models\User;
 use App\Helpers\Helpers;
 
 class UserService {
@@ -43,9 +44,7 @@ class UserService {
         ];
     }
 
-    public function updateMissingInfo(){
-        $user = auth()->user();
-        
+    public function updateMissingInfo($user){
         $missingInfo = [];
 
         $missingInfo['ca_division'] = Helpers::translateDivisionToEnglish(request()->ca_division_bn);
@@ -60,5 +59,29 @@ class UserService {
         }
 
         $user->update($missingInfo);
+    }
+
+    public function updateMissingInfoFromArray($user, $data){
+        $missingInfo = [];
+
+        $missingInfo['ca_division'] = Helpers::translateDivisionToEnglish($data['ca_division_bn']);
+        $missingInfo['ca_district'] = Helpers::translateDistrictToEnglish($data['ca_district_bn']);
+        $missingInfo['pa_division'] = Helpers::translateDivisionToEnglish($data['pa_division_bn']);
+        $missingInfo['pa_district'] = Helpers::translateDistrictToEnglish($data['pa_district_bn']);
+
+        foreach($this->attributes as $key => $value){
+            if(!$user->$key){
+                $missingInfo[$key] = $data[$key];
+            }
+        }
+
+        $user->update($missingInfo);
+    }
+
+    public static function createUser($data){
+        $data['password'] = bcrypt($data['national_id_no']);
+        $data['needs_password_reset'] = 1;
+        $user = User::create($data);
+        return $user;
     }
 }

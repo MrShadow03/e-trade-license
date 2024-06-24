@@ -14,6 +14,7 @@ class TradeLicensePaymentVerificationRequest extends FormRequest
         $application = TradeLicenseApplication::findOrFail($this->application_id);
 
         return auth()->user()->can('verify-form-fee-payment') && $application->status === Helpers::PENDING_FORM_FEE_VERIFICATION ||
+        auth()->user()->can('verify-amendment-fee-payment') && $application->getActiveAmendment()?->status === Helpers::PENDING_AMENDMENT_FEE_VERIFICATION ||
         auth()->user()->can('verify-license-fee-payment') && $application->status === Helpers::PENDING_LICENSE_FEE_VERIFICATION ||
         auth()->user()->can('verify-license-renewal-fee-payment') && $application->status === Helpers::PENDING_LICENSE_RENEWAL_FEE_VERIFICATION;
     }

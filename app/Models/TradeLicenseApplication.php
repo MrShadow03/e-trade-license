@@ -43,6 +43,7 @@ class TradeLicenseApplication extends Model implements HasMedia
         parent::boot();
         self::observe(TradeLicenseApplicationObserver::class);
     }
+    
     protected function businessOrganizationName(): Attribute {
         return Attribute::make(
             set: fn (string $value) => ucwords($value),
@@ -146,15 +147,24 @@ class TradeLicenseApplication extends Model implements HasMedia
             Helpers::PENDING_AMENDMENT_FEE_VERIFICATION,
             Helpers::DENIED_AMENDMENT_FEE_VERIFICATION,
             Helpers::PENDING_AMENDMENT_APPROVAL,
+            Helpers::DENIED_AMENDMENT_APPROVAL,
         ])->exists();
     }
-    //Media Conversion
+
+    //Media Collections and Conversions
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('owner_image')
+            ->singleFile();
+    }
+
     public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumb')
             ->width(60)
             ->height(60)
-            ->nonQueued();
+            ->nonQueued()
+            ->performOnCollections('owner_image');
     }
 
     public function payFormFeeWithBank($amount){
@@ -182,6 +192,7 @@ class TradeLicenseApplication extends Model implements HasMedia
             Helpers::PENDING_AMENDMENT_FEE_VERIFICATION,
             Helpers::DENIED_AMENDMENT_FEE_VERIFICATION,
             Helpers::PENDING_AMENDMENT_APPROVAL,
+            Helpers::DENIED_AMENDMENT_APPROVAL,
         ])->first();
     }
 
@@ -191,6 +202,10 @@ class TradeLicenseApplication extends Model implements HasMedia
 
     public function getFormFeePayment(){
         return $this->payments()->where('type', Helpers::FORM_FEE)->first();
+    }
+
+    public function getAmendmentFeePayment(){
+        return $this->payments()->where('type', Helpers::AMENDMENT_FEE)->latest()->first();
     }
 
     public function getLicenseFeePayment(){

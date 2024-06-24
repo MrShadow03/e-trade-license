@@ -32,7 +32,7 @@ class TradeLicenseApplicationController extends Controller
     public function create(){
         return view('user.pages.tl-application.create', [
             'businessCategories' => BusinessCategory::all(),
-            'requiredDocuments' => TradeLicenseRequiredDocument::all(),
+            'requiredDocuments' => TradeLicenseRequiredDocument::where('is_required', true)->get(),
             'districts' => Helpers::DISTRICTS,
             'signboards' => Signboard::all(),
             'latestApplication' => TradeLicenseApplication::where('user_id', auth()->id())->latest()->first() ?? null
@@ -41,7 +41,7 @@ class TradeLicenseApplicationController extends Controller
 
     public function store(TradeLicenseStoreRequest $request){
         $userService = new UserService();
-        $userService->updateMissingInfo();
+        $userService->updateMissingInfo(auth()->user());
 
         $tl = TradeLicenseApplication::create(collect($request->validated())->merge([
             'user_id' => auth()->id(),
@@ -89,7 +89,7 @@ class TradeLicenseApplicationController extends Controller
         return view('user.pages.tl-application.edit', [
             'application' => $tradeLicenseApplication->load('documents'),
             'businessCategories' => BusinessCategory::all(),
-            'requiredDocuments' => TradeLicenseRequiredDocument::all(),
+            'requiredDocuments' => TradeLicenseRequiredDocument::where('is_required', true)->get(),
             'districts' => Helpers::DISTRICTS,
             'signboards' => Signboard::all()
         ]);
@@ -122,7 +122,7 @@ class TradeLicenseApplicationController extends Controller
         return view('user.pages.tl-application.review', [
             'application' => $tradeLicenseApplication->load('documents'),
             'businessCategories' => BusinessCategory::all(),
-            'requiredDocuments' => TradeLicenseRequiredDocument::all(),
+            'requiredDocuments' => TradeLicenseRequiredDocument::where('is_required', true)->get(),
             'districts' => Helpers::DISTRICTS,
             'signboards' => Signboard::all()
         ]);

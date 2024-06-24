@@ -619,7 +619,38 @@ class Helpers
     const PENDING_AMENDMENT_FEE_VERIFICATION = 'pending_amendment_fee_verification';
     const DENIED_AMENDMENT_FEE_VERIFICATION = 'denied_amendment_fee_verification';
     const PENDING_AMENDMENT_APPROVAL = 'pending_amendment_approval';
-    const AMENDMENT_APPROVED = 'amendment_approved';
+    const DENIED_AMENDMENT_APPROVAL = 'denied_amendment_approval';
+    
+    // Amendment activities
+    const RELOCATION_AMENDMENT_CREATED = 'relocation amendment created';
+    const OWNERSHIP_TRANSFER_AMENDMENT_CREATED = 'ownership transfer amendment created';
+    const AMENDMENT_FEE_SUBMITTED = 'amendment fee submitted';
+    const AMENDMENT_FEE_DENIED = 'amendment fee denied';
+    const AMENDMENT_FEE_RESUBMITTED = 'amendment fee resubmitted';
+    const AMENDMENT_FEE_VERIFIED = 'amendment fee verified';
+    const AMENDMENT_DENIED = 'amendment denied';
+    const AMENDMENT_RESUBMITTED = 'amendment resubmitted';
+    const AMENDMENT_APPROVED = 'amendment approved';
+
+    const AMENDMENT_STATUS_ACTIVITY_MAP = [
+        [ self::PENDING_AMENDMENT_FEE_PAYMENT, self::PENDING_AMENDMENT_FEE_VERIFICATION, self::AMENDMENT_FEE_SUBMITTED],
+        [ self::PENDING_AMENDMENT_FEE_VERIFICATION, self::DENIED_AMENDMENT_FEE_VERIFICATION, self::AMENDMENT_FEE_DENIED],
+        [ self::DENIED_AMENDMENT_FEE_VERIFICATION, self::PENDING_AMENDMENT_FEE_VERIFICATION, self::AMENDMENT_FEE_RESUBMITTED],
+        [ self::PENDING_AMENDMENT_FEE_VERIFICATION, self::PENDING_AMENDMENT_APPROVAL, self::AMENDMENT_FEE_VERIFIED],
+        [ self::PENDING_AMENDMENT_APPROVAL, self::DENIED_AMENDMENT_APPROVAL, self::AMENDMENT_DENIED],
+        [ self::DENIED_AMENDMENT_APPROVAL, self::PENDING_AMENDMENT_APPROVAL, self::AMENDMENT_RESUBMITTED],
+        [ self::PENDING_AMENDMENT_APPROVAL, self::AMENDMENT_APPROVED, self::AMENDMENT_APPROVED],
+    ];
+
+    public static function getAmendmentActivity($prev, $current) {
+        foreach (self::AMENDMENT_STATUS_ACTIVITY_MAP as $map) {
+            [$prevStatus, $currentStatus, $activity] = $map;
+            if ($prev === $prevStatus && $current === $currentStatus) {
+                return $activity;
+            }
+        }
+        return self::UNKNOWN_ACTIVITY;
+    }
 
     //Activity
     const DENIED_STATES = [
@@ -753,6 +784,64 @@ class Helpers
             self::DENIED_SUPT_RENEWAL_APPROVAL,
             self::DENIED_RO_RENEWAL_APPROVAL,
         ]);
+    }
+
+    public static function formatTableField($field, $lan='bn'){
+        $attrMap = [
+            'name_bn' => 'মালিকের নাম (বাংলা)',
+            'name' => 'মালিকের নাম (ইংরেজি)',
+            'father_name_bn' => 'পিতার নাম (বাংলা)',
+            'father_name' => 'পিতার নাম (ইংরেজি)',
+            'mother_name_bn' => 'মাতার নাম (বাংলা)',
+            'mother_name' => 'মাতার নাম (ইংরেজি)',
+            'spouse_name_bn' => 'স্বামী/স্ত্রীর নাম (বাংলা)',
+            'spouse_name' => 'স্বামী/স্ত্রীর নাম (ইংরেজি)',
+            'national_id_no' => 'জাতীয় পরিচয়পত্র নং',
+            'birth_registration_no' => 'জন্ম নিবন্ধন নং',
+            'passport_no' => 'পাসপোর্ট নং',
+            'business_organization_name_bn' => 'প্রতিষ্ঠানের নাম (বাংলা)',
+            'business_organization_name' => 'প্রতিষ্ঠানের নাম (ইংরেজি)',
+            'nature_of_business_bn' => 'ব্যবসার প্রকৃতি (বাংলা)',
+            'business_category_id' => 'ব্যবসার ধরণ (বাংলা)',
+            'address_of_business_organization_bn' => 'প্রতিষ্ঠানের ঠিকানা (বাংলা)',
+            'address_of_business_organization' => 'প্রতিষ্ঠানের ঠিকানা (ইংরেজি)',
+            'zone_bn' => 'এলাকা',
+            'ward_no' => 'ওয়ার্ড নং',
+            'tin_no' => 'টিন নং',
+            'bin_no' => 'বিআইএন নং',
+            'phone_no' => 'ফোন নং',
+            'email' => 'ইমেইল',
+            'fiscal_year' => 'অর্থবছর',
+            'business_starting_date' => 'ব্যবসা শুরুর তারিখ',
+            'ca_holding_no' => 'স্থায়ী ঠিকানা হোল্ডিং নং',
+            'ca_road_no' => 'স্থায়ী ঠিকানা রোড নং',
+            'ca_post_code' => 'স্থায়ী ঠিকানা পোস্ট কোড',
+            'ca_village_bn' => 'স্থায়ী ঠিকানা গ্রাম (বাংলা)',
+            'ca_village' => 'স্থায়ী ঠিকানা গ্রাম (ইংরেজি)',
+            'ca_post_office_bn' => 'স্থায়ী ঠিকানা পোস্ট অফিস (বাংলা)',
+            'ca_post_office' => 'স্থায়ী ঠিকানা পোস্ট অফিস (ইংরেজি)',
+            'ca_division_bn' => 'স্থায়ী ঠিকানা বিভাগ (বাংলা)',
+            'ca_district_bn' => 'স্থায়ী ঠিকানা জেলা (বাংলা)',
+            'ca_upazilla_bn' => 'স্থায়ী ঠিকানা উপজেলা (বাংলা)',
+            'ca_upazilla' => 'স্থায়ী ঠিকানা উপজেলা (ইংরেজি)',
+            'pa_holding_no' => 'বর্তমান ঠিকানা হোল্ডিং নং',
+            'pa_road_no' => 'বর্তমান ঠিকানা রোড নং',
+            'pa_post_code' => 'বর্তমান ঠিকানা পোস্ট কোড',
+            'pa_village_bn' => 'বর্তমান ঠিকানা গ্রাম (বাংলা)',
+            'pa_village' => 'বর্তমান ঠিকানা গ্রাম (ইংরেজি)',
+            'pa_post_office_bn' => 'বর্তমান ঠিকানা পোস্ট অফিস (বাংলা)',
+            'pa_post_office' => 'বর্তমান ঠিকানা পোস্ট অফিস (ইংরেজি)',
+            'pa_division_bn' => 'বর্তমান ঠিকানা বিভাগ (বাংলা)',
+            'pa_district_bn' => 'বর্তমান ঠিকানা জেলা (বাংলা)',
+            'pa_upazilla_bn' => 'বর্তমান ঠিকানা উপজেলা (বাংলা)',
+            'pa_upazilla' => 'বর্তমান ঠিকানা উপজেলা (ইংরেজি)',
+        ];
+
+        if($lan == 'bn'){
+            return $attrMap[$field];
+        }else{
+            return ucwords(str_replace('_', ' ', $field));
+        }
     }
 
     public static function convertTlStatusToBangla($status){
@@ -1057,6 +1146,82 @@ class Helpers
                 break;
         }
     }
+
+    public static function convertAmendmentStatusToBangla($status){
+        switch ($status) {
+            case self::PENDING_AMENDMENT_FEE_PAYMENT:
+                return [
+                    'msg_bn_applicant' => 'সংশোধন ফি প্রদান করুন',
+                    'msg_en_applicant' => 'Please pay the amendment fee',
+                    'msg_bn_admin' => 'সংশোধন ফি প্রদান করা হয়নি',
+                    'msg_en_admin' => 'Amendment fee not paid',
+                    'theme' => 'danger',
+                    'icon' => 'fa-bangladeshi-taka-sign'
+                ];
+                break;
+            case self::PENDING_AMENDMENT_FEE_VERIFICATION:
+                return [
+                    'msg_bn_applicant' => 'সংশোধন ফি যাচাই করা হচ্ছে',
+                    'msg_en_applicant' => 'Amendment fee is being verified',
+                    'msg_bn_admin' => 'সংশোধন ফি যাচাই করুন',
+                    'msg_en_admin' => 'Please verify the amendment fee',
+                    'theme' => 'info',
+                    'icon' => 'fa-bangladeshi-taka-sign'
+                ];
+                break;
+            case self::DENIED_AMENDMENT_FEE_VERIFICATION:
+                return [
+                    'msg_bn_applicant' => 'সংশোধন ফি পুনরায় প্রেরণ করুন',
+                    'msg_en_applicant' => 'Please resubmit the amendment fee',
+                    'msg_bn_admin' => 'সংশোধন ফি যাচাই করা হয়নি',
+                    'msg_en_admin' => 'Amendment fee not verified',
+                    'theme' => 'danger',
+                    'icon' => 'fa-times-circle'
+                ];
+                break;
+            case self::PENDING_AMENDMENT_APPROVAL:
+                return [
+                    'msg_bn_applicant' => 'সংশোধন যাচাই করা হচ্ছে',
+                    'msg_en_applicant' => 'Amendment is being verified',
+                    'msg_bn_admin' => 'সংশোধন যাচাই করুন',
+                    'msg_en_admin' => 'Please verify the amendment',
+                    'theme' => 'info',
+                    'icon' => 'fa-file-search'
+                ];
+                break;
+            case self::DENIED_AMENDMENT_APPROVAL:
+                return [
+                    'msg_bn_applicant' => 'সংশোধন পুনরায় প্রেরণ করুন',
+                    'msg_en_applicant' => 'Please resubmit the amendment',
+                    'msg_bn_admin' => 'সংশোধন যাচাই করা হয়নি',
+                    'msg_en_admin' => 'Amendment not verified',
+                    'theme' => 'danger',
+                    'icon' => 'fa-times-circle'
+                ];
+                break;
+            case self::AMENDMENT_APPROVED:
+                return [
+                    'msg_bn_applicant' => 'সংশোধন অনুমোদিত',
+                    'msg_en_applicant' => 'Amendment approved',
+                    'msg_bn_admin' => 'সংশোধন অনুমোদিত',
+                    'msg_en_admin' => 'Amendment approved',
+                    'theme' => 'success',
+                    'icon' => 'fa-check-circle'
+                ];
+                break;
+            default:
+                return [
+                    'msg_bn_applicant' => '',
+                    'msg_en_applicant' => '',
+                    'msg_bn_admin' => '',
+                    'msg_en_admin' => '',
+                    'theme' => 'success',
+                    'icon' => 'fa-check-circle'
+                ];
+                break;
+        }
+    }
+
     public static function resizeImage($inputFileName = 'image', $width = 300, $applyCrop = true, $filters =  []) {
         // Get the uploaded file
         $uploadedFile = request()->file($inputFileName);

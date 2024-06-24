@@ -102,6 +102,10 @@
 .fa-eraser:before {
   content: "\f12d";
 }
+.fa-file-magnifying-glass:before,
+.fa-file-search:before {
+    content: "\f865";
+}
 .fa-globe:before {
     content: "\f0ac";
 }

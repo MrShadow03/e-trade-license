@@ -29,7 +29,6 @@ class ProfileController extends Controller
      */
     public function update(UserProfileUpdateRequest $request): RedirectResponse {
         $request->user()->email = $request->email;
-        $request->user()->address = $request->address;
 
         if($request->hasFile('image')) {
             $imgPath = Helpers::resizeImage();

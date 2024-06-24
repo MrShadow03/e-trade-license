@@ -45,9 +45,13 @@ Route::group(['middleware' => 'auth:admin', 'as' => 'admin.', 'prefix' => 'admin
         Route::get('/', [TradeLicenseApplicationController::class, 'index'])->name('');
 
         Route::get('/amendments', [TradeLicenseAmendmentApplicationController::class, 'index'])->name('.amendments')->middleware('can_any:verify-amendment-fee-payment, deny-amendment-fee-payment, approve-pending-amendment-approval-applications');
+        Route::patch('/{trade_license_application}/amendment/approve-relocation', [TradeLicenseAmendmentApplicationController::class, 'approveRelocation'])->name('.amendment.approve_relocation')->middleware('can_any:approve-pending-amendment-approval-applications, deny-amendment-approval-applications');
+        Route::patch('/{trade_license_application}/amendment/approve-ownership-transfer', [TradeLicenseAmendmentApplicationController::class, 'approveOwnershipTransfer'])->name('.amendment.approve_ownership_transfer')->middleware('can_any:approve-pending-amendment-approval-applications, deny-amendment-approval-applications');
 
         Route::get('/{trade_license_application}', [TradeLicenseApplicationController::class, 'show'])->name('.show');
         Route::get('/{trade_license_application}/inspect', [TradeLicenseApplicationController::class, 'inspect'])->name('.inspect');
+        Route::get('/{trade_license_application}/amendment/inspect', [TradeLicenseApplicationController::class, 'inspectAmendment'])->name('.inspect.amendment');
+        Route::post('/verify-amendment-fee-payment', [TradeLicenseApplicationController::class, 'verifyAmendmentFeePayment'])->name('.verify_amendment_fee_payment')->can('verify-amendment-fee-payment');
         Route::post('/verify-form-fee-payment', [TradeLicenseApplicationController::class, 'verifyFormFeePayment'])->name('.verify_form_fee_payment')->can('verify-form-fee-payment');
         Route::post('/verify-license-fee-payment', [TradeLicenseApplicationController::class, 'verifyLicenseFeePayment'])->name('.verify_license_fee_payment')->can('verify-license-fee-payment');
         Route::post('/verify-license-renewal-fee-payment', [TradeLicenseApplicationController::class, 'verifyLicenseRenewalFeePayment'])->name('.verify_license_renewal_fee_payment')->can('verify-license-renewal-fee-payment');
@@ -55,7 +59,6 @@ Route::group(['middleware' => 'auth:admin', 'as' => 'admin.', 'prefix' => 'admin
         // Approval Routes...
         // Assistant Approval
         Route::patch('/{trade_license_application}/approve', [TradeLicenseApplicationController::class, 'approve'])->name('.approve')->middleware('can_any:approve-pending-trade-license-assistant-approval-applications, approve-pending-trade-license-inspector-approval-applications, approve-pending-trade-license-superintendent-approval-applications, approve-pending-revenue-officer-approval-applications, approve-pending-chief-revenue-officer-approval-applications, approve-pending-chief-executive-officer-approval-applications');
-
     });
 
     Route::group(['prefix' => 'admins', 'as' => 'admins'], function () {

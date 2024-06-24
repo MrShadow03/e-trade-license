@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('trade_license_application_id')->constrained()->onDelete('cascade');
             $table->string('activity')->nullable(false);
+            $table->string('doer')->nullable()->default('system');
             $table->string('message')->nullable();
             $table->decimal('payment_amount', 10, 2)->nullable();
             $table->timestamps();
