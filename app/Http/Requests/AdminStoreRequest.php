@@ -24,6 +24,8 @@ class AdminStoreRequest extends FormRequest
             'email' => ['nullable', 'string', 'email', 'max:255', 'unique:admins'],
             'role' => ['required', 'string', 'exists:roles,name'],
             'address' => ['nullable', 'string', 'max:255'],
+            'wards' => ['required', 'array'],
+            'wards.*' => ['required', 'integer', 'exists:wards,ward_no'],
             'image' => ['nullable', 'image', 'max:2048'],
         ];
     }
@@ -37,6 +39,8 @@ class AdminStoreRequest extends FormRequest
             'email.email' => 'ইমেইল ঠিকানা সঠিক নয়',
             'role.required' => 'ভূমিকা অবশ্যই প্রয়োজন',
             'role.exists' => 'ভূমিকা সঠিক নয়',
+            'wards.required' => 'ওয়ার্ড অবশ্যই প্রয়োজন',
+            'wards.*.exists' => 'ওয়ার্ড সঠিক নয়',
             'email.unique' => 'এই ইমেইল ঠিকানা ইতিমধ্যে নিবন্ধিত',
         ];
     }

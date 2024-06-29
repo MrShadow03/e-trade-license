@@ -43,6 +43,7 @@ Route::group(['middleware' => 'auth:admin', 'as' => 'admin.', 'prefix' => 'admin
     // Application Routes...
     Route::group(['prefix' => 'trade-license-applications', 'as' => 'trade_license_applications'], function () {
         Route::get('/', [TradeLicenseApplicationController::class, 'index'])->name('');
+        Route::get('/all', [TradeLicenseApplicationController::class, 'all'])->name('.all');
 
         Route::get('/amendments', [TradeLicenseAmendmentApplicationController::class, 'index'])->name('.amendments')->middleware('can_any:verify-amendment-fee-payment, deny-amendment-fee-payment, approve-pending-amendment-approval-applications');
         Route::patch('/{trade_license_application}/amendment/approve-relocation', [TradeLicenseAmendmentApplicationController::class, 'approveRelocation'])->name('.amendment.approve_relocation')->middleware('can_any:approve-pending-amendment-approval-applications, deny-amendment-approval-applications');
@@ -62,8 +63,9 @@ Route::group(['middleware' => 'auth:admin', 'as' => 'admin.', 'prefix' => 'admin
     });
 
     Route::group(['prefix' => 'admins', 'as' => 'admins'], function () {
-        Route::get('/', [AdminController::class, 'index'])->name('');
-        Route::post('/', [AdminController::class, 'store'])->name('.store');
+        Route::get('/', [AdminController::class, 'index']);
+        Route::post('/', [AdminController::class, 'store']);
+        Route::patch('/', [AdminController::class, 'update']);
     });
 
 

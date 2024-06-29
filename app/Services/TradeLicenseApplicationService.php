@@ -92,26 +92,39 @@ class TradeLicenseApplicationService {
                 $existingDocument = TradeLicenseDocument::where('trade_license_application_id', $this->tlApplication->id)
                     ->where('trade_license_required_document_id', $id)
                     ->first();
-                
-                if(!$existingDocument){
-                    return false;
-                }
-
-                // clear the media collection
-                $existingDocument->clearMediaCollection('document');
-
+                    
                 //update the document
                 $ext = $doc->getClientOriginalExtension();
                 $name = TradeLicenseRequiredDocument::find($id)->document_name;
                 $path = $doc->storeAs('documents', md5(time().$id).'.'.$ext, 'public');
-                
-                $existingDocument->addMedia(storage_path('app/public/' . $path))->toMediaCollection('document');
 
-                //update DB entries
-                $existingDocument->update([
-                    'document_name' => $name,
-                    'document_path' => $existingDocument->getFirstMedia('document')->getUrl()
-                ]);
+                if($existingDocument){
+                    $existingDocument->clearMediaCollection('document');
+                    $existingDocument->addMedia(storage_path('app/public/' . $path))->toMediaCollection('document');
+                    //update DB entries
+                    $existingDocument->update([
+                        'document_name' => $name,
+                        'document_path' => $existingDocument->getFirstMedia('document')->getUrl()
+                    ]);
+                }else{
+                    //create DB entries
+                    $newDocument = TradeLicenseDocument::create([
+                        'trade_license_application_id' => $this->tlApplication->id,
+                        'trade_license_required_document_id' => $id,
+                        'document_name' => $name,
+                        'document_path' => $path
+                    ]);
+
+                    $newDocument->addMedia(storage_path('app/public/' . $path))->toMediaCollection('document');
+
+                    //update the document path
+                    $newDocument->update(['document_path' => $newDocument->getFirstMedia('document')->getUrl()]);
+                }
+
+                // clear the media collection
+
+                
+
             } catch (\Exception $exc) {
                 return false;
             }

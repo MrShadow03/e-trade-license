@@ -17,9 +17,17 @@ class TradeLicenseApplicationController extends Controller {
 
     public function index() {
         $accessibleApplicationStatuses = TradeLicenseApplicationService::getAccessibleApplicationStatuses();
-        $tradeLicenseApplications = TradeLicenseApplication::query()->with('payments')->whereIn('status', $accessibleApplicationStatuses);
+        $tradeLicenseApplications = TradeLicenseApplication::query()->with('payments')->whereIn('status', $accessibleApplicationStatuses)->whereIn('ward_no', auth()->user()->getWards());
         return view('admin.pages.tl-application.index', [
             'applications' => $tradeLicenseApplications->get()
+        ]);
+    }
+
+    public function all() {
+        $tradeLicenseApplications = TradeLicenseApplication::where('status', '!=', Helpers::PENDING_FORM_FEE_PAYMENT)->get();
+
+        return view('admin.pages.tl-application.all', [
+            'applications' => $tradeLicenseApplications
         ]);
     }
 

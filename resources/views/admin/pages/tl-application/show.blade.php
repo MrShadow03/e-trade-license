@@ -1,7 +1,7 @@
-@extends('admin.layouts.app')
+@extends('user.layouts.app')
 <!--begin::Page Title-->
 @section('title')
-    <title>{{ $application->owner_name_bn }} এর আবেদন পত্র</title>
+    <title>{{ $application->business_organization_name_bn }} এর আবেদন</title>
 @endsection
 <!--end::Page Title-->
 
@@ -84,7 +84,7 @@
                                 আবেদনের তারিখ: {{ Helpers::convertToBanglaDigits(Carbon\Carbon::parse($application->created_at)->locale('bn-BD')->translatedFormat('d F Y'))}}
                             </div> --}}
                             <ol class="breadcrumb text-muted fs-6 fw-semibold">
-                                <li class="breadcrumb-item"><a href="{{ route('admin.trade_license_applications') }}" class="">আবেদন সমূহ</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('admin.trade_license_applications.all') }}" class="">আবেদন সমূহ</a></li>
                                 <li class="breadcrumb-item text-muted">আবেদন</li>
                             </ol>                            
                         </div>
@@ -430,51 +430,55 @@
                                 <div class="row g-5 g-xl-8 mb-7">
                                     <div class="col-6 col-md-3">
                                         <div class="{{ INFO_LABEL_CLASSES }}">স্বত্বাধিকারীর নাম</div>
-                                        <div class="{{ INFO_CLASSES }}">{{ $application->owner_name_bn }}</div>
+                                        <div class="{{ INFO_CLASSES }}">{{ $application->user?->name_bn }}</div>
                                     </div>
                                     <div class="col-6 col-md-3">
                                         <div class="{{ INFO_LABEL_CLASSES_EN }}">Owner's Name</div>
-                                        <div class="{{ INFO_CLASSES_EN }}">{{ $application->owner_name }}</div>
+                                        <div class="{{ INFO_CLASSES_EN }}">{{ $application->user?->name }}</div>
                                     </div>
                                     <div class="col-6 col-md-3">
                                         <div class="{{ INFO_LABEL_CLASSES }}">পিতার নাম</div>
-                                        <div class="{{ INFO_CLASSES }}">{{ $application->father_name_bn }}</div>
+                                        <div class="{{ INFO_CLASSES }}">{{ $application->user?->father_name_bn }}</div>
                                     </div>
                                     <div class="col-6 col-md-3">
                                         <div class="{{ INFO_LABEL_CLASSES_EN }}">Father's Name</div>
-                                        <div class="{{ INFO_CLASSES_EN }}">{{ $application->father_name }}</div>
+                                        <div class="{{ INFO_CLASSES_EN }}">{{ $application->user?->father_name }}</div>
                                     </div>
                                 </div> 
                                 <div class="row g-5 g-xl-8 mb-7">
                                     <div class="col-6 col-md-3">
                                         <div class="{{ INFO_LABEL_CLASSES }}">মাতার নাম</div>
-                                        <div class="{{ INFO_CLASSES }}">{{ $application->mother_name_bn }}</div>
+                                        <div class="{{ INFO_CLASSES }}">{{ $application->user?->mother_name_bn }}</div>
                                     </div>
                                     <div class="col-6 col-md-3">
                                         <div class="{{ INFO_LABEL_CLASSES_EN }}">Mother's Name</div>
-                                        <div class="{{ INFO_CLASSES_EN }}">{{ $application->mother_name }}</div>
+                                        <div class="{{ INFO_CLASSES_EN }}">{{ $application->user?->mother_name }}</div>
                                     </div>
                                     <div class="col-6 col-md-3">
                                         <div class="{{ INFO_LABEL_CLASSES }}">স্বামী/স্ত্রীর নাম</div>
-                                        <div class="{{ INFO_CLASSES }}">{{ $application->spouse_name_bn }}</div>
+                                        <div class="{{ INFO_CLASSES }}">{{ $application->user?->spouse_name_bn ?? '---' }}</div>
                                     </div>
                                     <div class="col-6 col-md-3">
                                         <div class="{{ INFO_LABEL_CLASSES_EN }}">Spouse's Name</div>
-                                        <div class="{{ INFO_CLASSES_EN }}">{{ $application->spouse_name }}</div>
+                                        <div class="{{ INFO_CLASSES_EN }}">{{ $application->user?->spouse_name ?? '---' }}</div>
                                     </div>
                                 </div> 
                                 <div class="row g-5 g-xl-8">
                                     <div class="col-6 col-md-3">
                                         <div class="{{ INFO_LABEL_CLASSES }}">জাতীয় পরিচয়পত্র নং</div>
-                                        <div class="{{ INFO_CLASSES }}">{{ $application->national_id_no ?? '---' }}</div>
+                                        <div class="{{ INFO_CLASSES }}">{{ $application->user?->national_id_no ?? '---' }}</div>
                                     </div>
                                     <div class="col-6 col-md-3">
                                         <div class="{{ INFO_LABEL_CLASSES }}">জন্ম নিবন্ধন নং</div>
-                                        <div class="{{ INFO_CLASSES }}">{{ $application->birth_certificate_no ?? '---' }}</div>
+                                        <div class="{{ INFO_CLASSES }}">{{ $application->user?->birth_certificate_no ?? '---' }}</div>
                                     </div>
                                     <div class="col-6 col-md-3">
                                         <div class="{{ INFO_LABEL_CLASSES }}">পাসপোর্ট নং</div>
-                                        <div class="{{ INFO_CLASSES }}">{{ $application->passport_no ?? '---' }}</div>
+                                        <div class="{{ INFO_CLASSES }}">{{ $application->user?->passport_no ?? '---' }}</div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="{{ INFO_LABEL_CLASSES }}">ফোন নম্বর</div>
+                                        <div class="{{ INFO_CLASSES }}">{{ $application->user?->phone ?? '---' }}</div>
                                     </div>
                                 </div> 
                             </div>
@@ -569,7 +573,7 @@
                         </div>
                         <!--end::Card-->
                         <!--begin::Card-->
-                        <div class="card pt-4 mb-6 mb-xl-9">
+                        {{-- <div class="card pt-4 mb-6 mb-xl-9">
                             <!--begin::Card header-->
                             <div class="card-header border-0">
                                 <!--begin::Card title-->
@@ -683,7 +687,7 @@
                                 </table>
                             </div>
                             <!--end::Card header-->
-                        </div>
+                        </div> --}}
                         <!--end::Card-->
                         <!--begin::Card-->
                         <div class="card pt-4 mb-6 mb-xl-9">
@@ -697,10 +701,10 @@
                             </div>
                             <div class="card-body">
                                 @foreach ($application->documents?->chunk(2) as $chunk)
-                                <div class="row row-cols-1 row-cols-md-2 g-5 g-xl-8">
+                                <div class="row row-cols-1 row-cols-md-2 mb-md-10 g-5 g-xl-8">
                                     @foreach ($chunk as $document)
-                                    <div class="col">
-                                        <div class="min-h-100px min-h-md-50px fs-6 font-kohinoor fw-bold mb-4">{{ $document->document_name }}</div>
+                                    <div class="col d-flex flex-column justify-content-between">
+                                        <div class="fs-6 font-kohinoor fw-bold mb-4">{{ $document->document_name }}</div>
                                         <a href="{{ str_replace('localhost', 'localhost:'.env('LOCAL_PORT'), $document->getFirstMediaUrl('document')) }}" target="_blank" class="shadow p-2 d-block image-input-wrapper rounded w-200px h-250px position-relative" id="imageWrapper{{ $document->trade_license_required_document_id }}" style="background-image: url({{ str_replace('localhost', 'localhost:'.env('LOCAL_PORT'), $document->getFirstMediaUrl('document', 'document-preview')) }}); background-position: 50% 0%;">
                                             @if($document->media?->first()?->mime_type == 'application/pdf')
                                             <i class="fs-3x border border-danger bg-white p-2 rounded position-absolute fas fa-file-pdf text-danger" aria-hidden="true" style="left: 15px; bottom: 15px;"></i>

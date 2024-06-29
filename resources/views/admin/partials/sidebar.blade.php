@@ -39,8 +39,7 @@
         data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer"
         data-kt-scroll-wrappers="#kt_app_sidebar_menu" data-kt-scroll-offset="5px" data-kt-scroll-save-state="true">
         <!--begin::Menu-->
-        <div class="menu menu-column menu-rounded menu-sub-indention px-3" id="#kt_app_sidebar_menu"
-        data-kt-menu="true" data-kt-menu-expand="false">
+        <div class="menu menu-column menu-rounded menu-sub-indention px-3" id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false">
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
@@ -56,21 +55,24 @@
                 </div>
                 <!--end:Menu item-->
                 
-                
                 <!--begin:Menu item-->
                 <div data-kt-menu-trigger="click"
                 @class([
                     'menu-item',
                     'menu-accordion',
-                    'here show' => request()->url() == route('admin.trade_license_applications') || (request()->url() == route('admin.trade_license_applications.amendments') && auth()->user()->can('approve-pending-amendment-approval-applications'))
-                ])
-                >
+                    'here show' => request()->url() == route('admin.trade_license_applications') || (request()->url() == route('admin.trade_license_applications.amendments') && auth()->user()->can(   'approve-pending-amendment-approval-applications'))
+                ])>
                     <!--begin:Menu link-->
                     <span class="menu-link">
                         <span class="menu-icon">
                             <i class="ki-outline ki-note-2 fs-2"></i>
                         </span>
-                        <span class="menu-title font-bn">আবেদনসমূহ</span>
+                        <span class="menu-title font-bn">
+                            <span>আবেদনসমূহ</span>
+                            @if (auth()->user()->getPendingApplicationCount() + auth()->user()->getPendingAmendmentApplicationCount())
+                            <span class="badge badge-danger font-kohinoor py-0 badge-circle w-15px h-15px ms-3 fw-normal">{{ Helpers::convertToBanglaDigits(auth()->user()->getPendingApplicationCount()) }}</span>
+                            @endif
+                        </span>
                         <span class="menu-arrow"></span>
                     </span>
                     <!--end:Menu link-->
@@ -84,7 +86,10 @@
                                     <i class="far fa-sparkles fs-4"></i>
                                 </span>
                                 <span class="menu-title font-bn">
-                                    নতুন এবং নবায়ন
+                                    <span>নতুন এবং নবায়ন</span>
+                                    @if (auth()->user()->getPendingApplicationCount())
+                                    <span class="badge badge-danger font-kohinoor py-0 badge-circle w-15px h-15px ms-3 fw-normal">{{ Helpers::convertToBanglaDigits(auth()->user()->getPendingApplicationCount()) }}</span>
+                                    @endif
                                 </span>
                             </a>
                             <!--end:Menu link-->
@@ -104,6 +109,21 @@
                         </div>
                         <!--end:Menu item-->
                         @endcanany
+
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link {{ request()->url() == route('admin.trade_license_applications.all') ? 'active' : '' }}" href="{{ route('admin.trade_license_applications.all') }}">
+                                <span class="menu-icon">
+                                    <i class="far fa-sparkles fs-4"></i>
+                                </span>
+                                <span class="menu-title font-bn">
+                                    <span>সকল আবেদন</span>
+                                </span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
                     </div>
                     <!--end:Menu sub-->
                 </div>

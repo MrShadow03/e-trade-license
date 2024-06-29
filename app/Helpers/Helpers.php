@@ -489,7 +489,7 @@ class Helpers
 
     public static function getImageUrl($model, $collection = 'default', $conversion = 'default', $defaultImgDir = 'default')
     {
-        if ($model->getFirstMedia($collection)) {
+        if ($model && $model->getFirstMedia($collection)) {
             return str_replace('localhost', 'localhost:'.env('LOCAL_PORT'), $model->getFirstMediaUrl($collection, $conversion));
         }
         return asset('storage/'.$defaultImgDir.'/default.png');

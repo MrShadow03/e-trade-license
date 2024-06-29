@@ -19,24 +19,37 @@ class AdminController extends Controller{
     }
 
     public function store(AdminStoreRequest $request){
+        $data = $request->validated();
+        unset($data['wards']);
+
         $admin = Admin::create([
-            ...$request->validated(),
+            ...$data,
             'password' => 'pass@bcc'.$request->phone,
         ]);
 
         $admin->syncRoles([$request->role]);
+        $admin->syncWards([$request->wards]);
 
         $imagePath = Helpers::resizeImage();
-
         $admin->addMedia($imagePath)->toMediaCollection('dp');
 
         return redirect()->route('admin.admins');
     }
 
-    public function update(AdminUpdateRequest $request, Admin $admin){
+    public function update(AdminUpdateRequest $request){
+        $admin = Admin::findOrFail($request->validated()['id']);
+        $data = $request->validated();
+        unset($data['wards']);
+
         $admin->update($request->validated());
 
         $admin->syncRoles([$request->role]);
+        $admin->syncWards([$request->wards]);
+
+        if($request->hasFile('image')){
+            $imagePath = Helpers::resizeImage();
+            $admin->addMedia($imagePath)->toMediaCollection('dp');
+        }
 
         return redirect()->route('admin.admins');
     }
