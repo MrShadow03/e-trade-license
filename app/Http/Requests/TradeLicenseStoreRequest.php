@@ -13,17 +13,17 @@ class TradeLicenseStoreRequest extends FormRequest {
 
     public function rules(): array {
         return [
-            'business_category_id' => ['required', 'exists:business_categories,id'],
-            'signboard_id' => ['required', 'exists:signboards,id'],
             'name_bn' => ['required', 'string', 'max:255', 'regex:/^[\x{0980}-\x{09FF} ]+$/u'],
             'name' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z\. ]+$/'],
+            'business_category_id' => ['required', 'exists:business_categories,id'],
+            'signboard_id' => ['required', 'exists:signboards,id'],
             'father_name_bn' => ['required', 'string', 'max:255', 'regex:/^[\x{0980}-\x{09FF} ]+$/u'],
             'father_name' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z\. ]+$/'],
             'mother_name_bn' => ['required', 'string', 'max:255', 'regex:/^[\x{0980}-\x{09FF} ]+$/u'],
             'mother_name' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z\. ]+$/'],
             'spouse_name_bn' => ['nullable', 'string', 'max:255', 'regex:/^[\x{0980}-\x{09FF} ]+$/u'],
             'spouse_name' => ['nullable', 'string', 'max:255', 'regex:/^[A-Za-z\. ]+$/'],
-            'national_id_no' => ['required_without_all:birth_registration_no,passport_no'],
+            'national_id_no' => ['required'],
             'birth_registration_no' => ['required_without_all:national_id_no,passport_no'],
             'passport_no' => ['required_without_all:national_id_no,birth_registration_no'],
             'business_organization_name_bn' => ['required', 'string', 'max:255', 'regex:/^[\x{0980}-\x{09FF}\" ]+$/u', 'unique:trade_license_applications,business_organization_name_bn'],
@@ -70,8 +70,8 @@ class TradeLicenseStoreRequest extends FormRequest {
 
     public function attributes(): array {
         return [
-            'owner_name_bn' => 'মালিকের নাম (বাংলা)',
-            'owner_name' => 'মালিকের নাম (ইংরেজি)',
+            'name_bn' => 'মালিকের নাম (বাংলা)',
+            'name' => 'মালিকের নাম (ইংরেজি)',
             'father_name_bn' => 'পিতার নাম (বাংলা)',
             'father_name' => 'পিতার নাম (ইংরেজি)',
             'mother_name_bn' => 'মাতার নাম (বাংলা)',
@@ -122,13 +122,13 @@ class TradeLicenseStoreRequest extends FormRequest {
 
     public function messages(): array {
         return [
-            'owner_name_bn.required' => 'মালিকের নাম অবশ্যই পূরণ করতে হবে',
-            'owner_name_bn.string' => 'অক্ষর হতে হবে',
-            'owner_name_bn.max' => 'নাম অধিকতম ২৫৫ অক্ষর হতে পারে',
-            'owner_name_bn.regex' => 'বাংলা অক্ষর এবং স্পেস হতে পারে',
-            'owner_name.string' => 'অক্ষর হতে হবে',
-            'owner_name.max' => 'নাম অধিকতম ২৫৫ অক্ষর হতে পারে',
-            'owner_name.regex' => 'ইংরেজি অক্ষর এবং স্পেস হতে পারে',
+            'name_bn.required' => 'মালিকের নাম অবশ্যই পূরণ করতে হবে',
+            'name_bn.string' => 'অক্ষর হতে হবে',
+            'name_bn.max' => 'নাম অধিকতম ২৫৫ অক্ষর হতে পারে',
+            'name_bn.regex' => 'বাংলা অক্ষর এবং স্পেস হতে পারে',
+            'name.string' => 'অক্ষর হতে হবে',
+            'name.max' => 'নাম অধিকতম ২৫৫ অক্ষর হতে পারে',
+            'name.regex' => 'ইংরেজি অক্ষর এবং স্পেস হতে পারে',
             'father_name_bn.required' => 'পিতার নাম অবশ্যই পূরণ করতে হবে',
             'father_name_bn.string' => 'অক্ষর হতে হবে',
             'father_name_bn.max' => 'নাম অধিকতম ২৫৫ অক্ষর হতে পারে',

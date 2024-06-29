@@ -1321,8 +1321,8 @@
                 </span>
             </div>
 
-            <input type="hidden" id="documentsInput" value="{{ json_encode($application->documents->pluck('trade_license_required_document_id')->toArray()) }}"/>
-            @foreach ($application->documents->chunk(4) as $chunk)
+            <input type="hidden" id="documentsInput" value="{{ json_encode($requiredDocuments->pluck('id')->toArray()) }}"/>
+            @foreach ($requiredDocuments->chunk(4) as $chunk)
                 <div class="row">
                     @foreach ($chunk as $doc)
                     <div class="col col-lg-3 col-md-4 col-12 mb-4 mb-md-0">
@@ -1338,7 +1338,7 @@
                             <!--begin::Image input-->
                             <div class="image-input image-input-outline" data-kt-image-input="true">
                                 <!--begin::Image preview wrapper-->
-                                <a href="{{ str_replace('localhost', 'localhost:'.env('LOCAL_PORT'), $doc->getFirstMediaUrl('document')) }}" target="_blank" class="d-block image-input-wrapper w-200px h-250px position-relative" id="imageWrapper{{ $doc->trade_license_required_document_id }}" style="background-image: url({{ str_replace('localhost', 'localhost:'.env('LOCAL_PORT'), $doc->getFirstMediaUrl('document', 'document-preview')) }})"></a>
+                                <a href="{{ str_replace('localhost', 'localhost:'.env('LOCAL_PORT'), $application->documents?->where('trade_license_required_document_id', $doc->id)->first()?->getFirstMediaUrl('document')) }}" target="_blank" class="d-block image-input-wrapper w-200px h-250px position-relative" id="imageWrapper{{ $doc->id }}" style="background-image: url({{ str_replace('localhost', 'localhost:'.env('LOCAL_PORT'), $application->documents?->where('trade_license_required_document_id', $doc->id)->first()?->getFirstMediaUrl('document', 'document-preview')) }})"></a>
                                 <!--end::Image preview wrapper-->
     
                                 <!--begin::Edit button-->
@@ -1350,7 +1350,7 @@
                                     <i class="far fa-cloud-arrow-up fs-6"></i>
     
                                     <!--begin::Inputs-->
-                                    <input type="file" class="document_input" data-document-id="{{ $doc->trade_license_required_document_id }}" name="documents[{{ $doc->trade_license_required_document_id }}]" accept=".png, .jpg, .jpeg, .pdf" />
+                                    <input type="file" class="document_input" data-document-id="{{ $doc->id }}" name="documents[{{ $doc->id }}]" accept=".png, .jpg, .jpeg, .pdf" />
                                     <input type="hidden" name="avatar_remove" />
                                     <!--end::Inputs-->
                                 </label>
@@ -1361,8 +1361,8 @@
                                 data-kt-image-input-action="cancel"
                                 data-bs-toggle="tooltip"
                                 data-bs-dismiss="click"
-                                data-document-id="{{ $doc->trade_license_required_document_id }}"
-                                id="cancelButton{{ $doc->trade_license_required_document_id }}"
+                                data-document-id="{{ $doc->id }}"
+                                id="cancelButton{{ $doc->id }}"
                                 title="বাতিল করুন">
                                     <i class="far fa-times fs-3"></i>
                                 </span>

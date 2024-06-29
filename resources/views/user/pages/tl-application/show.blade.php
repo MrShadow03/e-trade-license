@@ -1,7 +1,7 @@
 @extends('user.layouts.app')
 <!--begin::Page Title-->
 @section('title')
-    <title>{{ auth()->user()->name }}'s Profile | Admin</title>
+    <title>{{ $application->business_organization_name_bn }} এর আবেদন</title>
 @endsection
 <!--end::Page Title-->
 

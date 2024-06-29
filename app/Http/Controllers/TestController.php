@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Imagick;
 use App\Models\User;
+use App\Models\Ward;
 use App\Jobs\TestJob;
+use App\Models\Admin;
 use App\Helpers\Helpers;
 use Milon\Barcode\DNS2D;
 use Illuminate\Http\Request;
+use App\Traits\FactoryHelper;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
 use App\Models\TradeLicenseDocument;
@@ -18,27 +21,11 @@ use Spatie\Permission\Models\Permission;
 class TestController extends Controller
 {
     public function index(){
-        $rolePermissions = [
-            'trade-license-superintendent' => [
-                'verify-amendment-fee-payment',
-                'deny-amendment-fee-payment',
-                'approve-pending-amendment-approval-applications'
-            ]
-        ];
-
-        foreach($rolePermissions as $roleName => $permissions){
-            $role = Role::where('name', $roleName)->first();
-
-            foreach($permissions as $permissionName){
-                $permission = Permission::create(['name' => $permissionName, 'guard_name' => 'admin']);
-
-                if($permission){
-                    $role->givePermissionTo($permission);
-                }
-            }
-        }
-
-        return 'Permissions created successfully';
+        TradeLicenseApplication::all()->each(function($application){
+            $application->update([
+                'status' => Helpers::PENDING_FORM_FEE_VERIFICATION
+            ]);
+        });
     }
 
     public function store(){

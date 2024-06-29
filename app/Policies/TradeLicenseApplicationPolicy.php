@@ -95,7 +95,7 @@ class TradeLicenseApplicationPolicy
     }
 
     public function hasApprovalPermission(Admin $admin, TradeLicenseApplication $tradeLicenseApplication): bool {
-        return $admin->can('approve-pending-trade-license-assistant-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_ASSISTANT_APPROVAL ||
+        $hasPermission = $admin->can('approve-pending-trade-license-assistant-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_ASSISTANT_APPROVAL ||
         $admin->can('approve-pending-trade-license-inspector-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_INSPECTOR_APPROVAL ||
         $admin->can('approve-pending-trade-license-superintendent-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_SUPT_APPROVAL ||
         $admin->can('approve-pending-revenue-officer-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_RO_APPROVAL ||
@@ -106,6 +106,9 @@ class TradeLicenseApplicationPolicy
         $admin->can('approve-pending-trade-license-superintendent-renewal-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_SUPT_RENEWAL_APPROVAL ||
         $admin->can('approve-pending-revenue-officer-renewal-approval-applications') && $tradeLicenseApplication->status === Helpers::PENDING_RO_RENEWAL_APPROVAL ||
         $admin->can('approve-pending-amendment-approval-applications') && $tradeLicenseApplication->getActiveAmendment()?->status === Helpers::PENDING_AMENDMENT_APPROVAL;
-        
+
+        $ownsWard = in_array($tradeLicenseApplication->ward_no, $admin->getWards());
+
+        return $hasPermission && $ownsWard;
     }
 }

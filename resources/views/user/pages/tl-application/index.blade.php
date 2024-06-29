@@ -95,14 +95,14 @@
                         <td class="py-2 {{ $loop->first ? 'pt-4' : '' }}">
                             <div class="d-flex align-items-center">
                                 <!--begin::Symbol-->
-                                <a href="{{ route('admin.trade_license_applications.show', $application->id) }}" class="symbol symbol-50px me-5">
-                                    <img src="{{ str_replace('localhost', 'localhost:'.env('LOCAL_PORT'), $application->getFirstMediaUrl('owner_image', 'thumb')) }}" alt="">
+                                <a href="{{ route('user.trade_license_applications.show', $application->id) }}" class="symbol symbol-50px me-5">
+                                    <img class="object-fit-contain" src="{{ str_replace('localhost', 'localhost:'.env('LOCAL_PORT'), $application->getFirstMediaUrl('owner_image', 'thumb')) }}" alt="">
                                 </a>
                                 <!--end::Symbol-->
 
                                 <!--begin::Text-->
                                 <div class="d-flex flex-column">
-                                    <a href="{{ route('admin.trade_license_applications.show', $application->id) }}" class="text-dark text-hover-primary fs-5 fw-bold d-block font-bn">{{ $application->business_organization_name_bn }}</a>
+                                    <a href="{{ route('user.trade_license_applications.show', $application->id) }}" class="text-dark text-hover-primary fs-5 fw-bold d-block font-bn">{{ $application->business_organization_name_bn }}</a>
                                     <span class="text-gray-600 fs-7 mt-1">{{ Helpers::convertToBanglaDigits(Carbon\Carbon::parse($application->created_at)->locale('bn-BD')->diffForHumans())}}</span>
                                 </div>
                                 <!--end::Text-->
@@ -227,13 +227,13 @@
                                 <a href="{{ route('user.trade_license_applications.edit', $application->id) }}" class="btn btn-light-info btn-icon btn-sm me-1" data-bs-toggle="tooltip" title="তথ্য পরিবর্তন করুন">
                                     <i class="fal fa-edit fs-4"></i>
                                 </a>
-                                <form action="{{ route('user.trade_license_applications.destroy', $application->id) }}" method="POST" onclick="submitForm(this, event, '{{ $application->business_organization_name_bn }}')">
+                                {{-- <form action="{{ route('user.trade_license_applications.destroy', $application->id) }}" method="POST" onclick="submitForm(this, event, '{{ $application->business_organization_name_bn }}')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-light-danger btn-icon btn-sm me-1" data-bs-toggle="tooltip" title="আবেদনটি বাতিল করুন">
                                         <i class="fal fa-trash-can fs-4"></i>
                                     </button>
-                                </form>
+                                </form> --}}
                                 @endif
 
                                 <!--begin::Menu-->
@@ -322,6 +322,21 @@
                                     </div>
                                     <!--end::Menu item-->
                                     @endif
+
+                                    @if ($application->status === Helpers::PENDING_FORM_FEE_PAYMENT)
+                                    <!--begin::Menu item-->
+                                    <div class="menu-item px-3">
+                                        <form action="{{ route('user.trade_license_applications.destroy', $application->id) }}" method="POST" onclick="submitForm(this, event, '{{ $application->business_organization_name_bn }}')" class="menu-link bg-hover-light-danger px-3">
+                                            @csrf
+                                            @method('DELETE')
+                                            <span class="menu-icon">
+                                                <i class="fal fa-trash-can fs-2 text-danger"></i>
+                                            </span>
+                                            <span class="menu-title text-danger">আবেদনটি ডিলিট করুন</span>
+                                        </form>
+                                    </div>
+                                    <!--end::Menu item-->
+                                    @endif 
                                 </div>
                                 <!--end::Menu 2-->
                                 <!--end::Menu-->

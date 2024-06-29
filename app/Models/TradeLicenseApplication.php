@@ -102,8 +102,13 @@ class TradeLicenseApplication extends Model implements HasMedia
 
     public function amendmentApplications(){
         return $this->hasMany(AmendmentApplication::class);
-    } 
+    }
 
+    public function ward(){
+        return $this->belongsTo(Ward::class, 'ward_no', 'ward_no');
+    }
+
+    //scopes
     public function canBeRenewed(): bool{
         return $this->trade_license_no && $this->issued_at && $this->status !== Helpers::ISSUED;
     }
