@@ -61,8 +61,8 @@ class TradeLicenseApplicationFactory extends Factory
     {
         return $this->afterCreating(function (TradeLicenseApplication $application) {
             // Add the image to the media collection 'owner_image'
-            $randNumber = $this->faker->numberBetween(1, 38);
-            $path = 'C:\Users\gjemo\Pictures\Cartoon Avaters\profile\img (' . $randNumber . ').png';
+            $randNumber = $this->faker->numberBetween(1, 43);
+            $path = 'C:\Users\gjemo\Pictures\Cartoon Avaters\profile\img (' . $randNumber . ').jpg';
             $application->addMedia($path)
                 ->preservingOriginal()
                 ->usingFileName('avatar.jpg')

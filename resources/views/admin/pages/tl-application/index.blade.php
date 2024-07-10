@@ -200,7 +200,7 @@
                                 @endphp
 
                                 @if (auth()->user()->can('verify-license-fee-payment') && $application->status === Helpers::PENDING_LICENSE_FEE_VERIFICATION)
-                                <a href="#" class="btn btn-success btn-icon btn-sm me-1" data-bs-toggle="modal" data-bs-target="#view_license_fee_payment_details" title="লাইসেন্স ফি নিশ্চিত করুন" onclick="enterPaymentData({{ json_encode($fees) }},{{ json_encode($application->getLicenseFeePayment()) }}, '{{ Helpers::getImageUrl($application->getLicenseFeePayment(), $paymentSlipCollectionName) }}', '{{ Helpers::convertToBanglaDigits(number_format($application->getLicenseFeePayment()->amount, 0, ',')) }}')">
+                                <a href="#" class="btn btn-success btn-icon btn-sm me-1" data-bs-toggle="modal" data-bs-target="#view_license_fee_payment_details" title="লাইসেন্স ফি নিশ্চিত করুন" onclick="enterPaymentData({{ json_encode($fees) }},{{ json_encode($application->getLicenseFeePayment()) }}, '{{ Helpers::getImageUrl($application->getLicenseFeePayment(), $paymentSlipCollectionName) }}', '{{ Helpers::convertToBanglaDigits(number_format($application->getLicenseFeePayment()?->amount, 0, ',')) }}')">
                                     <i class="far fa-bangladeshi-taka-sign fs-4"></i>
                                 </a>
                                 @endif
@@ -247,7 +247,7 @@
                                 
 
                                 @if (auth()->user()->can('verify-form-fee-payment') && $application->status === Helpers::PENDING_FORM_FEE_VERIFICATION)
-                                <a href="#" class="btn btn-success btn-icon btn-sm me-1" data-bs-toggle="modal" data-bs-target="#view_payment_details" title="ফর্ম ফি নিশ্চিত করুন" onclick="enterFormFeePaymentData({{ json_encode($application->getFormFeePayment()) }}, '{{ Helpers::getImageUrl($application->getFormFeePayment(), $paymentSlipCollectionName) }}', '{{ Helpers::convertToBanglaDigits(number_format($application->getFormFeePayment()->amount, 0, ',')) }}')">
+                                <a href="#" class="btn btn-success btn-icon btn-sm me-1" data-bs-toggle="modal" data-bs-target="#view_payment_details" title="ফর্ম ফি নিশ্চিত করুন" onclick="enterFormFeePaymentData({{ json_encode($application->getFormFeePayment()) }}, '{{ Helpers::getImageUrl($application->getFormFeePayment(), $paymentSlipCollectionName) }}', '{{ Helpers::convertToBanglaDigits(number_format($application->getFormFeePayment()?->amount, 0, ',')) }}')">
                                     <i class="far fa-bangladeshi-taka-sign fs-4"></i>
                                 </a>
                                 @endif

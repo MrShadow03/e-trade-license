@@ -1,4 +1,4 @@
-@extends('user.layouts.app')
+@extends('admin.layouts.app')
 <!--begin::Page Title-->
 @section('title')
     <title>{{ $application->business_organization_name_bn }} এর আবেদন</title>

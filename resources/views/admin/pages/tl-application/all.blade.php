@@ -32,11 +32,17 @@
                             আবেদন সমূহ
                         </h2>
                         <div class="text-gray-800 fs-5 fw-semibold font-kohinoor">
-                            মোট আবেদন সংখ্যা: {{ Helpers::convertToBanglaDigits($applications->count()) }} টি
+                            মোট আবেদন সংখ্যা: {{ Helpers::convertToBanglaDigits($applicationsCount) }} টি
                         </div> 
                     </div>
                     <!--end::Title-->
                 </div>
+                <!--begin::Search-->
+                <div class="d-flex align-items-center position-relative my-1">
+                    <i class="fal fa-search fs-3 position-absolute ms-6"></i>
+                    <input type="text" data-application-table-filter="search" class="form-control w-250px ps-15 font-bn" placeholder="আবেদন সার্চ করুন" />
+                </div>
+                <!--end::Search--> 
             </div>
         </div>
         <!--end::Card header-->
@@ -47,29 +53,9 @@
         <!--end::Card body-->
     </div>
     <div class="card card-flush mb-10">
-        <!--begin::Card header-->
-        <div class="card-header pt-8 border-bottom">
-            <div class="card-title">
-                <!--begin::Search-->
-                <div class="d-flex align-items-center position-relative my-1">
-                    <i class="fal fa-search fs-3 position-absolute ms-6"></i>
-                    <input type="text" data-application-table-filter="search" class="form-control w-250px ps-15 font-bn" placeholder="আবেদন সার্চ করুন" />
-                </div>
-                <!--end::Search--> 
-            </div>
-    
-            <!--begin::Card toolbar-->
-            <div class="card-toolbar">
-                <!--begin::Toolbar-->
-                <div class="d-flex justify-content-end" data-kt-filemanager-table-toolbar="base">
-                </div>
-                <!--end::Toolbar-->       
-            </div>
-            <!--end::Card toolbar-->
-        </div>
-        <!--end::Card header-->
+
         <!--begin::Card body-->
-        <div class="card-body">        
+        <div class="card-body">   
             <!--begin::Table-->
             <table id="kt_file_manager_list" data-kt-filemanager-table="files" class="table align-middle table-row-dashed fs-6 gy-5 font-bn">
                 <thead class="border-bottom">
@@ -81,108 +67,6 @@
                     </tr>
                 </thead>
                 <tbody class="fw-semibold text-gray-600 font-kohinoor">
-                    @foreach($applications as $application)
-                    @php
-                        $data = Helpers::convertTlStatusToBangla($application->status);
-                    @endphp
-                    <tr>
-                        <td class="py-2 {{ $loop->first ? 'pt-4' : '' }}">
-                            <div class="d-flex align-items-center">
-                                <!--begin::Symbol-->
-                                <a href="{{ route('admin.trade_license_applications.show', $application->id) }}" class="symbol symbol-50px me-5">
-                                    <img src="{{ str_replace('localhost', 'localhost:'.env('LOCAL_PORT'), $application->getFirstMediaUrl('owner_image', 'thumb')) }}" alt="">
-                                </a>
-                                <!--end::Symbol-->
-
-                                <!--begin::Text-->
-                                <div class="d-flex flex-column">
-                                    <a href="{{ route('admin.trade_license_applications.show', $application->id) }}" class="text-dark text-hover-primary fs-5 fw-bold d-block font-bn">{{ $application->user?->name_bn }}</a>
-                                    <span class="text-gray-600 fs-7 mt-1">{{ Helpers::convertToBanglaDigits(Carbon\Carbon::parse($application->created_at)->locale('bn-BD')->diffForHumans())}}</span>
-                                </div>
-                                <!--end::Text-->
-                            </div>
-                        </td>
-                        <td class="py-2">
-                            <div class="d-flex align-items-center">
-                                <!--begin::Symbol-->
-                                @php
-                                    $b_theme = 'primary';
-
-                                    if ($application->nature_of_business === 'Individual'){
-                                        $b_theme = 'primary';
-                                    } elseif ($application->nature_of_business === 'Joint') {
-                                        $b_theme = 'success';
-                                    } else {
-                                        $b_theme = 'info';
-                                    }
-                                @endphp
-                                <div class="symbol symbol-50px me-5">
-                                    <span class="symbol-label bg-light-{{ $b_theme }} border border-{{ $b_theme }} border-dashed">
-                                        <i class="fas fa-shop fs-2x text-{{ $b_theme }}"></i>
-                                    </span>
-                                </div>
-                                <!--end::Symbol-->
-
-                                <!--begin::Text-->
-                                <div class="">
-                                    <span class="text-dark fs-5 fw-bold font-bn">{{ $application->business_organization_name_bn }} 
-                                        {{-- <i class="far {{ $data['icon'] }} fs-6 text-{{ $data['theme'] }}"></i> --}}
-                                    </span>
-
-                                    @if ($application->nature_of_business === 'Individual')
-                                    <span class="badge d-inline-block font-bn badge-light-primary fs-7">{{ $application->nature_of_business_bn }}</span>
-                                    @elseif ($application->nature_of_business === 'Joint')
-                                    <span class="badge d-inline-block font-bn badge-light-success fs-7">{{ $application->nature_of_business_bn }}</span>
-                                    @else
-                                    <span class="badge d-inline-block font-bn badge-light-info fs-7">{{ $application->nature_of_business_bn }}</span>
-                                    @endif
-                                    <br>
-                                    <a href="tel:{{ $application->phone_no }}" class="text-gray-600 fs-6 ls-1 mt-1 text-hover-primary">{{ $application->phone_no }}</a>
-                                </div>
-                                <!--end::Text-->
-                            </div>
-                        </td>
-                        <td class="py-2">
-                            <div class="d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <!--begin::Symbol-->
-                                    <div class="symbol symbol-50px me-5">
-                                        <span class="symbol-label bg-light-{{ $data['theme'] }} border border-{{ $data['theme'] }} border-dashed">
-                                            <i class="fas {{ $data['icon'] }} fs-2x text-{{ $data['theme'] }}"></i>
-                                        </span>
-                                    </div>
-                                    <!--end::Symbol-->
-                                    
-                                    <!--begin::Text-->
-                                    <div class="d-flex flex-column">
-                                        <span class="text-{{ $data['theme'] }} fs-5 font-bn">{{ $data['msg_bn'] }}</span>
-                                        <span class="text-gray-600 fs-7 mt-1">{{ Helpers::convertToBanglaDigits(Carbon\Carbon::parse($application->updated_at)->locale('bn-BD')->diffForHumans())}}</span>
-                                    </div>
-                                    <!--end::Text-->
-                                </div>
-                            </div>
-                        </td>
-                        @php
-                            if($application->status === Helpers::PENDING_FORM_FEE_VERIFICATION){
-                                $paymentSlipCollectionName = 'form-fee-payment-slip';
-                            }elseif($application->status === Helpers::PENDING_LICENSE_FEE_VERIFICATION){
-                                $paymentSlipCollectionName = 'license-fee-payment-slip';
-                            }elseif($application->status === Helpers::PENDING_LICENSE_RENEWAL_FEE_VERIFICATION){
-                                $paymentSlipCollectionName = 'license-renewal-'.Helpers::getFiscalYear(date('Y-m-d')).'-fee-payment-slip';
-                            }
-                        @endphp
-                        <td class="text-end py-2" data-kt-filemanager-table="action_dropdown">
-                            <div class="d-flex justify-content-end">
-
-                                @if ($application->isValid())
-                                <a href="#" class="btn btn-success btn-icon btn-sm me-1" data-bs-toggle="tooltip" title="ট্রেড লাইসেন্স দেখুন">
-                                    <i class="fal fa-memo-circle-check fs-4"></i>
-                                </a>
-                                @endif
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
                 </tbody>
             </table>
             <!--end::Table-->
@@ -192,10 +76,23 @@
 </div>
 @endsection
 <!--end::Main Content-->
-
+<style>
+    .dataTables_wrapper .dataTables_paginate .paginate_button,
+    .dataTables_wrapper .dataTables_length select,
+    .dataTables_wrapper .dataTables_info {
+        font-family: 'Kohinoor', sans-serif;
+    }
+    .dataTables_wrapper .row {
+        padding-top: 18px;
+        border-top: 1px solid #e0e0e057;
+    }
+    .dataTables_info {
+        padding-left: 15px;
+    }
+</style>
 @section('exclusive_scripts')
 <script src="{{ asset('/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-<script>    
+<script>
     var KTFileManagerList = function () {
         // Define shared variables
         var datatable;
@@ -213,18 +110,101 @@
             const tableRows = table.querySelectorAll('tbody tr');
 
             const filesListOptions = {
-                "info": false,
+                "processing": false,
+                "serverSide": true,
+                "ajax": "{{ route('admin.datatable.trade_license_applications') }}",
+                "info": true,
                 'order': [],
                 'pageLength': 15,
-                "lengthChange": false,
+                'lengthMenu': [5, 10, 15, 20, 25, 30, 50, 100, 200, 500, 1000],
+                'autoWidth': false,
+                'scrollX': false,
+                "lengthChange": true,
+                "searching": true,
                 'ordering': true,
                 'columns': [
-                    { data: 'organization_name' },
-                    { data: 'owners_name' },
-                    { data: 'status' },
-                    { data: 'actions', responsivePriority: -1 },
+                    { 
+                        data: 'owner', 
+                        name: 'owner', 
+                        orderable: true, 
+                        createdCell: function (td, cellData, rowData, row, col) {
+                            let padding = 'py-2';
+                            if(row === 0){
+                                padding = 'pt-4';
+                            }
+                            $(td).addClass(padding+'');
+                        }
+                    },
+                    {
+                        data: 'organization',
+                        name: 'organization',
+                        createdCell: function (td, cellData, rowData, row, col) {
+                            $(td).addClass('py-2');
+                        }
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                        createdCell: function (td, cellData, rowData, row, col) {
+                            $(td).addClass('py-2');
+                        }
+                    },
+                    {
+                        data: 'actions',
+                        name: 'actions',
+                        orderable: false,
+                        searchable: false,
+                        createdCell: function (td, cellData, rowData, row, col) {
+                            $(td).addClass('text-end py-2');
+                        }
+                    },
                 ],
-                conditionalPaging: true
+                conditionalPaging: true,
+                language: {
+                    paginate: {
+                        previous: 'পূর্ববর্তী',
+                        next: 'পরবর্তী',
+                    },
+                    info: "_START_ থেকে _END_ পর্যন্ত | মোট _TOTAL_ টি ফলাফল",
+                    // lengthMenu: "_MENU_ ফলাফল দেখান",
+                    zeroRecords: "কোনো ফলাফল পাওয়া যায়নি",
+                    infoEmpty: "কোনো ফলাফল পাওয়া যায়নি",
+                    infoFiltered: "(মোট _MAX_ ফলাফল থেকে ফিল্টার করা হয়েছে)",
+                },
+                drawCallback: function(settings) {
+                    // Function to convert numbers to Bangla digits
+                    function convertToBanglaDigits(number) {
+                        const banglaDigits = {
+                            '0': '০', '1': '১', '2': '২', '3': '৩', '4': '৪',
+                            '5': '৫', '6': '৬', '7': '৭', '8': '৮', '9': '৯'
+                        };
+                        return number.toString().split('').map(digit => banglaDigits[digit] || digit).join('');
+                    }
+
+                    // Update pagination numbers
+                    $('a.page-link').each(function() {
+                        const originalText = $(this).text();
+                        const banglaText = convertToBanglaDigits(originalText);
+                        $(this).text(banglaText);
+                    });
+
+                    // Update page length
+                    $('select[name="kt_file_manager_list_length"] option').each(function() {
+                        const originalText = $(this).text();
+                        const banglaText = convertToBanglaDigits(originalText);
+                        $(this).text(banglaText);
+                    });
+
+                    // Update info text
+                    const infoText = $('.dataTables_info').text();
+                    const banglaInfoText = convertToBanglaDigits(infoText);
+                    $('.dataTables_info').text(banglaInfoText);
+
+                    // // update loading text
+                    // const loadingText = $('.dataTables_processing').text();
+                    // const banglaLoadingText = 'অপেক্ষা করুন...';
+                    // $('.dataTables_processing').text(banglaLoadingText);
+                }
             };
 
             // Define datatable options to load
@@ -239,9 +219,20 @@
 
         // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
         const handleSearchDatatable = () => {
+            let tableBody = table.querySelector('tbody');
+            let blockUI = new KTBlockUI(tableBody);
             const filterSearch = document.querySelector('[data-application-table-filter="search"]');
             filterSearch.addEventListener('keyup', function (e) {
                 datatable.search(e.target.value).draw();
+            });
+            datatable.on('processing.dt', function (e, settings, processing) {
+                if (processing) {
+                    if (!blockUI.isBlocked()) {
+                        blockUI.block();
+                    }
+                }else{
+                    blockUI.release();
+                }
             });
         }
         // Public methods

@@ -20,7 +20,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'imageUrl' => $imageUrl,
             'ownerNameBn' => $this->name_bn,
-            'ownerName' => $this->owner_name ?? null,
+            'ownerName' => $this->name ?? null,
             'fatherNameBn' => $this->father_name_bn ?? null,
             'fatherName' => $this->father_name ?? null,
             'motherNameBn' => $this->mother_name_bn ?? null,

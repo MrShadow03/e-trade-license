@@ -40,7 +40,7 @@ class UserFactory extends Factory
         return [
             'name_bn' => $userName['bn'],
             'name' => $userName['en'],
-            'email' => $this->faker->unique()->safeEmail(),
+            // 'email' => $this->faker->unique()->safeEmail(),
             'phone' => $this->faker->unique()->regexify('01[3-9]{1}[0-9]{8}'),
             'image' => 'users/default.png',
             'father_name_bn' => $fatherName['bn'],

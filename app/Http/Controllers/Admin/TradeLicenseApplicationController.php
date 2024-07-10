@@ -24,10 +24,10 @@ class TradeLicenseApplicationController extends Controller {
     }
 
     public function all() {
-        $tradeLicenseApplications = TradeLicenseApplication::where('status', '!=', Helpers::PENDING_FORM_FEE_PAYMENT)->get();
+        $tradeLicenseApplicationsCount = TradeLicenseApplication::where('status', '!=', Helpers::PENDING_FORM_FEE_PAYMENT)->count();
 
         return view('admin.pages.tl-application.all', [
-            'applications' => $tradeLicenseApplications
+            'applicationsCount' => $tradeLicenseApplicationsCount
         ]);
     }
 

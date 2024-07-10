@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DataTableController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Auth\Admin\PasswordController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\Auth\Admin\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\Admin\EmailVerificationPromptController;
 use App\Http\Controllers\Admin\TradeLicenseAmendmentApplicationController;
 use App\Http\Controllers\Auth\Admin\EmailVerificationNotificationController;
+use App\Http\Controllers\Admin\DataEntry\TradeLicenseApplicationController as DETradeLicenseApplicationController;
 
 Route::group(['middleware' => 'guest:admin', 'as' => 'admin.', 'prefix' => 'admin'], function () {
     Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
@@ -68,6 +70,12 @@ Route::group(['middleware' => 'auth:admin', 'as' => 'admin.', 'prefix' => 'admin
         Route::patch('/', [AdminController::class, 'update']);
     });
 
+    Route::group(['prefix' => 'data-entry', 'as' => 'data_entry'], function () {
+        Route::get('/trade-license-applications', [DETradeLicenseApplicationController::class, 'index'])->name('.trade_license_applications');
+        Route::get('/trade-license-applications/create', [DETradeLicenseApplicationController::class, 'create'])->name('.trade_license_applications.create');
+    });
+
+    Route::get('datatable/trade-license-applications', [DataTableController::class, 'getTradeLicenseApplications'])->name('datatable.trade_license_applications');
 
 
 

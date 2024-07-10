@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\CanAny;
+use App\Http\Middleware\MultiAuth;
 use App\Http\Middleware\PasswordResetMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Application;
@@ -30,6 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'phone_verified' => PhoneVerifiedMiddleware::class,
             'can_any' => CanAny::class,
             'has_pure_password' => PasswordResetMiddleware::class,
+            'auth_any' => MultiAuth::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

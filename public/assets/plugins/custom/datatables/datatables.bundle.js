@@ -11951,7 +11951,9 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLoadingRecords": "Loading...",
+			// "sLoadingRecords": "Loading...",
+			"sLoadingRecords": "অপেক্ষা করুন...",
+			
 	
 	
 			/**

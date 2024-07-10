@@ -63,6 +63,9 @@
 }
 
 /* Icon classes */
+.fa-user-plus:before {
+    content: "\f234";
+}
 .fa-bars:before,
 .fa-navicon:before {
     content: "\f0c9";

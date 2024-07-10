@@ -69,8 +69,11 @@
                         </span>
                         <span class="menu-title font-bn">
                             <span>আবেদনসমূহ</span>
-                            @if (auth()->user()->getPendingApplicationCount() + auth()->user()->getPendingAmendmentApplicationCount())
-                            <span class="badge badge-danger font-kohinoor py-0 badge-circle w-15px h-15px ms-3 fw-normal">{{ Helpers::convertToBanglaDigits(auth()->user()->getPendingApplicationCount()) }}</span>
+                            @php
+                                $count = auth()->user()->getPendingApplicationCount() + auth()->user()->getPendingAmendmentApplicationCount() > 99 ? '99+' : auth()->user()->getPendingApplicationCount() + auth()->user()->getPendingAmendmentApplicationCount();
+                            @endphp
+                            @if ($count)
+                            <span class="badge badge-danger font-kohinoor py-0 badge-circle mw-20px mh-20px ms-3 fw-normal">{{ Helpers::convertToBanglaDigits($count) }}</span>
                             @endif
                         </span>
                         <span class="menu-arrow"></span>
@@ -88,7 +91,7 @@
                                 <span class="menu-title font-bn">
                                     <span>নতুন এবং নবায়ন</span>
                                     @if (auth()->user()->getPendingApplicationCount())
-                                    <span class="badge badge-danger font-kohinoor py-0 badge-circle w-15px h-15px ms-3 fw-normal">{{ Helpers::convertToBanglaDigits(auth()->user()->getPendingApplicationCount()) }}</span>
+                                    <span class="badge badge-danger font-kohinoor py-0 badge-circle mw-20px mh-20px ms-3 fw-normal">{{ Helpers::convertToBanglaDigits(auth()->user()->getPendingApplicationCount()) }}</span>
                                     @endif
                                 </span>
                             </a>
@@ -115,7 +118,7 @@
                             <!--begin:Menu link-->
                             <a class="menu-link {{ request()->url() == route('admin.trade_license_applications.all') ? 'active' : '' }}" href="{{ route('admin.trade_license_applications.all') }}">
                                 <span class="menu-icon">
-                                    <i class="far fa-sparkles fs-4"></i>
+                                    <i class="ki-outline ki-note fs-2"></i>
                                 </span>
                                 <span class="menu-title font-bn">
                                     <span>সকল আবেদন</span>
@@ -155,6 +158,49 @@
                     <!--end:Menu link-->
                 </div>
                 <!--end:Menu item-->
+
+                <!--begin:Menu item-->
+                <div class="menu-item pt-5">
+                    <!--begin:Menu content-->
+                    <div class="menu-content">
+                        <span class="menu-heading fw-bold text-uppercase fs-7 font-bn">
+                            তথ্য সংযোজন
+                        </span>
+                    </div>
+                    <!--end:Menu content-->
+                </div>
+                <!--end:Menu item-->
+
+                <!--begin:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link {{ request()->url() == route('admin.admins') ? 'active' : '' }}" href="{{ route('admin.admins') }}">
+                        <span class="menu-icon">
+                            <i class="ki-outline ki-address-book fs-2"></i>
+                        </span>
+                        <span class="menu-title font-bn">
+                            নতুন গ্রাহক
+                        </span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
+                
+                <!--begin:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link {{ request()->url() == route('admin.data_entry.trade_license_applications.create') ? 'active' : '' }}" href="{{ route('admin.data_entry.trade_license_applications.create') }}">
+                        <span class="menu-icon">
+                            <i class="ki-outline ki-add-files fs-2"></i>
+                        </span>
+                        <span class="menu-title font-bn">
+                            নতুন আবেদন / লাইসেন্স
+                        </span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
+
                 
             </div>
             <!--end::Menu-->
